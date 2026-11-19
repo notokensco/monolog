@@ -1,2 +1,5 @@
+packages:
+  - '.'
+
 minimumReleaseAgeExclude:
   - autoprefixer@10.7.0
