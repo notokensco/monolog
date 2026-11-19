@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Monolog — Type. Speak. Act. Remember your side of the day.</title>
+<!-- Google Fonts: Inter & JetBrains Mono -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 with Plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            paper: {
+              DEFAULT: '#FAFAFC',
+              50: '#FFFFFF',
+              100: '#F4F5F8',
+              200: '#E8EDFF',
+              300: '#F2EAFE',
+              border: '#E2E6EF'
+            },
+            ink: {
+              DEFAULT: '#050505',
+              card: '#121316',
+              surface: '#1D1D1F',
+              muted: '#333438',
+              border: '#2A2B30',
+              accent: '#D9D6E8'
+            },
+            brand: {
+              charcoal: '#141416',
+              indigo: '#4F46E5',
+              violet: '#7C3AED'
+            }
+          },
+          boxShadow: {
+            'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.07)',
+            'glass-dark': '0 8px 32px 0 rgba(0, 0, 0, 0.45)',
+            'key-soft': '0 2px 10px rgba(0,0,0,0.04)',
+            'glow-aurora': '0 0 50px -10px rgba(199, 210, 254, 0.45)',
+          }
+        }
+      }
+    }
+  </script>
+<!-- BEGIN: StyleBlocks -->
+<style data-purpose="base-enhancements">
+    body {
+      font-family: 'Inter', sans-serif;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* Aurora Gradient Atmospheres */
+    .bg-aurora-soft {
+      background: radial-gradient(circle at 15% 20%, rgba(220, 232, 247, 0.6) 0%, transparent 40%),
+                  radial-gradient(circle at 85% 30%, rgba(232, 226, 243, 0.65) 0%, transparent 45%),
+                  radial-gradient(circle at 50% 80%, rgba(244, 231, 235, 0.5) 0%, transparent 50%),
+                  #FAFAFC;
+    }
+
+    .bg-aurora-ink {
+      background: radial-gradient(circle at 20% 15%, rgba(68, 62, 92, 0.25) 0%, transparent 45%),
+                  radial-gradient(circle at 80% 35%, rgba(42, 59, 87, 0.22) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 90%, rgba(30, 25, 45, 0.3) 0%, transparent 55%),
+                  #07080A;
+    }
+
+    .frosted-glass {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+  </style>
+<style data-purpose="animations">
+    @keyframes pulseSlow {
+      0%, 100% { opacity: 0.9; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.02); }
+    }
+    .animate-pulse-slow {
+      animation: pulseSlow 5s ease-in-out infinite;
+    }
+  </style>
+<!-- END: StyleBlocks -->
+</head>
+<body class="bg-paper text-slate-800 transition-colors duration-300 selection:bg-indigo-100 selection:text-indigo-900" id="page-root">
+<!-- BEGIN: TopNotificationBanner -->
+<div class="bg-slate-900 text-white text-xs sm:text-sm py-2 px-4 border-b border-slate-800 text-center flex items-center justify-center gap-2" data-purpose="event-banner">
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
+      Buildathon 2026
+    </span>
+<span class="font-medium text-slate-200">Google Startup Buildathon Finalist: On-device Gemma + Android IME Architecture</span>
+<a class="underline underline-offset-2 text-indigo-300 hover:text-white font-medium ml-1" href="#architecture">Read Architecture →</a>
+</div>
+<!-- END: TopNotificationBanner -->
+<!-- BEGIN: Navigation -->
+<header class="sticky top-0 z-50 frosted-glass bg-white/80 border-b border-paper-border/80 transition-all">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+<!-- Brand & Version -->
+<div class="flex items-center gap-3">
+<a aria-label="Monolog Home" class="flex items-center gap-2.5 focus:outline-none" href="#">
+<!-- Monolog Wordmark + Icon Asset -->
+<img alt="Monolog Logo" class="h-9 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTG13739pbQOuucUoLglMRYtvLWFrexbRAfaY0-0EntB-a_vxZYZsSV-APT4c3hV3A2wcKjfkjDBdCHk5hnmwu3hIebHHHEwY2Yw9yetISwa1f82iGx7Pl432ph5XvHXjfjD0VQkaQnTpCc3BSYpNTZQV-3RWGYT3TW5yYlE1LOQUnd8Yd9TuYcc7o3aDHKgNDkuaurjSRpD4TE365zHADj3nbaldyKpbcTqDWlZiGgvvraIPpCbVhpA"/>
+</a>
+<span class="hidden sm:inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-100 text-slate-600 border border-slate-200/80">
+          v1.0 for Android
+        </span>
+</div>
+<!-- Navigation Links -->
+<nav aria-label="Main Navigation" class="hidden md:flex items-center space-x-7 text-sm font-medium text-slate-600">
+<a class="hover:text-slate-900 transition-colors" href="#keyboard">Keyboard</a>
+<a class="hover:text-slate-900 transition-colors" href="#vox">Vox Voice</a>
+<a class="hover:text-slate-900 transition-colors" href="#ai-panel">Floating AI</a>
+<a class="hover:text-slate-900 transition-colors" href="#journal">Journal</a>
+<a class="hover:text-slate-900 transition-colors" href="#privacy">Privacy</a>
+<a class="hover:text-slate-900 transition-colors" href="#pricing">Pricing</a>
+<a class="hover:text-slate-900 transition-colors" href="#faq">FAQ</a>
+</nav>
+<!-- Action Area: Theme Pill & APK CTA -->
+<div class="flex items-center gap-3">
+<!-- Visual Theme Preview Mode Switcher -->
+<div class="flex items-center bg-slate-100/90 p-1 rounded-full border border-slate-200 text-xs" data-purpose="theme-toggle">
+<button class="px-2.5 py-1 rounded-full font-medium transition-all bg-white text-slate-900 shadow-sm" id="theme-btn-paper" onclick="setVisualTheme('paper')">
+            Paper
+          </button>
+<button class="px-2.5 py-1 rounded-full font-medium transition-all text-slate-500 hover:text-slate-800" id="theme-btn-ink" onclick="setVisualTheme('ink')">
+            Ink
+          </button>
+</div>
+<a class="inline-flex items-center gap-2 bg-slate-900 hover:bg-black text-white text-xs sm:text-sm font-semibold px-4 py-2.5 rounded-full shadow-sm hover:shadow-md transition-all active:scale-95" href="#download">
+<svg class="w-4 h-4 fill-current text-white/90" viewbox="0 0 24 24">
+<path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993s-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9994.4482.9994.9993s-.4483.9997-.9994.9997m11.4045-6.02l1.9964-3.4578a.416.416 0 00-.1523-.5676.416.416 0 00-.568.1524l-2.0223 3.503c-1.5273-.6972-3.2384-1.0847-5.1353-1.0847s-3.608.3875-5.1353 1.0847L4.8417 5.4484a.4161.4161 0 00-.568-.1524.4157.4157 0 00-.1524.5676l1.9965 3.4578C2.688 11.233.375 14.8617.375 19.1417h23.25c0-4.28-2.313-7.9087-5.7425-9.8203"></path>
+</svg>
+<span>Join Android Beta</span>
+</a>
+</div>
+</div>
+</header>
+<!-- END: Navigation -->
+<!-- BEGIN: HeroSection -->
+<section class="relative overflow-hidden pt-12 pb-24 md:pt-20 md:pb-32 bg-aurora-soft border-b border-paper-border">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Center Aligned Header Copy -->
+<div class="text-center max-w-3xl mx-auto space-y-6">
+<div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-slate-200/90 shadow-sm text-xs font-semibold text-slate-700 tracking-wide">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Privacy-First Android IME &amp; Personal Journal
+        </div>
+<h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-slate-900 leading-[1.08]">
+          Type. Speak. Act.<br/>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-slate-950 via-indigo-900 to-slate-800">
+            Remember your side of the day.
+          </span>
+</h1>
+<p class="text-lg sm:text-xl text-slate-600 font-normal leading-relaxed max-w-2xl mx-auto">
+          The Android keyboard that connects everyday conversations and screen context into a private, on-device personal journal. Without switching apps or sacrificing your privacy.
+        </p>
+<!-- CTA Cluster -->
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-3">
+<a class="w-full sm:w-auto px-8 py-3.5 rounded-full bg-slate-900 hover:bg-black text-white font-medium text-base shadow-lg shadow-indigo-950/10 hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2" href="#interactive-showcase">
+<span>Explore Product Showcase</span>
+<svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M19 9l-7 7-7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+<a class="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white hover:bg-slate-50 text-slate-800 border border-slate-200/90 font-medium text-base shadow-sm transition-all duration-200 flex items-center justify-center gap-2" href="#architecture">
+<svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span>Architectural Specs</span>
+</a>
+</div>
+<div class="pt-2 flex items-center justify-center gap-6 text-xs text-slate-500">
+<span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path></svg> Zero Telemetry</span>
+<span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path></svg> Gemma 2B On-Device</span>
+<span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-600" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" fill-rule="evenodd"></path></svg> Android Keystore AES-256</span>
+</div>
+</div>
+<!-- Hero Visual: Dual Theme Showcase with Context Callouts -->
+<div class="mt-14 max-w-5xl mx-auto relative">
+<div class="relative rounded-3xl p-3 sm:p-5 bg-white/70 frosted-glass border border-white/80 shadow-2xl shadow-indigo-900/10">
+<!-- Product Dual Board Image -->
+<img alt="Monolog Dual Theme Keyboard Design: Paper and Ink" class="w-full h-auto rounded-2xl object-cover shadow-sm" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBn3QgIIRCf_Ph_8X3SKT-BWKB0e5eziCjJs8rwgNMfdQsvPWX9vVgsHd-JPbgEvI9thkQRSA7-1o9LjGNr55ybEKi8SyClGnJ78WsBU_hfSksEVg6ESDPbesELpuIt-zdSpOTzmP1dGAfIABJ1dNnESmJktViCix3qBeetrgQMhA1GC_Pq1Qw2k-Tedu2OaY5U-g4NZEv-RaeLJG6u4cOqfCIyWPg9JhZct-BdctZt-EY6rabiOJ8CFw"/>
+<!-- Interactive Annotation Badges Over Hero -->
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-4 pt-4 border-t border-slate-100">
+<div class="p-3 bg-slate-50/80 rounded-xl border border-slate-200/60">
+<div class="flex items-center gap-1.5 text-xs font-semibold text-slate-800">
+<span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+<span>m Context Key</span>
+</div>
+<p class="text-[11px] text-slate-500 mt-1">Tap to capture context. Hold for instant Reminder &amp; Journal shortcuts.</p>
+</div>
+<div class="p-3 bg-slate-50/80 rounded-xl border border-slate-200/60">
+<div class="flex items-center gap-1.5 text-xs font-semibold text-slate-800">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+<span>Lightning Space</span>
+</div>
+<p class="text-[11px] text-slate-500 mt-1">Hold the spacebar to summon Monolog AI search &amp; actions without leaving the app.</p>
+</div>
+<div class="p-3 bg-slate-50/80 rounded-xl border border-slate-200/60">
+<div class="flex items-center gap-1.5 text-xs font-semibold text-slate-800">
+<span class="w-2 h-2 rounded-full bg-rose-500"></span>
+<span>Period Incognito</span>
+</div>
+<p class="text-[11px] text-slate-500 mt-1">Long-press the period key to pause memory recording for 15 minutes.</p>
+</div>
+<div class="p-3 bg-slate-50/80 rounded-xl border border-slate-200/60">
+<div class="flex items-center gap-1.5 text-xs font-semibold text-slate-800">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<span>Borderless Keys</span>
+</div>
+<p class="text-[11px] text-slate-500 mt-1">Standard Gboard key pitch with zero visual borders for pure frosted calm.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HeroSection -->
+<!-- BEGIN: CoreFeaturePillars -->
+<section class="py-24 bg-white" id="keyboard">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
+<!-- Section Heading -->
+<div class="max-w-3xl">
+<h2 class="text-xs font-mono uppercase tracking-wider text-indigo-600 font-semibold mb-2">Pillar 01 — Everyday Keyboard</h2>
+<p class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900">
+          The keyboard you know, tuned for thought.
+        </p>
+<p class="text-slate-600 mt-3 text-base sm:text-lg leading-relaxed">
+          Standard QWERTY muscle memory meets intelligent context awareness. Monolog suggests smart actions inline before you even switch out to your calendar or notes app.
+        </p>
+</div>
+<!-- Feature Split Grid 1: Everyday Typing & Contextual Suggestion -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+<div class="lg:col-span-5 space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-indigo-50 text-indigo-700 rounded-md text-xs font-medium">
+            Proactive Inline Intelligence
+          </div>
+<h3 class="text-2xl font-bold text-slate-900">
+            Turn chat commitments into reminders instantly.
+          </h3>
+<p class="text-slate-600 text-sm leading-relaxed">
+            When you type <em>"We have exam at 5 PM?"</em>, Monolog detects the temporal cue locally. An intuitive pill button appears in the suggestion ribbon to set an alarm or calendar reminder with a single tap.
+          </p>
+<div class="space-y-3 pt-2">
+<div class="flex items-start gap-3">
+<div class="mt-1 w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 text-xs font-bold">1</div>
+<p class="text-xs text-slate-600 leading-snug"><strong class="text-slate-800">Zero App Context Leakage:</strong> Processing happens via on-device regex &amp; local intent classification.</p>
+</div>
+<div class="flex items-start gap-3">
+<div class="mt-1 w-5 h-5 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 text-xs font-bold">2</div>
+<p class="text-xs text-slate-600 leading-snug"><strong class="text-slate-800">No Typing Latency:</strong> Rendered at 120Hz using Android Jetpack Compose Canvas keys.</p>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 flex justify-center">
+<div class="relative max-w-sm rounded-[2.5rem] p-2 bg-gradient-to-b from-slate-200 to-slate-100 shadow-2xl border border-slate-300">
+<img alt="Smart Reminder Suggestion on Monolog Keyboard" class="rounded-[2.2rem] w-full h-auto shadow-inner" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsguD40QaNbShRn9X4P1TVVCRQWrFFGRMrMkp2UGNgm5n3q2_PW70WhPpElSD2TlqsyhvCH4UOL_T2z0IRHAAO7LtUAXw3A1M-oYiMBHjLDloXwAxT5pkW0tRisVPqmQe-prf4HBcvbhZQE_5PY3R8dzo-8hInvoqnUc9P94vTmU2OZX47srAgVXSv0M9jy1Xx3zMVKc8rpy2XdED4mQ9_Jssu_eTOMk8L6cj33mDBoCEvMkbK3Q103w"/>
+</div>
+</div>
+</div>
+<!-- Feature Split Grid 2: Vox Voice Typing -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-8 border-t border-slate-100" id="vox">
+<div class="lg:col-span-7 order-2 lg:order-1 flex justify-center">
+<div class="relative max-w-sm rounded-[2.5rem] p-2 bg-gradient-to-b from-slate-200 to-slate-100 shadow-2xl border border-slate-300">
+<img alt="Vox Mode Dictation UI with Waveform" class="rounded-[2.2rem] w-full h-auto shadow-inner" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUWStt39ZI7lF7pasRy1UVsN8f9KGkEV7ByMV8HY4eOgbTHyh5UfWasrU9-LqrItluQkCIEzf5oGedT0dFyCjUIDsr2M5K5-1fkR62lsgo8SZq44ez9y1m_ewXM4udS75NCCwG6KVMVGZYfaNJKcIyfIoQI3fQK8U5qAP2NrhKEFo1-grYYvLk3MtBYB2OLqKUwl8DVB-jl8h76TnStfdL8Zuyp55LGaZXNI7UesCOdUuIWotR0v-pzg"/>
+</div>
+</div>
+<div class="lg:col-span-5 order-1 lg:order-2 space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-violet-50 text-violet-700 rounded-md text-xs font-medium">
+            Pillar 02 — Vox Voice
+          </div>
+<h3 class="text-2xl sm:text-3xl font-bold text-slate-900">
+            Speak naturally. Words appear as you talk.
+          </h3>
+<p class="text-slate-600 text-sm leading-relaxed">
+            Hold the microphone key to enter Vox Mode. Monolog provides sustained, fluid speech-to-text with an expressive voice waveform. Our on-device formatting model automatically injects capitalization, commas, and periods while preserving your authentic voice.
+          </p>
+<ul class="space-y-2.5 text-xs text-slate-600">
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-violet-600"></span>
+<span><strong>Hands-free persistence:</strong> Doesn't cut out after pauses; tap 'Done' when finished.</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-violet-600"></span>
+<span><strong>Tone preservation:</strong> Keeps colloquial phrases without sterile robotic overwriting.</span>
+</li>
+<li class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-violet-600"></span>
+<span><strong>Multi-language support:</strong> Instant toggle between English and regional dialects.</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Feature Split Grid 3: Floating AI Panel -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-8 border-t border-slate-100" id="ai-panel">
+<div class="lg:col-span-5 space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 text-blue-700 rounded-md text-xs font-medium">
+            Pillar 03 — Floating AI Panel
+          </div>
+<h3 class="text-2xl sm:text-3xl font-bold text-slate-900">
+            AI without app switching.
+          </h3>
+<p class="text-slate-600 text-sm leading-relaxed">
+            Long-press the lightning spacebar anytime. An elegant frosted glass overlay appears right above your keyboard. Ask quick questions, summarize incoming logistics, or verify facts with live cited sources without ever leaving your conversation.
+          </p>
+<div class="p-4 bg-slate-50 rounded-2xl border border-slate-200/70 space-y-2">
+<div class="flex items-center gap-2 text-xs font-semibold text-slate-900">
+<svg class="w-4 h-4 text-blue-600" fill="currentColor" viewbox="0 0 20 20"><path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1h4v1a2 2 0 11-4 0zM12 14H8a4 4 0 01-4-4 4 4 0 014-4h4a4 4 0 014 4 4 4 0 01-4 4z"></path></svg>
+<span>Grounded Answers with Citations</span>
+</div>
+<p class="text-xs text-slate-500">
+              Ask <em>"What should I pack for a day hike?"</em> — Receive clean, bulleted essentials with instant "View sources" validation.
+            </p>
+</div>
+</div>
+<div class="lg:col-span-7 flex justify-center">
+<div class="relative max-w-sm rounded-[2.5rem] p-2 bg-gradient-to-b from-slate-200 to-slate-100 shadow-2xl border border-slate-300">
+<img alt="Monolog AI Floating Panel Interface" class="rounded-[2.2rem] w-full h-auto shadow-inner" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAq1FWI9UYyv10DlzsEXy3U6McJ1I0rzWygh6QXBiYnAAseJsyefzSnAmBYnH-iRomEORM6jbyec_4TiPHCxtVJEqgFJCyM9_gkBt3g9bbYVVbhoKF5d5CNAcflkGlJeDodYP5AlcnlV6Pb2RZcaEGZgtd5M4Am2cPcUL__kKjaqfDQOd84IxWQHWkyyPwEq0kxakqXYk_UtmPfTxFAG0YMuy_9aLq0Dqzw5TQk2cjQgt1z2DWBeL1w4A"/>
+</div>
+</div>
+</div>
+<!-- Feature Split Grid 4: Context Capture via 'm' Key -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-8 border-t border-slate-100">
+<div class="lg:col-span-7 order-2 lg:order-1 flex justify-center">
+<div class="relative max-w-sm rounded-[2.5rem] p-2 bg-gradient-to-b from-slate-200 to-slate-100 shadow-2xl border border-slate-300">
+<img alt="Quick shortcuts popup from m key" class="rounded-[2.2rem] w-full h-auto shadow-inner" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXI7PGM_PMRWwBN_qImdJnfn4zFTdvFZ65I_zEbntXA0yeqJKFvBE5rg-dLadlnJo7UoNpfQSA7mThmjaREI7gVw6KbjGPUd4CFFVNFcX9bAofAFgBXP0Cy-LCj_MKPey0qkn5y7FZffWA-vhoRKOB1XncQ7gpeB5GwD7I50ttqSaMg-ZGZJJ2haNPz-JehxF_3yj51xxKuu20L9J4YxJGiwp22WMHOuMTpUu0Pj4uWZK6wiSmiDWEyw"/>
+</div>
+</div>
+<div class="lg:col-span-5 order-1 lg:order-2 space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-50 text-amber-800 rounded-md text-xs font-medium">
+            Pillar 04 — Context Engine
+          </div>
+<h3 class="text-2xl sm:text-3xl font-bold text-slate-900">
+            Context, just one tap away.
+          </h3>
+<p class="text-slate-600 text-sm leading-relaxed">
+            The prominent <span class="font-serif italic font-bold">m</span> mark in the upper-right corner acts as your gateway. Tap once to capture screen context with explicit permission. Long press to summon your customized quick launcher: Reminder, Alarm, and Journal shortcuts.
+          </p>
+<div class="space-y-3">
+<div class="p-3 bg-white border border-slate-200 rounded-xl shadow-sm flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center font-bold text-sm">🔔</div>
+<div>
+<p class="text-xs font-semibold text-slate-800">Quick Reminder</p>
+<p class="text-[11px] text-slate-500">Auto-filled with relevant chat context</p>
+</div>
+</div>
+<div class="p-3 bg-white border border-slate-200 rounded-xl shadow-sm flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm">⏰</div>
+<div>
+<p class="text-xs font-semibold text-slate-800">System Alarm</p>
+<p class="text-[11px] text-slate-500">Preset to conversational times</p>
+</div>
+</div>
+<div class="p-3 bg-white border border-slate-200 rounded-xl shadow-sm flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-purple-50 text-purple-600 flex items-center justify-center font-bold text-sm">📖</div>
+<div>
+<p class="text-xs font-semibold text-slate-800">Open Journal</p>
+<p class="text-[11px] text-slate-500">Dive into your personal chronicle</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Feature Split Grid 5: Companion Journal -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center pt-8 border-t border-slate-100" id="journal">
+<div class="lg:col-span-5 space-y-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-800 rounded-md text-xs font-medium">
+            Pillar 05 — The Companion Journal
+          </div>
+<h3 class="text-2xl sm:text-3xl font-bold text-slate-900">
+            Your day, quietly remembered.
+          </h3>
+<p class="text-slate-600 text-sm leading-relaxed">
+            At the end of the day, open Monolog. Instead of a blank sheet of paper, your journal is already gently seeded with your side of the day: reminders completed, photos pinned, thoughtful voice notes, and weather conditions.
+          </p>
+<div class="space-y-3 pt-2">
+<div class="border-l-2 border-indigo-500 pl-3 py-1">
+<p class="text-xs font-semibold text-slate-900">Today Dashboard</p>
+<p class="text-xs text-slate-500">Weather, Memory of the Day, and modular cards that make the space uniquely yours.</p>
+</div>
+<div class="border-l-2 border-purple-500 pl-3 py-1">
+<p class="text-xs font-semibold text-slate-900">Reverse-Chronological Timeline</p>
+<p class="text-xs text-slate-500">Browse dates with quick photo snippets, notes, and ambient daily titles like <em>"A focused day"</em>.</p>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 flex flex-col sm:flex-row items-center justify-center gap-6">
+<div class="relative max-w-[260px] rounded-[2.2rem] p-1.5 bg-gradient-to-b from-slate-200 to-slate-100 shadow-xl border border-slate-300">
+<img alt="Monolog Home Screen Dashboard" class="rounded-[2rem] w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4EY0e6uxH5sUY1E4lgmgZJjfGbozEJJWmfskpVtNCl2S0ijAS1df8FjpfweLLjvbjBJerI7hyLj2A5vFmY7BcKp6cphuUKU0kVnxZWWucdEG7MGshXJ-0VFJspSKmFdmuOMcBTBHbaeDHawNOOPSqR7jFXjBfkYqV89wXx3-KdopicbFm3md4ZCHkXNTXkYhNzIgA295aMx4SsiMOhV7-brfUTQ_sZAu0oSOtrok1ux5AP_8jw6nNcw"/>
+<p class="text-center text-[11px] font-medium text-slate-500 py-2">Today Dashboard</p>
+</div>
+<div class="relative max-w-[260px] rounded-[2.2rem] p-1.5 bg-gradient-to-b from-slate-200 to-slate-100 shadow-xl border border-slate-300">
+<img alt="Monolog Journal Timeline Screen" class="rounded-[2rem] w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnipWj1K4FBcx2hKZng5QgrMUfgUKkpXOzQXRzb4lV4PRAlZ7kxBkWJTZvvAWsykRYRFjRqex9Cr606iF4xvirxwaZRYZAcfylGK7dbFKbXKMdHZlFotraOLHX9uhGNAKoHyYnEQuwxqPIcFn5Z-RZGV9a9TlqfP-VMjB0NdWOYBV68vw0GJA-H2HNPuH4j4xsVgjxxWnYoJHXW2blRGCRecT5b4Lv9EpwJGh4S-9V-75AWCDGD85_pw"/>
+<p class="text-center text-[11px] font-medium text-slate-500 py-2">Journal Timeline</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: CoreFeaturePillars -->
+<!-- BEGIN: InteractiveShowcaseExplorer -->
+<section class="py-24 bg-slate-900 text-white relative overflow-hidden" id="interactive-showcase">
+<!-- Ambient Aurora Glow Behind Screen -->
+<div class="absolute inset-0 bg-aurora-ink opacity-80 pointer-events-none"></div>
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+<div class="text-center max-w-2xl mx-auto space-y-4">
+<h2 class="text-xs font-mono uppercase tracking-widest text-indigo-400 font-semibold">Interactive UI Explorer</h2>
+<p class="text-3xl sm:text-5xl font-extrabold tracking-tight">Experience every interface</p>
+<p class="text-slate-400 text-sm sm:text-base">
+          Click the modes below to inspect Monolog’s fluid dual themes, contextual overlays, and privacy shields.
+        </p>
+</div>
+<!-- Tab Buttons -->
+<div class="flex flex-wrap items-center justify-center gap-2 mt-10">
+<button class="tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-white text-slate-900" id="btn-tab-paper" onclick="switchTab('tab-paper')">
+          01. Paper Light
+        </button>
+<button class="tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-slate-800 text-slate-300 hover:text-white" id="btn-tab-ink" onclick="switchTab('tab-ink')">
+          02. Ink Dark Mode
+        </button>
+<button class="tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-slate-800 text-slate-300 hover:text-white" id="btn-tab-vox" onclick="switchTab('tab-vox')">
+          03. Vox Voice
+        </button>
+<button class="tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-slate-800 text-slate-300 hover:text-white" id="btn-tab-ai" onclick="switchTab('tab-ai')">
+          04. Floating AI
+        </button>
+<button class="tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-slate-800 text-slate-300 hover:text-white" id="btn-tab-journal" onclick="switchTab('tab-journal')">
+          05. Daily Chronicle
+        </button>
+<button class="tab-btn px-4 py-2 rounded-full text-xs sm:text-sm font-medium transition-all bg-slate-800 text-slate-300 hover:text-white" id="btn-tab-incognito" onclick="switchTab('tab-incognito')">
+          06. Bank Incognito 🛡️
+        </button>
+</div>
+<!-- Tab Display Panels -->
+<div class="mt-12 flex justify-center">
+<!-- Tab 1: Paper Light -->
+<div class="tab-panel max-w-sm w-full transition-all duration-300" id="tab-paper">
+<div class="p-2 rounded-[2.5rem] bg-slate-800/80 border border-slate-700 shadow-2xl backdrop-blur-md">
+<img alt="Paper Light Keyboard" class="rounded-[2.2rem] w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsguD40QaNbShRn9X4P1TVVCRQWrFFGRMrMkp2UGNgm5n3q2_PW70WhPpElSD2TlqsyhvCH4UOL_T2z0IRHAAO7LtUAXw3A1M-oYiMBHjLDloXwAxT5pkW0tRisVPqmQe-prf4HBcvbhZQE_5PY3R8dzo-8hInvoqnUc9P94vTmU2OZX47srAgVXSv0M9jy1Xx3zMVKc8rpy2XdED4mQ9_Jssu_eTOMk8L6cj33mDBoCEvMkbK3Q103w"/>
+</div>
+<div class="text-center mt-4 space-y-1">
+<p class="text-sm font-semibold text-slate-200">Paper Light Experience</p>
+<p class="text-xs text-slate-400">Pearl white canvas, soft ice-blue aura, zero key boundary visual noise.</p>
+</div>
+</div>
+<!-- Tab 2: Ink Dark Mode (Hidden initially) -->
+<div class="tab-panel hidden max-w-sm w-full transition-all duration-300" id="tab-ink">
+<div class="p-2 rounded-[2.5rem] bg-slate-800/80 border border-slate-700 shadow-2xl backdrop-blur-md">
+<img alt="Ink Theme Keyboard" class="rounded-[2.2rem] w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe__BWNFAdUWPjFZmWl5oUut2pGrvoO_z6leTOpkZMwwpE9ZyPvIIFrUpkqzZ8HuVZGZZgdlD1GzCc7GnfQ_3jHoF4hXrYQXnJMg45YWdIZ-dAjCXDX7tSjH2ZLeTINH2o8mMqiJit-bgPW8xkwHMhBKumYJcrUq5kWAYwhx1fBqXm-RkTcjgzvkxmTQwdqwGu7CY9UVnzovSxHngKjbtDBcH-xCRnJwXjGvE5R3H2TMg_khkRiRrI3A"/>
+</div>
+<div class="text-center mt-4 space-y-1">
+<p class="text-sm font-semibold text-slate-200">Ink Theme (#050505)</p>
+<p class="text-xs text-slate-400">Deep obsidian keys paired with muted nebula lilac glow for night typing.</p>
+</div>
+</div>
+<!-- Tab 3: Vox Voice (Hidden initially) -->
+<div class="tab-panel hidden max-w-sm w-full transition-all duration-300" id="tab-vox">
+<div class="p-2 rounded-[2.5rem] bg-slate-800/80 border border-slate-700 shadow-2xl backdrop-blur-md">
+<img alt="Vox Mode Screen" class="rounded-[2.2rem] w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUWStt39ZI7lF7pasRy1UVsN8f9KGkEV7ByMV8HY4eOgbTHyh5UfWasrU9-LqrItluQkCIEzf5oGedT0dFyCjUIDsr2M5K5-1fkR62lsgo8SZq44ez9y1m_ewXM4udS75NCCwG6KVMVGZYfaNJKcIyfIoQI3fQK8U5qAP2NrhKEFo1-grYYvLk3MtBYB2OLqKUwl8DVB-jl8h76TnStfdL8Zuyp55LGaZXNI7UesCOdUuIWotR0v-pzg"/>
+</div>
+<div class="text-center mt-4 space-y-1">
+<p class="text-sm font-semibold text-slate-200">Vox Dictation Mode</p>
+<p class="text-xs text-slate-400">Continuous speech waveform, active listening status, live punctuation model.</p>
+</div>
+</div>
+<!-- Tab 4: Floating AI (Hidden initially) -->
+<div class="tab-panel hidden max-w-sm w-full transition-all duration-300" id="tab-ai">
+<div class="p-2 rounded-[2.5rem] bg-slate-800/80 border border-slate-700 shadow-2xl backdrop-blur-md">
+<img alt="Monolog Floating AI Panel" class="rounded-[2.2rem] w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAq1FWI9UYyv10DlzsEXy3U6McJ1I0rzWygh6QXBiYnAAseJsyefzSnAmBYnH-iRomEORM6jbyec_4TiPHCxtVJEqgFJCyM9_gkBt3g9bbYVVbhoKF5d5CNAcflkGlJeDodYP5AlcnlV6Pb2RZcaEGZgtd5M4Am2cPcUL__kKjaqfDQOd84IxWQHWkyyPwEq0kxakqXYk_UtmPfTxFAG0YMuy_9aLq0Dqzw5TQk2cjQgt1z2DWBeL1w4A"/>
+</div>
+<div class="text-center mt-4 space-y-1">
+<p class="text-sm font-semibold text-slate-200">Non-Intrusive Floating AI</p>
+<p class="text-xs text-slate-400">Direct query box, follow-ups, citation links, and instant copy/insert back into chat.</p>
+</div>
+</div>
+<!-- Tab 5: Daily Chronicle (Hidden initially) -->
+<div class="tab-panel hidden max-w-sm w-full transition-all duration-300" id="tab-journal">
+<div class="p-2 rounded-[2.5rem] bg-slate-800/80 border border-slate-700 shadow-2xl backdrop-blur-md">
+<img alt="Journal Timeline Interface" class="rounded-[2.2rem] w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnipWj1K4FBcx2hKZng5QgrMUfgUKkpXOzQXRzb4lV4PRAlZ7kxBkWJTZvvAWsykRYRFjRqex9Cr606iF4xvirxwaZRYZAcfylGK7dbFKbXKMdHZlFotraOLHX9uhGNAKoHyYnEQuwxqPIcFn5Z-RZGV9a9TlqfP-VMjB0NdWOYBV68vw0GJA-H2HNPuH4j4xsVgjxxWnYoJHXW2blRGCRecT5b4Lv9EpwJGh4S-9V-75AWCDGD85_pw"/>
+</div>
+<div class="text-center mt-4 space-y-1">
+<p class="text-sm font-semibold text-slate-200">Daily Timeline Chronicle</p>
+<p class="text-xs text-slate-400">Integrated calendar filters, tagged reminders, and memory summaries.</p>
+</div>
+</div>
+<!-- Tab 6: Banking Incognito (Hidden initially) -->
+<div class="tab-panel hidden max-w-sm w-full transition-all duration-300" id="tab-incognito">
+<div class="p-2 rounded-[2.5rem] bg-slate-800/80 border border-slate-700 shadow-2xl backdrop-blur-md">
+<img alt="Banking Incognito Protection" class="rounded-[2.2rem] w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeeGkVejIyAifKIAEp3W0TdL7371p_Y437ukBZTaB_m1GpUSFP4xV72YPDx48RGvss48CQQ8YrPRgwfLZU9zaTNhdkwZ3b4ghtcyu_M6MC-bc11RMQNYWWfyHFHDLgae61CkdOHCir5m4aKmwhcVH6J2_UXQIk24SCd-4xmFLlijRiYO_URMtFw0L52sDb4j0f90diRn1DSaIElPMeIC-zdzwfN91Rkel1OK5ZB_cAfV7N8VMro0oskA"/>
+</div>
+<div class="text-center mt-4 space-y-1">
+<p class="text-sm font-semibold text-emerald-400 flex items-center justify-center gap-1.5">
+<span>Automatic Incognito Activated</span>
+</p>
+<p class="text-xs text-slate-400">Banking, passwords, &amp; sensitive inputs automatically pause learning with zero logs.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: InteractiveShowcaseExplorer -->
+<!-- BEGIN: PrivacyAndArchitectureMatrix -->
+<section class="py-24 bg-paper" id="privacy">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+<div class="text-center max-w-3xl mx-auto space-y-4">
+<span class="text-xs font-mono uppercase tracking-widest text-indigo-600 font-semibold">Security &amp; Architecture</span>
+<h2 class="text-3xl sm:text-5xl font-bold tracking-tight text-slate-900">
+          Private by default. Honest by design.
+        </h2>
+<p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+          Monolog rejects the silent keylogger archetype. We process memory on-device using local weights, and we only record what you explicitly choose to remember.
+        </p>
+</div>
+<!-- 4 Privacy States Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="p-6 bg-white rounded-2xl border border-slate-200/90 shadow-sm space-y-3">
+<div class="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-700 font-mono text-sm font-bold">
+            01
+          </div>
+<h3 class="font-bold text-slate-900 text-base">Memory Off</h3>
+<p class="text-xs text-slate-500 leading-relaxed">
+            Operates as a pure, lightweight standard Android keyboard. Zero keystrokes saved, zero contextual indexing.
+          </p>
+<span class="inline-block text-[11px] font-medium text-slate-400 bg-slate-50 px-2 py-0.5 rounded border border-slate-200">Clean baseline</span>
+</div>
+<div class="p-6 bg-white rounded-2xl border border-indigo-200 shadow-sm space-y-3 relative overflow-hidden">
+<div class="absolute top-0 right-0 bg-indigo-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-bl-lg">Active</div>
+<div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center font-mono text-sm font-bold">
+            02
+          </div>
+<h3 class="font-bold text-slate-900 text-base">Memory On</h3>
+<p class="text-xs text-slate-500 leading-relaxed">
+            Captures your side of the day, temporal obligations, and highlights directly into your local encrypted SQLite Room database.
+          </p>
+<span class="inline-block text-[11px] font-medium text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">Encrypted Local Room</span>
+</div>
+<div class="p-6 bg-white rounded-2xl border border-slate-200/90 shadow-sm space-y-3">
+<div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center font-mono text-sm font-bold">
+            03
+          </div>
+<h3 class="font-bold text-slate-900 text-base">Manual Incognito</h3>
+<p class="text-xs text-slate-500 leading-relaxed">
+            Hold the period key for 0.4s to enter Incognito. A 15-minute countdown starts automatically pausing all journaling until timeout.
+          </p>
+<span class="inline-block text-[11px] font-medium text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-100">15-minute quick pause</span>
+</div>
+<div class="p-6 bg-white rounded-2xl border border-emerald-200 shadow-sm space-y-3">
+<div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center font-mono text-sm font-bold">
+            04
+          </div>
+<h3 class="font-bold text-slate-900 text-base">Automatic Banking Shield</h3>
+<p class="text-xs text-slate-500 leading-relaxed">
+            Any password field, PIN, OTP, banking app package ID, or incognito browser tab triggers immediate automatic lockdown.
+          </p>
+<span class="inline-block text-[11px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">Zero override allowed</span>
+</div>
+</div>
+<!-- Architectural Specs Technical Blueprint Box -->
+<div class="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm" id="architecture">
+<div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-slate-100 gap-4">
+<div>
+<h3 class="text-lg font-bold text-slate-900">Technical Architecture Specifications</h3>
+<p class="text-xs text-slate-500">Android IME System Service &amp; Google Gemma Integration</p>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2.5 py-1 rounded bg-slate-100 font-mono text-[11px] text-slate-600">Android 12 (API 31)+</span>
+<span class="px-2.5 py-1 rounded bg-indigo-50 font-mono text-[11px] text-indigo-700">Jetpack Compose IME</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
+<div class="space-y-2">
+<h4 class="text-xs font-mono font-semibold text-slate-900 uppercase">1. Local Storage Layer</h4>
+<p class="text-xs text-slate-600 leading-relaxed">
+              Encrypted SQLite Room database keyed with Android Keystore 256-bit AES-GCM. Keys never leave the secure hardware enclave (TEE/StrongBox).
+            </p>
+</div>
+<div class="space-y-2">
+<h4 class="text-xs font-mono font-semibold text-slate-900 uppercase">2. On-Device Gemma SLM</h4>
+<p class="text-xs text-slate-600 leading-relaxed">
+              Google Gemma 2B model executed via LiteRT-LM (TensorFlow Lite runtime) directly on Snapdragon/Tensor NPUs for offline summarization and formatting.
+            </p>
+</div>
+<div class="space-y-2">
+<h4 class="text-xs font-mono font-semibold text-slate-900 uppercase">3. Optional Cloud Relay</h4>
+<p class="text-xs text-slate-600 leading-relaxed">
+              Firebase AI Logic + Gemini 1.5 Flash utilized strictly when user triggers the web search pill in the floating panel. Explicit opt-in per query.
+            </p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: PrivacyAndArchitectureMatrix -->
+<!-- BEGIN: PricingAndSubscriptions -->
+<section class="py-24 bg-white border-t border-paper-border" id="pricing">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+<div class="text-center max-w-2xl mx-auto space-y-4">
+<span class="text-xs font-mono uppercase tracking-widest text-indigo-600 font-semibold">Fair &amp; Transparent Pricing</span>
+<h2 class="text-3xl sm:text-5xl font-bold tracking-tight text-slate-900">
+          Start free. Upgrade for depth.
+        </h2>
+<p class="text-slate-600 text-sm sm:text-base">
+          Our core keyboard and complete on-device privacy are free forever. Pro unlocks unlimited multi-modal voice and deeper historical synthesis.
+        </p>
+</div>
+<!-- Pricing Plans Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch max-w-6xl mx-auto">
+<!-- Plan 1: Free Forever -->
+<div class="p-8 bg-paper rounded-3xl border border-slate-200/90 flex flex-col justify-between">
+<div class="space-y-4">
+<h3 class="text-lg font-bold text-slate-900">Free Core</h3>
+<p class="text-xs text-slate-500">Everyday typing, local daily reflections, and fundamental privacy controls.</p>
+<div class="pt-2">
+<span class="text-4xl font-extrabold text-slate-900">₹0</span>
+<span class="text-xs text-slate-500 font-medium">/ forever</span>
+</div>
+<ul class="space-y-2.5 pt-4 border-t border-slate-200/60 text-xs text-slate-700">
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Full Paper &amp; Ink QWERTY Keyboard</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Local on-device Journal timeline</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Automatic Banking Incognito protection</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Standard Vox dictation quota</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-emerald-500" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Basic local keyword memory search</li>
+</ul>
+</div>
+<div class="pt-8">
+<a class="block w-full py-2.5 text-center rounded-xl bg-white border border-slate-300 text-slate-800 text-xs font-semibold hover:bg-slate-50 transition-colors" href="#download">
+              Install Free APK
+            </a>
+</div>
+</div>
+<!-- Plan 2: Pro Monthly -->
+<div class="p-8 bg-white rounded-3xl border border-slate-200 shadow-sm flex flex-col justify-between">
+<div class="space-y-4">
+<div class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-slate-100 text-slate-700">Flexible</div>
+<h3 class="text-lg font-bold text-slate-900">Pro Monthly</h3>
+<p class="text-xs text-slate-500">Expanded AI queries, higher audio limits, and conversational retrospectives.</p>
+<div class="pt-2">
+<span class="text-4xl font-extrabold text-slate-900">₹299</span>
+<span class="text-xs text-slate-500 font-medium">/ month</span>
+</div>
+<ul class="space-y-2.5 pt-4 border-t border-slate-100 text-xs text-slate-700">
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-600" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Everything in Free</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-600" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> 10× Expanded Vox &amp; AI pool</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-600" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Advanced tone rewrites &amp; stylistic tools</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-600" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Natural language queries into your past</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-600" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Rich monthly narrative recaps</li>
+</ul>
+</div>
+<div class="pt-8">
+<a class="block w-full py-2.5 text-center rounded-xl bg-slate-900 hover:bg-black text-white text-xs font-semibold shadow-sm transition-colors" href="#download">
+              Subscribe Monthly
+            </a>
+</div>
+</div>
+<!-- Plan 3: Pro Yearly (Featured) -->
+<div class="p-8 bg-slate-900 text-white rounded-3xl border border-indigo-500/50 shadow-xl relative flex flex-col justify-between overflow-hidden">
+<div class="absolute top-0 right-0 bg-indigo-600 text-white text-[11px] font-bold px-3 py-1 rounded-bl-xl tracking-wider uppercase">
+            Save 6%
+          </div>
+<div class="space-y-4">
+<div class="inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-400/30">
+              Best Value
+            </div>
+<h3 class="text-lg font-bold text-white">Pro Yearly</h3>
+<p class="text-xs text-slate-400">Equivalent to ₹281/month (Save ₹216 annually). Billed once a year.</p>
+<div class="pt-2">
+<span class="text-4xl font-extrabold text-white">₹3,372</span>
+<span class="text-xs text-slate-400 font-medium">/ year</span>
+</div>
+<ul class="space-y-2.5 pt-4 border-t border-slate-800 text-xs text-slate-300">
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> All Pro Monthly features included</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Priority access to Gemma on-device beta updates</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Unlimited context card pins in Journal</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Cloud encrypted sync backup via Google Drive</li>
+<li class="flex items-center gap-2"><svg class="w-4 h-4 text-indigo-400" fill="currentColor" viewbox="0 0 20 20"><path clip-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" fill-rule="evenodd"></path></svg> Direct founder engineering support</li>
+</ul>
+</div>
+<div class="pt-8">
+<a class="block w-full py-2.5 text-center rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold shadow-md transition-colors" href="#download">
+              Get Pro Yearly
+            </a>
+</div>
+</div>
+</div>
+<!-- Free Guarantee Statement -->
+<div class="max-w-2xl mx-auto p-4 rounded-2xl bg-slate-50 border border-slate-200 text-center">
+<p class="text-xs text-slate-600 font-medium">
+          🔒 <strong>Monolog Lifetime Privacy Guarantee:</strong> Local encryption, incognito modes, 1-click database erasure, and standard Markdown export remain completely free forever.
+        </p>
+</div>
+</div>
+</section>
+<!-- END: PricingAndSubscriptions -->
+<!-- BEGIN: FAQSection -->
+<section class="py-24 bg-paper" id="faq">
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+<div class="text-center space-y-3">
+<h2 class="text-xs font-mono uppercase tracking-widest text-indigo-600 font-semibold">Honest Answers</h2>
+<p class="text-3xl font-bold tracking-tight text-slate-900">Frequently Asked Questions</p>
+</div>
+<div class="space-y-4" data-purpose="faq-accordion">
+<details class="group bg-white p-5 rounded-2xl border border-slate-200/90 open:shadow-sm">
+<summary class="flex justify-between items-center font-semibold text-slate-900 cursor-pointer list-none text-sm">
+<span>Is Monolog a keylogger?</span>
+<span class="transition group-open:rotate-180">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+</span>
+</summary>
+<p class="text-slate-600 mt-3 text-xs sm:text-sm leading-relaxed">
+            No. Traditional keyloggers silently capture every raw keystroke and exfiltrate them to remote servers. Monolog runs on-device, never tracks raw character streams, and automatically pauses on passwords and banking interfaces. You have granular control to pause memory for 15 minutes or wipe entries at any time.
+          </p>
+</details>
+<details class="group bg-white p-5 rounded-2xl border border-slate-200/90 open:shadow-sm">
+<summary class="flex justify-between items-center font-semibold text-slate-900 cursor-pointer list-none text-sm">
+<span>Does Monolog read other people's incoming messages?</span>
+<span class="transition group-open:rotate-180">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+</span>
+</summary>
+<p class="text-slate-600 mt-3 text-xs sm:text-sm leading-relaxed">
+            No. As an input method editor (IME), Monolog only interacts with what <em>you</em> type or dictate. It does not inspect other participants' chats unless you explicitly tap the 'm' key to take a screen context snapshot with your Android permission. Hence our motto: <em>Remember your side of the day</em>.
+          </p>
+</details>
+<details class="group bg-white p-5 rounded-2xl border border-slate-200/90 open:shadow-sm">
+<summary class="flex justify-between items-center font-semibold text-slate-900 cursor-pointer list-none text-sm">
+<span>Can I use Monolog completely offline without an internet connection?</span>
+<span class="transition group-open:rotate-180">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+</span>
+</summary>
+<p class="text-slate-600 mt-3 text-xs sm:text-sm leading-relaxed">
+            Yes. The core QWERTY keyboard, local SQLite Room storage, Vox speech model, and Gemma 2B on-device models operate 100% offline. Network connectivity is only utilized if you choose to trigger cloud web-grounding or Google Drive encrypted backups.
+          </p>
+</details>
+<details class="group bg-white p-5 rounded-2xl border border-slate-200/90 open:shadow-sm">
+<summary class="flex justify-between items-center font-semibold text-slate-900 cursor-pointer list-none text-sm">
+<span>How does Monolog differ from Gboard or SwiftKey?</span>
+<span class="transition group-open:rotate-180">
+<svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20"><path d="M6 9l6 6 6-6"></path></svg>
+</span>
+</summary>
+<p class="text-slate-600 mt-3 text-xs sm:text-sm leading-relaxed">
+            Standard keyboards treat text as ephemeral: once sent, the context vanishes. Monolog bridges your keyboard with a personal ambient journal. It automatically aggregates your commitments, daily feelings, and screen notes into a peaceful personal timeline without you needing to manually maintain a diary app.
+          </p>
+</details>
+</div>
+</div>
+</section>
+<!-- END: FAQSection -->
+<!-- BEGIN: CTASection -->
+<section class="py-20 bg-slate-900 text-white relative overflow-hidden" id="download">
+<div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6 relative z-10">
+<!-- Mark Icon -->
+<div class="flex justify-center">
+<img alt="Monolog Icon" class="w-20 h-20 rounded-2xl shadow-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA31HS0ER17qyGOMCtqwhabSiismmn_83AQZ6xIgw4MQLFfhAuQSlZ0a3wqoKTtXzSQL6VMj8rzONdTo3K-iWZexKRdKIOokVuYaDDSQ7oDxmtWNJHu7ouKP3YKyxsnVCRKhcIUQRMzHIuwXVdXJblrcjCP3RzvYEKYpx0IWcrNMMVv_4kpKW1sdg-JMGNrpdcYRCR4Gx6-_xK1gVFBCcGXuOy8Bplo4fVt9nks4UUUlBFpdrwqD0M8gA"/>
+</div>
+<h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight">
+        Ready for a more mindful keyboard?
+      </h2>
+<p class="text-slate-400 text-base max-w-xl mx-auto">
+        Download the early build APK today or sign up for Google Play Internal Testing.
+      </p>
+<div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+<a class="px-8 py-3.5 rounded-full bg-white text-slate-900 font-semibold text-sm hover:bg-slate-100 transition-all flex items-center gap-2 shadow-lg" href="#download-apk">
+<svg class="w-4 h-4 fill-current" viewbox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM17 13l-5 5-5-5h3V9h4v4h3z"></path></svg>
+<span>Download Signed APK (v1.0-alpha)</span>
+</a>
+<a class="px-7 py-3.5 rounded-full bg-slate-800 text-slate-200 border border-slate-700 font-medium text-sm hover:bg-slate-700 transition-all flex items-center gap-2" href="#play-store">
+<span>Request Google Play Track</span>
+</a>
+</div>
+<p class="text-xs text-slate-500 pt-2 font-mono">
+        MD5: 8f9b2a7d4e1c0b3a • Requires Android 12+ • 48 MB
+      </p>
+</div>
+</section>
+<!-- END: CTASection -->
+<!-- BEGIN: MainFooter -->
+<footer class="bg-white border-t border-slate-200 py-12 text-slate-600 text-xs">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+<div class="flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-3">
+<img alt="Monolog Logo" class="h-6 w-auto object-contain" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTG13739pbQOuucUoLglMRYtvLWFrexbRAfaY0-0EntB-a_vxZYZsSV-APT4c3hV3A2wcKjfkjDBdCHk5hnmwu3hIebHHHEwY2Yw9yetISwa1f82iGx7Pl432ph5XvHXjfjD0VQkaQnTpCc3BSYpNTZQV-3RWGYT3TW5yYlE1LOQUnd8Yd9TuYcc7o3aDHKgNDkuaurjSRpD4TE365zHADj3nbaldyKpbcTqDWlZiGgvvraIPpCbVhpA"/>
+<span class="text-slate-400">|</span>
+<span class="font-medium text-slate-500">Built by NoTokens</span>
+</div>
+<div class="flex flex-wrap items-center gap-6 font-medium text-slate-600">
+<a class="hover:text-slate-900" href="#keyboard">Product Features</a>
+<a class="hover:text-slate-900" href="#privacy">Privacy Manifesto</a>
+<a class="hover:text-slate-900" href="#architecture">Security Architecture</a>
+<a class="hover:text-slate-900" href="#pricing">Pricing</a>
+<a class="hover:text-slate-900" href="#">GitHub (Public Core)</a>
+</div>
+</div>
+<div class="pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-400">
+<p>© 2026 NoTokens Studio. All rights reserved. Monolog and its iconic mark are trademarks of NoTokens.</p>
+<div class="flex items-center gap-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px]">
+            Google Startup Buildathon Finalist Entry
+          </span>
+<a class="hover:underline" href="#privacy">Privacy Policy</a>
+<a class="hover:underline" href="#">Terms of Service</a>
+</div>
+</div>
+</div>
+</footer>
+<!-- END: MainFooter -->
+<!-- BEGIN: InteractiveScripts -->
+<script data-purpose="tab-switcher">
+    function switchTab(targetTabId) {
+      // Hide all panels
+      const panels = document.querySelectorAll('.tab-panel');
+      panels.forEach(panel => {
+        panel.classList.add('hidden');
+      });
+
+      // Show selected panel
+      const targetPanel = document.getElementById(targetTabId);
+      if (targetPanel) {
+        targetPanel.classList.remove('hidden');
+      }
+
+      // Update button styles
+      const buttons = document.querySelectorAll('.tab-btn');
+      buttons.forEach(btn => {
+        btn.classList.remove('bg-white', 'text-slate-900');
+        btn.classList.add('bg-slate-800', 'text-slate-300');
+      });
+
+      // Highlight active button
+      const activeBtnId = 'btn-' + targetTabId;
+      const activeBtn = document.getElementById(activeBtnId);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-slate-800', 'text-slate-300');
+        activeBtn.classList.add('bg-white', 'text-slate-900');
+      }
+    }
+  </script>
+<script data-purpose="theme-palette-switcher">
+    function setVisualTheme(theme) {
+      const root = document.getElementById('page-root');
+      const paperBtn = document.getElementById('theme-btn-paper');
+      const inkBtn = document.getElementById('theme-btn-ink');
+
+      if (theme === 'ink') {
+        // Switch hero and preview tab to dark tone
+        switchTab('tab-ink');
+        inkBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+        inkBtn.classList.remove('text-slate-500');
+        paperBtn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+        paperBtn.classList.add('text-slate-500');
+      } else {
+        // Return to default paper light
+        switchTab('tab-paper');
+        paperBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+        paperBtn.classList.remove('text-slate-500');
+        inkBtn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+        inkBtn.classList.add('text-slate-500');
+      }
+    }
+  </script>
+<!-- END: InteractiveScripts -->
+</body></html>

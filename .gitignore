@@ -43,3 +43,9 @@ node_modules/
 __pycache__/
 *.pyc
 *.log
+
+# Vite / Web Showcase
+dist/
+.vite/
+test-results/
+playwright-report/

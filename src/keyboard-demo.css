@@ -1,0 +1,460 @@
+/* Monolog Interactive Keyboard Demo Styles */
+
+/* Tour Header & Preset Switchers */
+.demo-tour-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+  gap: 12px;
+}
+.demo-tour-header .mono {
+  font-size: 11px;
+  color: #7b7587;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.demo-tour-header p {
+  font-size: 13px;
+  color: #383344;
+  margin-top: 2px;
+  font-weight: 500;
+}
+.tour-control {
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 11px;
+  font-weight: 500;
+  font-family: var(--font-mono, monospace);
+  background: #f1edf7;
+  border: 1px solid #dcd4e8;
+  color: #5d536e;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+.tour-control:hover {
+  background: #e6ddf2;
+  color: #272133;
+}
+.tour-control[aria-pressed="true"] {
+  background: #3c344d;
+  color: #ffffff;
+  border-color: #3c344d;
+}
+
+.demo-presets {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+  scrollbar-width: none;
+}
+.demo-presets::-webkit-scrollbar {
+  display: none;
+}
+.demo-presets button {
+  padding: 5px 12px;
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: 20px;
+  background: #faf8fd;
+  border: 1px solid #e1d8ed;
+  color: #635876;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+.demo-presets button:hover {
+  background: #f2eafb;
+  border-color: #cbbede;
+  color: #2a223a;
+}
+.demo-presets button[aria-pressed="true"] {
+  background: #4a3e63;
+  color: #ffffff;
+  border-color: #4a3e63;
+  box-shadow: 0 2px 6px rgba(74, 62, 99, 0.25);
+}
+
+.tour-recovery {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: #8c849c;
+  margin-bottom: 10px;
+  min-height: 20px;
+}
+.tour-recovery button {
+  background: none;
+  border: none;
+  padding: 0;
+  color: #654c86;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  font-size: 11px;
+  font-family: inherit;
+}
+.tour-recovery button:hover {
+  color: #2f1d47;
+}
+
+/* Simulated Chat Canvas & Floating AI Panel */
+.demo-chat-canvas {
+  position: relative;
+  background: #fdfcfe;
+  border: 1px solid #e5dfef;
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+}
+.demo-chat-top {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #f0ecf6;
+  margin-bottom: 10px;
+}
+.chat-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #e3d9f2;
+  color: #4d3e66;
+  font-weight: 700;
+  font-size: 12px;
+  display: grid;
+  place-items: center;
+}
+.demo-chat-top strong {
+  font-size: 12px;
+  color: #272133;
+  display: block;
+  line-height: 1.2;
+}
+.demo-chat-top small {
+  font-size: 10px;
+  color: #8a8298;
+}
+.chat-preview-label {
+  margin-left: auto;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #f0eaf7;
+  color: #685782;
+  font-weight: 600;
+}
+.demo-chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 130px;
+  overflow-y: auto;
+}
+.chat-bubble {
+  padding: 8px 12px;
+  border-radius: 14px;
+  font-size: 13px;
+  line-height: 1.4;
+  max-width: 82%;
+  animation: fadeIn 0.25s ease-out;
+}
+.chat-bubble-peer {
+  background: #f0ecf6;
+  color: #2f293b;
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+.chat-bubble-user {
+  background: #47395f;
+  color: #ffffff;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+/* Floating Monolog Panel */
+.demo-panel {
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid #d8cde8;
+  border-radius: 14px;
+  padding: 12px 14px;
+  box-shadow: 0 10px 25px rgba(70, 52, 94, 0.12);
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.demo-panel-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #f0ecf6;
+}
+.panel-brand {
+  font-family: 'Beth Ellen', cursive;
+  font-size: 16px;
+  color: #614d7d;
+}
+.demo-panel-head strong {
+  font-size: 12px;
+  font-weight: 600;
+  color: #272133;
+}
+.demo-panel-head button {
+  background: none;
+  border: none;
+  color: #8b8399;
+  padding: 2px 6px;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 6px;
+  line-height: 1;
+}
+.demo-panel-head button:hover {
+  background: #f1ecf7;
+  color: #272133;
+}
+.demo-panel-head button:last-child {
+  margin-left: auto;
+  font-size: 17px;
+}
+.demo-panel-body {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #433c50;
+}
+.demo-panel-body h5 {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1f192b;
+  margin-bottom: 4px;
+}
+.demo-panel-body .source-tag {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #efe9f7;
+  color: #62507a;
+  font-size: 10px;
+  font-family: var(--font-mono, monospace);
+}
+
+/* Context Emoji Suggestions */
+.context-emoji-suggestions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 0 2px;
+  min-height: 28px;
+}
+.context-emoji-suggestions button {
+  background: #f5f2f9;
+  border: 1px solid #e4dcf0;
+  border-radius: 12px;
+  padding: 2px 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.1s, background 0.15s;
+}
+.context-emoji-suggestions button:hover {
+  background: #e9e0f5;
+  transform: scale(1.12);
+}
+
+/* Vox Stage */
+.vox-stage {
+  padding: 20px 16px 14px;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.vox-live-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  color: #3b304c;
+  margin-bottom: 12px;
+}
+.vox-live-state span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+  animation: pulse 1.6s infinite;
+}
+.demo-voice-wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  height: 38px;
+  width: 100%;
+  max-width: 280px;
+  margin: 6px auto 14px;
+}
+.demo-voice-wave i {
+  display: block;
+  width: 3.5px;
+  background: #7c5fb3;
+  border-radius: 2px;
+  height: var(--h, 15%);
+  animation: wavePulse 1.2s ease-in-out infinite alternate;
+  animation-delay: var(--d, 0s);
+}
+.vox-promise {
+  font-size: 14px;
+  font-weight: 500;
+  color: #272133;
+  margin-bottom: 6px;
+}
+.vox-transcript {
+  font-size: 17px;
+  color: #4b3e64;
+  font-style: italic;
+  min-height: 28px;
+  max-width: 90%;
+  line-height: 1.4;
+  margin-bottom: 4px;
+}
+.vox-subtitle {
+  font-size: 11px;
+  color: #8c829c;
+  margin-bottom: 16px;
+  display: block;
+}
+.vox-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.vox-controls button {
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  color: #3f3651;
+  transition: all 0.15s ease;
+}
+.vox-controls button:hover {
+  background: rgba(255, 255, 255, 0.95);
+  color: #1a1523;
+}
+.vox-controls .vox-done {
+  background: #47395f;
+  color: #ffffff;
+  border-color: #47395f;
+}
+.vox-controls .vox-done:hover {
+  background: #2f2541;
+}
+
+/* Demo Theme Switcher & Gestures */
+.demo-gestures {
+  font-size: 10.5px;
+  color: #837a90;
+  text-align: center;
+  margin-top: 14px;
+  letter-spacing: 0.01em;
+}
+.demo-theme-controls {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+.demo-theme-controls button {
+  padding: 4px 12px;
+  border-radius: 14px;
+  font-size: 11px;
+  font-weight: 500;
+  background: #f1ecf7;
+  border: 1px solid #ded6e9;
+  color: #635876;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.demo-theme-controls button[aria-pressed="true"] {
+  background: #3c344d;
+  color: #ffffff;
+  border-color: #3c344d;
+}
+
+/* Ink Mode in Keyboard Demo */
+.keyboard-demo[data-theme="ink"] .keyboard-surface {
+  --keyboard-ink: #f0edf8;
+  background:
+    radial-gradient(ellipse at 0% 68%, #362f4acc 0%, transparent 57%),
+    radial-gradient(ellipse at 100% 67%, #452a3bce 0%, transparent 59%),
+    radial-gradient(ellipse at 55% 100%, #2a223bad 0%, transparent 66%),
+    linear-gradient(115deg, #131217, #1b1922 56%, #1a161f);
+}
+.keyboard-demo[data-theme="ink"] .keyboard-toolbar button {
+  color: #e4dcf2;
+}
+.keyboard-demo[data-theme="ink"] .reminder-suggestion {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.12) !important;
+  color: #f0edf8;
+}
+.keyboard-demo[data-theme="ink"] .letter-key {
+  color: #f0edf8;
+}
+.keyboard-demo[data-theme="ink"] .letter-key:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+.keyboard-demo[data-theme="ink"] .key-number {
+  color: #a49cb5;
+}
+.keyboard-demo[data-theme="ink"] .space-key-group {
+  background: rgba(255, 255, 255, 0.12);
+}
+.keyboard-demo[data-theme="ink"] .keyboard-gesture > span {
+  background: #ded9eb;
+}
+.keyboard-demo[data-theme="ink"] #polish-button {
+  color: #f0edf8;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.15); }
+}
+
+@keyframes wavePulse {
+  0% { height: 15%; }
+  100% { height: 85%; }
+}

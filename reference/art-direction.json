@@ -1,0 +1,31 @@
+{
+  "mode": "Built-in image_gen",
+  "artworks": [
+    {
+      "asset": "public/artwork/key-constellation.webp",
+      "original": "reference/generated/key-constellation.png",
+      "prompt": "Use case: product-mockup. Asset type: original premium website hero artwork for Monolog, a private AI keyboard and journal. A sophisticated 3D industrial-design studio sculpture of floating oversized mechanical keyboard keycaps against an infinite dark near-black (#0b0b0d) studio background blending seamlessly into all edges. In the right-center, a large warm-white ceramic square keycap with concave top and rounded corners has the signature handwritten cursive lowercase 'm' (Beth Ellen script) cleanly 3D debossed into its concave face with subtle depth and beveled edges in rich dark charcoal ink (#151b29). Beneath the keycap are stacked journal page layers with silver and subtle aurora-blue edges matching the Monolog logo, with a small silk ribbon bookmark extending from between the lower pages. Surrounding the large keycap are floating smaller keycaps: matte warm-white ceramic keys and luminous crystal-clear glass / cut crystal keycaps with delicate pale aurora ice-blue and soft lavender crystal tints (#b0bbd0, #dce8f7), subtle caustic refractions, and delicate rim lighting. In the foreground bottom-left is the long warm-white ceramic mechanical spacebar. Subtle realistic ceramic and paper microtexture, quiet studio reflections, dark near-black #0b0b0d infinite backdrop, high-end editorial product photography, Hasselblad photoreal lighting."
+    },
+    {
+      "asset": "public/artwork/memory-unfolding.webp",
+      "original": "reference/generated/memory-unfolding.png",
+      "prompt": "Use case: product-mockup. Asset type: original editorial artwork for Monolog's private journal website section. Square 1024x1024 high-end 3D studio still life. A single oversized warm-white rounded keyboard key transforms into a tiny personal journal: an elegant stack of many fine offwhite paper layers with delicate gray edges rises from beneath its ceramic key face, several pages gently fan and curl upward above the key in a loose sculptural arc like a memory unfolding. The blank top key is in lower-middle, viewed in three-quarter isometric perspective; floating paper sheets make a beautiful asymmetrical arc from lower-left to upper-right. One soft translucent lavender sheet among ivory pages. Background pure pale cool white #f4f3f0, evenly lit, soft contact shadows and gentle global illumination, extremely fine tactile paper texture and ceramic gloss, modern minimal art direction, sculptural and surprising, generous breathing space. No notebook cover, no spiral binding, no letters, handwriting, diagrams, words, logos, symbols, watermark or screens. Only the original white keyboard key and unfolding blank pages. Premium photoreal CGI, calm monochrome with restrained lavender, original design."
+    }
+  ],
+  "inspiration": [
+    {
+      "url": "https://www.worklouder.cc/",
+      "principle": "Tactile product presentation and confident editorial scale."
+    },
+    {
+      "url": "https://www.raycast.com/",
+      "principle": "Keyboard-centered interactions and visible product behavior."
+    }
+  ],
+  "identity": {
+    "wordmark": "Beth Ellen, locally hosted; editable text rather than an image.",
+    "body": "Manrope Variable, locally hosted.",
+    "contact": "monolog@notokens.co"
+  },
+  "notes": "New composition and original generated assets. No artwork, source code, slogans, or layouts copied from inspiration sites."
+}
