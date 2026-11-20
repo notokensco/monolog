@@ -1,0 +1,25 @@
+{
+  "mode": "Built-in image_gen",
+  "assets": [
+    {
+      "name": "monolog-key",
+      "prompt": "Use case: product-mockup. Asset type: a single isolated 3D keycap asset for Monolog's premium website hero. Input image is style reference only; create a fresh pristine complete object, not a crop. Match its softly rounded tactile keycap sculpture, refined ivory ceramic and restrained cool lavender lighting, photoreal high-end studio CGI. Three-quarter view from above, front and right sides visible, natural perspective, centered object with generous transparent margin on all sides. True transparent alpha background. No floor, no backdrop, no ground shadow, no surrounding objects, no rectangular matte, no watermarks. All edges smooth and complete. Subject: one large pearl-white ceramic keycap with gently concave face bearing a single dark charcoal flowing handwritten lowercase 'm'. Beneath the ceramic key are three softly rounded thin off-white journal page layers offset a little down-right. Keep the silhouette compact and sculptural. Elegant restrained detail, not a keyboard. The whole complete object alone on transparency.",
+      "source": "C:\\Users\\princ\\.codex\\generated_images\\01a1f731-99df-7682-bb09-ce1cb16b7b19\\exec-5fbf6c9c-d73a-4290-b7d9-05bffda8d4b4.png"
+    },
+    {
+      "name": "ceramic-key",
+      "prompt": "Use case: product-mockup. Asset type: a single isolated 3D keycap asset for Monolog's premium website hero. Input image is style reference only; create a fresh pristine complete object, not a crop. Match its softly rounded tactile keycap sculpture, refined ivory ceramic and restrained cool lavender lighting, photoreal high-end studio CGI. Three-quarter view from above, front and right sides visible, natural perspective, centered object with generous transparent margin on all sides. True transparent alpha background. No floor, no backdrop, no ground shadow, no surrounding objects, no rectangular matte, no watermarks. All edges smooth and complete. Subject: exactly one small blank warm ivory ceramic mechanical keycap. Soft rounded corners and a subtly concave face, squat tactile silhouette. Gentle warm gray side shading and a fine pearly highlight. No letters, symbols, stacked pages or lettering. The whole complete object alone on transparency.",
+      "source": "C:\\Users\\princ\\.codex\\generated_images\\01a1f731-99df-7682-bb09-ce1cb16b7b19\\exec-c2306fe6-f25d-42d9-afcd-3883db9b4204.png"
+    },
+    {
+      "name": "crystal-key",
+      "prompt": "Use case: product-mockup. Asset type: a single isolated 3D keycap asset for Monolog's premium website hero. Input image is style reference only; create a fresh pristine complete object, not a crop. Match its softly rounded tactile keycap sculpture, refined ivory ceramic and restrained cool lavender lighting, photoreal high-end studio CGI. Three-quarter view from above, front and right sides visible, natural perspective, centered object with generous transparent margin on all sides. True transparent alpha background. No floor, no backdrop, no ground shadow, no surrounding objects, no rectangular matte, no watermarks. All edges smooth and complete. Subject: exactly one blank clear frosted crystal glass keycap, softly rounded corners and concave face, transparent smoky ice-blue glass with soft lavender edge refractions, delicate caustics contained INSIDE the object. Beautiful polished thick glass, not icy, not neon, no rainbow. No letters, symbols or lettering. The whole complete object alone on transparency.",
+      "source": "C:\\Users\\princ\\.codex\\generated_images\\01a1f731-99df-7682-bb09-ce1cb16b7b19\\exec-7281993a-2882-40e8-a584-8fa8d93fa13b.png"
+    },
+    {
+      "name": "spacebar-key",
+      "prompt": "Use case: product-mockup. Asset type: a single isolated 3D keycap asset for Monolog's premium website hero. Input image is style reference only; create a fresh pristine complete object, not a crop. Match its softly rounded tactile keycap sculpture, refined ivory ceramic and restrained cool lavender lighting, photoreal high-end studio CGI. Three-quarter view from above, front and right sides visible, natural perspective, centered object with generous transparent margin on all sides. True transparent alpha background. No floor, no backdrop, no ground shadow, no surrounding objects, no rectangular matte, no watermarks. All edges smooth and complete. Subject: exactly one long low rounded ivory ceramic keyboard spacebar, about 4 times wider than deep, softly concave top, rounded corners, angled gently down-right in the image. Match a refined tactile off-white keycap. No letters, symbols, text or lettering. The whole complete object alone on transparency.",
+      "source": "C:\\Users\\princ\\.codex\\generated_images\\01a1f731-99df-7682-bb09-ce1cb16b7b19\\exec-64dcdf69-ee3c-4f7b-a11f-e733a7d5339a.png"
+    }
+  ]
+}

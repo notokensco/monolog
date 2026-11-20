@@ -25,6 +25,7 @@ The production output is dist/. Tests use installed Microsoft Edge on Windows; o
 
 - Editable Beth Ellen wordmarks and handwritten accents, with Manrope and IBM Plex Mono. All fonts are hosted locally.
 - Original generated ceramic-key artwork and a keyboard key unfolding into journal pages.
+- Separate transparent hero keys pop into place once when the artwork enters view. Reduced-motion visitors see the settled arrangement.
 - Working keyboard playground: letter keys, shift, backspace, space, punctuation polish and a clearly labelled voice-typing simulation. Drafts stay in memory in the current browser tab.
 - Native scrolling drives a pinned horizontal feature story on desktop. Mobile and reduced-motion users get a regular vertical layout.
 - Scroll reveals, animated waveform, Paper/Ink product previews, accessible tabs, incognito illustration and monthly/yearly pricing.
@@ -35,6 +36,8 @@ The production output is dist/. Tests use installed Microsoft Edge on Windows; o
 - index.html: Product content and semantic markup.
 - src/main.js: Interactions and scroll choreography.
 - src/styles.css: Original responsive design.
+- src/hero-keys.js and src/hero-keys.css: Viewport-triggered popcorn entrance and independent key motion.
+- public/artwork/keys-v2/: Four transparent key assets, arranged as eight independent sculptures.
 - public/artwork/: Optimized generated WebP assets.
 - reference/generated/: Preserved original generated PNGs.
 - reference/art-direction.json: Final image prompts, generation mode and inspiration notes.
@@ -47,6 +50,8 @@ The initial Stitch export remains under reference/stitch-showcase.html. Its lega
 ## Artwork and inspiration
 
 Both new artworks were created with the built-in image_gen tool. No third-party artwork was copied. Final prompts and inspiration sources are documented in reference/art-direction.json. To re-encode the preserved artwork, run node scripts/optimize-artwork.mjs.
+
+The replacement hero keys were generated individually with the built-in image_gen tool. Prompts are in reference/hero-keys-v2.json; originals are preserved in reference/generated/keys-v2/. Run node scripts/prepare-hero-keys.mjs to regenerate optimized WebP files from those originals.
 
 ## Product status
 

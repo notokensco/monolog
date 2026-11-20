@@ -1,0 +1,75 @@
+/* Each sculpture has true alpha. Light belongs to the stage, never a square image matte. */
+.hero-art {
+  width: 70%;
+  right: 1%;
+  top: 100px;
+  mask-image: none;
+}
+
+.constellation-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  isolation: isolate;
+}
+
+.constellation-stage::before {
+  content: '';
+  position: absolute;
+  inset: 8% 0 0 18%;
+  background: radial-gradient(ellipse, #b5a8d810, transparent 67%);
+  pointer-events: none;
+}
+
+.constellation-keys { position: absolute; inset: 0; pointer-events: none; }
+
+.constellation-key {
+  position: absolute;
+  left: var(--left);
+  top: var(--top);
+  width: var(--width) !important;
+  z-index: var(--z, 1);
+  mix-blend-mode: normal;
+  animation: none;
+  transition: none;
+  transform-origin: 50% 75%;
+  will-change: auto;
+}
+
+.constellation-key:hover { transform: none; filter: none; z-index: var(--z, 1); }
+.key-sculpture { width: 100%; transform: rotate(var(--tilt, 0deg)); }
+.is-preparing .constellation-key { opacity: 0; }
+.is-visible .constellation-key {
+  animation: popcorn-arrive 1050ms linear var(--delay) both;
+}
+.is-visible .key-sculpture {
+  animation: sculpture-drift var(--float-duration, 7s) ease-in-out calc(var(--delay) + 1050ms) infinite alternate;
+}
+
+@keyframes popcorn-arrive {
+  0% { opacity: 0; transform: translate3d(var(--launch-x, 0px), 150px, 0) rotate(var(--launch-turn, -12deg)) scale(.22); }
+  16% { opacity: 1; }
+  54% { opacity: 1; transform: translate3d(0, -24px, 0) rotate(3deg) scale(1.045); }
+  74% { transform: translate3d(0, 9px, 0) rotate(-1.5deg) scale(.985); }
+  89% { transform: translate3d(0, -4px, 0) rotate(.5deg) scale(1.008); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0) scale(1); }
+}
+
+@keyframes sculpture-drift {
+  from { transform: translateY(0) rotate(var(--tilt, 0deg)); }
+  to { transform: translateY(-7px) rotate(calc(var(--tilt, 0deg) + 1deg)); }
+}
+
+@media (max-width: 1000px) and (min-width: 701px) {
+  .hero { min-height: 1100px; }
+  .hero-art { width: 85%; right: 2%; top: auto; bottom: 60px; }
+}
+
+@media (max-width: 700px) {
+  .hero-art { width: 100%; right: 0; top: auto; bottom: 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .is-preparing .constellation-key { opacity: 1; }
+  .is-visible .constellation-key, .is-visible .key-sculpture { animation: none; }
+}

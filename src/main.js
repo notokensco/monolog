@@ -5,8 +5,11 @@ import '@fontsource/roboto/latin-400.css'
 import './styles.css'
 import './keyboard.css'
 import './keyboard-demo.css'
+import './hero-keys.css'
+import { initHeroKeys } from './hero-keys.js'
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
+initHeroKeys(reducedMotion)
 const icon = name => '<svg class="icon" aria-hidden="true"><use href="#icon-' + name + '"/></svg>'
 for (const svg of document.querySelectorAll('svg')) svg.setAttribute('aria-hidden', 'true')
 
