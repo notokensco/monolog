@@ -5,6 +5,9 @@ test('production loads original artwork, local fonts, valid links and the reques
   page.on('pageerror', error => errors.push(error.message))
   await page.goto('/')
   await expect(page.getByRole('heading', { level: 1 })).toContainText('A keyboard.')
+  const brandKeys = page.locator('.key-main-m img, .footer-brand-key img, .panel-brand, .feature-brand, .context-box-brand, .context-shortcut-brand')
+  await expect(brandKeys).toHaveCount(6)
+  expect(await brandKeys.evaluateAll(keys => keys.every(key => key.getAttribute('src') === '/images/monolog-icon.png'))).toBe(true)
   await page.evaluate(() => document.fonts.ready)
   expect(await page.evaluate(() => document.fonts.check('24px "Beth Ellen"'))).toBeTruthy()
   const images = await page.locator('img').evaluateAll(elements => elements.map(image => image.getAttribute('src')))
@@ -23,7 +26,83 @@ test('production loads original artwork, local fonts, valid links and the reques
   await page.screenshot({ path: 'test-results/redesign-desktop-hero.png' })
 })
 
+test('Android badge and footer links work at the smallest mobile width', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.setViewportSize({ width: 320, height: 800 })
+  await page.goto('/')
+  const badge = page.locator('.android-label')
+  await expect(badge).toHaveText('Made for Android')
+  await expect(badge.locator('svg')).toBeVisible()
+  await expect(badge.locator('.android-eye')).toHaveCount(2)
+  await expect(page.locator('[href="#icon-spark"], [data-emoji="✨"]')).toHaveCount(0)
+  const footer = page.getByRole('navigation', { name: 'Footer navigation' })
+  for (const [label, target] of [
+    ['Keyboard', 'playground'], ['Journal', 'journal'], ['Context Library', 'context-library'],
+    ['Privacy', 'privacy'], ['Pricing', 'pricing'], ['FAQ', 'faq'], ['Contact', 'contact'],
+  ]) {
+    await footer.getByRole('link', { name: label, exact: true }).click()
+    await expect(page).toHaveURL(new RegExp(`#${target}$`))
+    await expect(page.locator(`#${target}`)).toBeInViewport()
+  }
+  await expect(page.locator('#contact a[href="mailto:monolog@notokens.co"]')).toBeVisible()
+})
+
+test('the ticker fills the screen through the loop seam', async ({ page }) => {
+  await page.goto('/')
+  const ticker = page.locator('.word-ticker')
+  await page.evaluate(() => document.fonts.ready)
+  for (const width of [390, 3840]) {
+    await page.setViewportSize({ width, height: 900 })
+    await expect.poll(() => ticker.evaluate(banner => {
+      const track = banner.querySelector('.ticker-track')
+      const phrase = track.firstElementChild
+      return track.offsetWidth - phrase.offsetWidth >= banner.clientWidth
+    })).toBe(true)
+    const loop = await ticker.evaluate(banner => {
+      const track = banner.querySelector('.ticker-track')
+      const animation = track.getAnimations()[0]
+      const { duration, iterations } = animation.effect.getTiming()
+      animation.pause()
+      animation.currentTime = duration - 1
+      const viewport = banner.getBoundingClientRect()
+      return {
+        iterations,
+        remaining: track.lastElementChild.getBoundingClientRect().right - viewport.right,
+        seam: track.children[1].getBoundingClientRect().left - viewport.left,
+      }
+    })
+    expect(loop.iterations).toBe(Infinity)
+    expect(loop.remaining).toBeGreaterThanOrEqual(0)
+    expect(Math.abs(loop.seam)).toBeLessThan(.1)
+  }
+})
+
+test('thought keys bounce in alternating directions and the Android mascot blinks twice', async ({ page }) => {
+  await page.goto('/')
+  const mascot = page.getByRole('button', { name: 'Blink Android mascot' })
+  const eye = mascot.locator('.android-eye').first()
+  await mascot.hover()
+  const blinkFrames = await eye.evaluate(dot => dot.getAnimations()[0]?.effect.getKeyframes())
+  expect(blinkFrames?.filter(frame => Number.parseFloat(frame.transform?.slice(7)) === .08)).toHaveLength(2)
+  await eye.evaluate(dot => dot.getAnimations().forEach(animation => animation.finish()))
+  await mascot.click()
+  expect(await eye.evaluate(dot => dot.getAnimations().length)).toBe(1)
+
+  const keys = page.locator('.thought-key')
+  for (const [index, displacement] of [[0, -9], [1, 7], [2, -9]]) {
+    await keys.nth(index).hover()
+    const peak = await keys.nth(index).locator('span').evaluate(face => face.getAnimations()[0]?.effect.getKeyframes()[1].translate)
+    expect(Number.parseFloat(peak?.split(' ').at(-1))).toBe(displacement)
+  }
+
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await eye.evaluate(dot => dot.getAnimations().forEach(animation => animation.finish()))
+  await mascot.press('Enter')
+  expect(await eye.evaluate(dot => dot.getAnimations().length)).toBe(0)
+})
+
 test('playground keys, shift, deletion, punctuation and local voice preview work', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/#playground')
   await page.getByRole('button', { name: 'Clear demo text' }).click()
   const input = page.getByRole('textbox', { name: 'Try typing a thought' })
@@ -41,32 +120,291 @@ test('playground keys, shift, deletion, punctuation and local voice preview work
   await expect(input).toHaveValue('Hello world.')
   await page.getByRole('button', { name: 'Play a voice typing demo' }).click()
   await expect(input).toHaveValue("Hey, let's take the long way home.", { timeout: 5000 })
-  await page.getByRole('button', { name: 'Preview a journal memory' }).click()
-  await expect(page.locator('#demo-feedback')).toContainText('Nothing is saved in this demo.')
+  await page.getByRole('button', { name: 'Monolog context' }).click()
+  const shortcuts = page.locator('#demo-context-shortcuts')
+  await expect(shortcuts.getByRole('button', { name: 'Reminder' })).toBeVisible()
+  await expect(shortcuts.getByRole('button', { name: 'Alarm' })).toBeVisible()
+  await expect(shortcuts.getByRole('link', { name: 'Journal' })).toBeVisible()
+  await expect(shortcuts.getByRole('button', { name: '+ Save a note' })).toBeVisible()
   await page.reload()
   await expect(input).toHaveValue("Let's meet at the library at four.")
 })
 
-test('five accessible product tabs and both theme previews work', async ({ page }) => {
-  await page.goto('/#showcase')
-  const tabs = page.getByRole('tab')
-  await expect(tabs).toHaveCount(5)
-  for (const tab of await tabs.all()) {
-    await tab.click()
-    await expect(tab).toHaveAttribute('aria-selected', 'true')
-    const image = page.getByRole('tabpanel').locator('img')
-    await expect.poll(() => image.evaluate(element => element.complete && element.naturalWidth > 0)).toBeTruthy()
+test('3D phone rotates, switches finishes from the rear logo and retains the draft', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/#playground')
+  const stage = page.getByRole('group', { name: 'Interactive 3D Monolog phone' })
+  const screen = page.locator('.demo-phone-screen')
+  const back = page.locator('#demo-phone-rear')
+  await expect(page.locator('#keyboard-demo')).toHaveAttribute('data-theme', 'ink')
+  await expect(screen).toBeVisible()
+  await expect(back).toHaveAttribute('inert', '')
+  const displayRatio = await screen.evaluate(display => display.offsetHeight / display.offsetWidth)
+  expect(displayRatio).toBeCloseTo(19.5 / 9, 2)
+  await page.getByRole('button', { name: 'Clear demo text' }).click()
+  await page.getByRole('button', { name: 'Type h', exact: true }).click()
+
+  await stage.scrollIntoViewIfNeeded()
+  const bounds = await stage.boundingBox()
+  const startX = bounds.x + 15
+  const startY = bounds.y + 120
+  const phoneWidth = await page.locator('.demo-phone-body').evaluate(body => body.offsetWidth)
+  await page.mouse.move(startX, startY)
+  await page.mouse.down()
+  await page.mouse.move(startX + phoneWidth / 2, startY + 20, { steps: 12 })
+  await page.mouse.up()
+  await expect(stage).toHaveAttribute('data-phone-side', 'rear')
+  await expect(page.locator('#demo-phone-front')).toHaveAttribute('inert', '')
+  const inkFinish = await back.evaluate(face => getComputedStyle(face).backgroundImage)
+  await page.getByRole('button', { name: 'Switch phone to Paper' }).click()
+  await expect(page.locator('#keyboard-demo')).toHaveAttribute('data-theme', 'paper')
+  expect(await back.evaluate(face => getComputedStyle(face).backgroundImage)).not.toBe(inkFinish)
+  await page.getByRole('button', { name: 'Switch phone to Ink' }).click()
+  await expect(page.locator('#keyboard-demo')).toHaveAttribute('data-theme', 'ink')
+
+  await page.setViewportSize({ width: 320, height: 800 })
+  await page.getByRole('button', { name: 'View front' }).click()
+  await expect(screen.getByRole('textbox', { name: 'Try typing a thought' })).toHaveValue('h')
+  await page.getByRole('button', { name: 'Type i', exact: true }).click()
+  await expect(screen.locator('#demo-input')).toHaveValue('hi')
+  expect(await screen.evaluate(display => display.scrollHeight)).toBeLessThanOrEqual(
+    await screen.evaluate(display => display.clientHeight)
+  )
+})
+
+test('phone automatically demonstrates the features and hands off to real typing', async ({ page }) => {
+  await page.clock.install()
+  await page.goto('/#playground')
+  await page.locator('.demo-phone-stage').scrollIntoViewIfNeeded()
+  await expect(page.getByRole('button', { name: 'Pause demo' })).toBeVisible()
+  await expect(page.getByRole('group', { name: 'Demo presets' })).toHaveCount(0)
+
+  async function reach(cue, limit = 7000) {
+    for (let elapsed = 0; elapsed <= limit; elapsed += 400) {
+      if (await page.getByText(cue, { exact: true }).isVisible()) return
+      await page.clock.runFor(400)
+    }
+    await expect(page.getByText(cue, { exact: true })).toBeVisible()
   }
-  await tabs.last().focus()
-  await page.keyboard.press('ArrowRight')
-  await expect(tabs.first()).toBeFocused()
-  await page.locator('#theme-btn-ink').click()
-  await expect(page.locator('.showcase-stage')).toHaveAttribute('data-preview-theme', 'ink')
-  await expect(page.locator('#keyboard-preview-image')).toHaveAttribute('src', '/images/ink-theme-keyboard.png')
-  await page.reload()
-  await expect(page.locator('#theme-btn-ink')).toHaveAttribute('aria-pressed', 'true')
-  await page.locator('#theme-btn-paper').click()
-  await expect(page.locator('.showcase-stage')).toHaveAttribute('data-preview-theme', 'paper')
+
+  await reach('Rewrite suggestion')
+  await expect(page.locator('#keyboard-suggestion')).toHaveText('Rewrite this draft')
+  await expect(page.locator('.demo-phone-stage')).toHaveAttribute('data-demo-pose', 'typing')
+  await reach('Memorised in this demo')
+  await reach('Reminder set')
+  await expect(page.locator('#keyboard-suggestion')).toHaveText('Set 5 PM reminder')
+  await reach('Alarm set')
+  await reach('The study room closes at 8 PM.', 9000)
+  await reach('Pine Bank')
+  await expect(page.locator('.keyboard-surface')).toHaveAttribute('data-privacy', 'protected')
+  await expect(page.locator('#keyboard-suggestion use')).toHaveAttribute('href', '#icon-lock')
+  await reach('Private note')
+  await expect(page.locator('.keyboard-surface')).toHaveAttribute('data-privacy', 'manual')
+  await reach('Filler words removed · Punctuation added', 9000)
+  await reach('Journal preview', 9000)
+  await expect(page.locator('#demo-chat-messages .chat-bubble-peer')).toHaveCount(0)
+  await reach('Monthly recap')
+
+  await page.getByRole('button', { name: 'Clear demo text' }).click()
+  await page.getByRole('button', { name: 'Type h', exact: true }).click()
+  await expect(page.getByRole('button', { name: 'Play demo' })).toBeVisible()
+  await page.clock.runFor(3500)
+  await expect(page.locator('#demo-input')).toHaveValue('h')
+})
+
+test('toolbar suggests from the draft and the tools menu and Vox controls work', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/#playground')
+  const input = page.locator('#demo-input')
+  const pill = page.locator('#keyboard-suggestion')
+  await input.fill('where is the library?')
+  await expect(pill).toHaveText('Search with AI')
+  await expect(pill.locator('svg')).toBeHidden()
+  await pill.click()
+  await expect(page.locator('#demo-panel')).toContainText('where is the library?')
+  await page.getByRole('button', { name: 'Close preview panel' }).click()
+  await input.fill('lets bring some notes')
+  await expect(pill).toHaveText('Rewrite this draft')
+
+  const tools = page.getByRole('button', { name: 'Keyboard tools' })
+  await tools.click()
+  await expect(tools).toHaveAttribute('aria-expanded', 'true')
+  await page.getByRole('button', { name: 'Clipboard' }).click()
+  await page.getByRole('button', { name: 'Copy draft' }).click()
+  await input.fill('')
+  await page.getByRole('button', { name: 'Paste', exact: true }).click()
+  await expect(input).toHaveValue('lets bring some notes')
+  await tools.click()
+  await page.getByRole('button', { name: 'Settings', exact: true }).click()
+  await page.getByRole('group', { name: 'Theme in keyboard settings' }).getByRole('button', { name: 'Paper' }).click()
+  await expect(page.locator('#keyboard-demo')).toHaveAttribute('data-theme', 'paper')
+  await page.keyboard.press('Escape')
+  await expect(tools).toHaveAttribute('aria-expanded', 'false')
+
+  await page.getByRole('button', { name: 'Preview Vox mode' }).click()
+  await expect(pill).toHaveText('Vox mode')
+  await expect(page.locator('#demo-voice-wave i')).toHaveCount(37)
+  await expect(page.locator('#vox-pause use')).toHaveAttribute('href', '#icon-pause')
+  await page.getByRole('button', { name: 'Pause Vox voice demo' }).click()
+  await expect(page.locator('#vox-status')).toHaveText('Paused')
+  await expect(page.locator('#vox-pause use')).toHaveAttribute('href', '#icon-play')
+  await page.getByRole('button', { name: 'Resume Vox voice demo' }).click()
+  await expect(page.locator('#vox-status')).toHaveText('Listening…')
+  await page.getByRole('button', { name: 'Done', exact: true }).click()
+  await expect(input).toHaveValue("Hey, let's take the long way home.")
+})
+
+test('holding m opens shortcuts and keeps notes and memory cues inside the demo', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/#playground')
+  const key = page.getByRole('button', { name: 'Monolog context' })
+  await key.scrollIntoViewIfNeeded()
+  const bounds = await key.boundingBox()
+  await page.mouse.move(bounds.x + bounds.width / 2, bounds.y + bounds.height / 2)
+  await page.mouse.down()
+  await expect(page.locator('#demo-context-panel').getByRole('heading', { name: 'Quick shortcuts' })).toBeVisible()
+  await page.mouse.up()
+  await expect(key).toHaveAttribute('aria-expanded', 'true')
+
+  await page.getByRole('button', { name: 'Alarm', exact: true }).click()
+  await expect(page.locator('#keyboard-suggestion')).toContainText('Alarm')
+  await page.getByRole('button', { name: 'Close context' }).click()
+  await key.press('Enter')
+  await page.getByRole('button', { name: '+ Save a note' }).click()
+  await page.getByRole('textbox', { name: 'Your note' }).fill('Bring the study guide')
+  await page.getByRole('button', { name: 'Type x', exact: true }).click()
+  await expect(page.getByRole('textbox', { name: 'Your note' })).toHaveValue('Bring the study guidex')
+  await page.getByRole('button', { name: 'Save note', exact: true }).click()
+  await expect(page.locator('#demo-memory-cue')).toHaveText('Note saved in this demo')
+  await key.press('Enter')
+  await page.locator('#demo-context-shortcuts').getByRole('button', { name: '+ Save a note' }).click()
+  await expect(page.getByRole('textbox', { name: 'Your note' })).toHaveValue('Bring the study guidex')
+  await page.getByRole('button', { name: 'Close context' }).click()
+
+  const draft = page.getByRole('textbox', { name: 'Try typing a thought' })
+  await draft.fill('My exam is at 5 PM.')
+  await expect(page.locator('#demo-memory-cue')).toHaveText('Memorised in this demo')
+  await expect(key).toHaveClass(/context-key-memorised/)
+  await page.getByRole('button', { name: 'Toggle keyboard incognito preview' }).click()
+  await expect(page.locator('#demo-memory-cue')).toBeHidden()
+  await expect(key).toBeDisabled()
+  await page.getByRole('button', { name: 'Toggle keyboard incognito preview' }).click()
+  await key.click()
+  await page.locator('#demo-context-shortcuts').getByRole('link', { name: 'Journal' }).click()
+  await expect(page).toHaveURL(/#journal$/)
+  await expect(page.locator('#journal')).toBeInViewport()
+})
+test('the feature overview keeps moving until paused and can wrap to the next card', async ({ page }) => {
+  await page.goto('/#showcase')
+  const rail = page.getByRole('region', { name: 'Monolog feature previews' })
+  const cards = rail.getByRole('listitem')
+  await expect(cards).toHaveCount(8)
+  await expect.poll(() => rail.evaluate(view => view.scrollLeft)).toBeGreaterThan(10)
+  await page.getByRole('button', { name: 'Pause', exact: true }).click()
+  const first = await cards.first().getByRole('heading').textContent()
+  await rail.evaluate(view => {
+    const [leading, second] = view.firstElementChild.children
+    view.scrollLeft = second.offsetLeft - leading.offsetLeft - 4
+  })
+  await page.getByRole('button', { name: 'Play', exact: true }).click()
+  await expect(cards.first().getByRole('heading')).not.toHaveText(first)
+  await expect(cards).toHaveCount(8)
+  await page.getByRole('button', { name: 'Pause', exact: true }).click()
+  const pausedAt = await rail.evaluate(view => view.scrollLeft)
+  await page.getByRole('button', { name: 'Next feature' }).click()
+  await expect.poll(() => rail.evaluate(view => view.scrollLeft)).toBeGreaterThan(pausedAt + 100)
+})
+
+test('the feature rail keeps shortcut links usable on a reduced-motion phone', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/#showcase')
+  const rail = page.getByRole('region', { name: 'Monolog feature previews' })
+  await expect(page.getByRole('button', { name: 'Pause', exact: true })).toBeHidden()
+  await expect.poll(() => rail.evaluate(view => view.scrollLeft)).toBe(0)
+  await page.getByRole('button', { name: 'Next feature' }).click()
+  await expect.poll(() => rail.evaluate(view => view.scrollLeft)).toBeGreaterThan(0)
+  await rail.getByRole('link', { name: 'Reminder', exact: true }).click()
+  await expect(page).toHaveURL(/#keyboard-demo$/)
+  await expect(page.getByRole('heading', { name: 'Reminder preview' })).toBeVisible()
+  await page.getByRole('button', { name: 'Close context' }).click()
+  await rail.getByRole('link', { name: '+ Save a note' }).click()
+  await expect(page.getByRole('textbox', { name: 'Your note' })).toBeVisible()
+})
+
+test('the coded Journal phone opens real sample views and saves an in-demo note', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/#journal')
+  const phone = page.locator('.journal-phone-frame').getByRole('group', { name: 'Interactive Monolog journal preview' })
+  await expect(phone.getByRole('heading', { name: 'A focused day' })).toBeVisible()
+  await expect(phone.locator('img')).toHaveAttribute('src', '/images/monolog-icon.png')
+  const card = phone.getByRole('article').filter({ hasText: 'A focused day' })
+  await card.getByRole('button', { name: 'View day' }).click()
+  await expect(phone.getByText('Library study plans')).toBeVisible()
+  await phone.getByRole('button', { name: 'Back' }).click()
+
+  await phone.getByRole('button', { name: 'Previous month' }).click()
+  await expect(phone.getByText('October 2026')).toBeVisible()
+  await expect(phone.getByRole('heading', { name: 'Making room' })).toBeVisible()
+  await phone.getByRole('button', { name: 'Next month' }).click()
+  await phone.getByRole('button', { name: 'Calendar', exact: true }).click()
+  await phone.getByRole('button', { name: /Open .*Small moments, kept/ }).click()
+  await expect(phone.getByRole('heading', { name: 'Small moments, kept' })).toBeVisible()
+  await phone.getByRole('button', { name: 'Back' }).click()
+  await phone.getByRole('button', { name: 'Gallery', exact: true }).click()
+  await expect(phone.getByRole('heading', { name: 'Riverside art walk' })).toBeVisible()
+
+  await phone.getByRole('button', { name: 'Timeline', exact: true }).click()
+  await phone.getByRole('button', { name: 'Search entries' }).click()
+  await phone.getByRole('searchbox', { name: 'Search the sample journal' }).fill('outline')
+  await expect(phone.getByRole('heading', { name: 'A little progress' })).toBeVisible()
+  await expect(phone.getByRole('heading', { name: 'A focused day' })).toHaveCount(0)
+  await phone.getByRole('searchbox', { name: 'Ask about your days' }).fill('coffee')
+  await phone.getByRole('button', { name: 'Find matching days' }).click()
+  await expect(phone.getByRole('heading', { name: 'A focused day' })).toBeVisible()
+
+  const nav = phone.getByRole('navigation')
+  await nav.getByRole('button', { name: 'Today' }).click()
+  await phone.getByRole('button', { name: 'Continue writing' }).click()
+  await phone.getByRole('textbox', { name: 'Your note' }).fill('Bring the new study guide')
+  await phone.getByRole('button', { name: 'Save note' }).click()
+  await expect(phone.getByText('Bring the new study guide')).toBeVisible()
+  await nav.getByRole('button', { name: 'Library' }).click()
+  await expect(phone.getByText('Bring the new study guide')).toBeVisible()
+})
+
+test('the coded Context Library searches source text, filters items and saves a demo note', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.setViewportSize({ width: 320, height: 800 })
+  await page.goto('/#context-library')
+  const library = page.getByRole('group', { name: 'Interactive Monolog Context Library preview' })
+  const search = library.getByRole('searchbox', { name: 'Search saved context' })
+  await expect(library.locator('img')).toHaveAttribute('src', '/images/monolog-icon.png')
+  await search.fill('Namba')
+  await expect(library.locator('.context-item')).toHaveCount(1)
+  await library.getByRole('button', { name: /Weekend getaway/ }).click()
+  await expect(library.getByText('Text in this screenshot')).toBeVisible()
+  await expect(library.getByText(/Hotel Namba/)).toBeVisible()
+  await library.getByRole('button', { name: /Back to Library/ }).click()
+  await search.fill('')
+  await library.getByRole('button', { name: 'Voice', exact: true }).click()
+  await expect(library.locator('.context-item')).toHaveCount(1)
+  await library.getByRole('button', { name: /On the way home/ }).click()
+  await expect(library.getByText('I took the long way home. Glad I did.')).toBeVisible()
+  const audio = library.locator('audio')
+  await audio.evaluate(media => { media.muted = true; return media.play() })
+  expect(await audio.evaluate(media => media.duration)).toBeGreaterThan(1)
+  await library.getByRole('button', { name: /Back to Library/ }).click()
+  await library.getByRole('button', { name: 'Add a library note' }).click()
+  await library.getByRole('textbox', { name: 'Your library note' }).fill('Pick up the printouts')
+  await library.getByRole('button', { name: 'Save note' }).click()
+  await expect(library.getByText('Pick up the printouts')).toBeVisible()
+  await library.getByRole('button', { name: /Back to Library/ }).click()
+  await library.getByRole('button', { name: 'Notes', exact: true }).click()
+  await expect(library.getByRole('button', { name: /Your note/ })).toBeVisible()
+  await library.getByRole('link', { name: 'Open Journal' }).click()
+  await expect(page).toHaveURL(/#journal$/)
 })
 
 test('incognito illustration and annual pricing communicate their state', async ({ page }) => {
@@ -86,6 +424,11 @@ test('incognito illustration and annual pricing communicate their state', async 
 
 test('native scroll reveals all three desktop feature chapters', async ({ page }) => {
   await page.goto('/')
+  const branding = page.locator('#possibilities :is(.story-brand, .answer-brand, .giant-m-key)')
+  await expect(branding).toHaveCount(4)
+  expect(await branding.evaluateAll(images => images.every(image =>
+    image.getAttribute('src') === '/images/monolog-icon.png' && image.complete && image.naturalWidth > 0
+  ))).toBe(true)
   const info = await page.locator('#possibilities').evaluate(section => ({ top: section.offsetTop, height: section.offsetHeight }))
   const distance = info.height - 1000 + 80
   await page.evaluate(y => scrollTo({ top: y, behavior: 'instant' }), info.top - 80 + distance * .5)
@@ -125,7 +468,7 @@ test('artwork, playable keyboard and journal look complete at desktop and mobile
     await page.screenshot({ path: 'test-results/redesign-desktop-' + filename + '.png' })
   }
   await page.setViewportSize({ width: 390, height: 844 })
-  for (const [selector, filename] of [['.keyboard-demo', 'keyboard'], ['#vox', 'vox'], ['.journal-art', 'journal'], ['.showcase-stage', 'showcase']]) {
+  for (const [selector, filename] of [['.keyboard-demo', 'keyboard'], ['#vox', 'vox'], ['.journal-art', 'journal'], ['.feature-rail', 'showcase']]) {
     await page.locator(selector).scrollIntoViewIfNeeded()
     await page.waitForTimeout(1100)
     await page.screenshot({ path: 'test-results/redesign-mobile-' + filename + '.png' })
@@ -143,12 +486,13 @@ test('reduced motion keeps all feature chapters readable without pinning', async
 })
 
 test('keyboard matches the borderless reference and its utility controls work', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/#playground')
   const surface = page.locator('.keyboard-surface')
   await surface.scrollIntoViewIfNeeded()
   await expect(page.locator('.key-number')).toHaveText(['1','2','3','4','5','6','7','8','9','0'])
   await expect(page.locator('#space-key')).toHaveText('English')
-  await expect(page.locator('.reminder-suggestion')).toContainText('Set 5 PM exam reminder')
+  await expect(page.locator('.keyboard-suggestion')).toHaveText('Ask')
   const appearance = await page.locator('[data-letter="q"]').evaluate(key => {
     const style = getComputedStyle(key)
     return { background: style.backgroundColor, shadow: style.boxShadow, border: style.borderTopWidth }
@@ -166,9 +510,10 @@ test('keyboard matches the borderless reference and its utility controls work', 
   await expect(page.locator('#demo-input')).toHaveValue('1@.😊')
   await expect(page.locator('#emoji-tray')).toBeHidden()
   await page.getByRole('button', { name: 'Toggle keyboard incognito preview' }).click()
-  await expect(page.locator('.reminder-suggestion')).toContainText('Memory paused')
+  await expect(page.locator('.keyboard-suggestion')).toContainText('Memory paused')
   await page.getByRole('button', { name: 'Toggle keyboard incognito preview' }).click()
-  await page.getByRole('button', { name: 'Preview the 5 PM exam reminder' }).click()
+  await page.locator('#demo-input').fill('Exam at 5 PM')
+  await page.getByRole('button', { name: 'Set 5 PM reminder' }).click()
   await expect(page.locator('#demo-feedback')).toContainText('Nothing is scheduled here.')
   await page.locator('#demo-feedback').evaluate(element => { element.hidden = true })
   await surface.screenshot({ path: 'test-results/keyboard-enlarged.png' })

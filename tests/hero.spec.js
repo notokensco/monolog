@@ -34,13 +34,48 @@ test('keys wait offscreen and pop once when visitors return to the hero', async 
   expect(await stage.locator('.constellation-key').evaluateAll(keys => keys.every(key => key.getAnimations().every(animation => animation.playState === 'finished')))).toBeTruthy()
 })
 
-test('reduced motion and JavaScript disabled both keep the full artwork visible', async ({ page, browser }) => {
+test('every hero sculpture presses and springs back with mouse and touch', async ({ page, browser, baseURL }) => {
+  async function checkPresses(screen, touch = false) {
+    await screen.goto('/')
+    const keys = screen.getByRole('button', { name: /^Press / })
+    await expect(keys).toHaveCount(8)
+    await expect.poll(() => keys.evaluateAll(nodes => nodes.every(key =>
+      getComputedStyle(key).opacity === '1' && key.getAnimations().every(animation => animation.playState === 'finished')
+    ))).toBe(true)
+    for (const key of await keys.all()) {
+      if (touch) await key.tap()
+      else await key.click()
+      const travel = await key.locator('img').evaluate(sculpture => {
+        const frames = sculpture.getAnimations().flatMap(animation => animation.effect.getKeyframes())
+        return frames.filter(frame => frame.translate).map(frame => Number.parseFloat(frame.translate.split(' ').at(-1)))
+      })
+      expect(travel.some(offset => offset > 0)).toBe(true)
+      expect(travel.some(offset => offset < 0)).toBe(true)
+    }
+    return keys
+  }
+
+  const keys = await checkPresses(page)
+  await keys.first().press('Enter')
+  await expect.poll(() => keys.first().locator('img').evaluate(sculpture =>
+    sculpture.getAnimations().some(animation => animation.effect.getKeyframes().some(frame => frame.translate))
+  )).toBe(true)
+
+  const context = await browser.newContext({ baseURL, viewport: { width: 390, height: 844 }, hasTouch: true, isMobile: true })
+  try {
+    await checkPresses(await context.newPage(), true)
+  } finally {
+    await context.close()
+  }
+})
+
+test('reduced motion and JavaScript disabled both keep the full artwork visible', async ({ page, browser, baseURL }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/')
   expect(await page.locator('.constellation-key').evaluateAll(keys => keys.every(key => getComputedStyle(key).opacity === '1' && key.getAnimations().length === 0))).toBeTruthy()
-  const context = await browser.newContext({ javaScriptEnabled: false })
+  const context = await browser.newContext({ javaScriptEnabled: false, baseURL })
   const staticPage = await context.newPage()
-  await staticPage.goto('http://127.0.0.1:4173/')
+  await staticPage.goto('/')
   expect(await staticPage.locator('.constellation-key img').evaluateAll(images => images.every(image => image.complete && image.naturalWidth > 0 && getComputedStyle(image.parentElement).opacity === '1'))).toBeTruthy()
   await context.close()
 })

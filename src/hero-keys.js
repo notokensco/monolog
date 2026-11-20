@@ -1,7 +1,28 @@
 // Observe the artwork itself: on phones it can begin below the fold.
 export function initHeroKeys(reducedMotion) {
   const stage = document.querySelector('.constellation-stage')
-  if (!stage || reducedMotion.matches || !('IntersectionObserver' in window)) return
+  if (!stage) return
+
+  for (const key of stage.querySelectorAll('.constellation-key')) {
+    const sculpture = key.querySelector('img')
+    let press
+    key.addEventListener('click', () => {
+      if (reducedMotion.matches) return
+      const pose = getComputedStyle(sculpture)
+      const start = { translate: pose.translate, scale: pose.scale }
+      const travel = Math.min(11, Math.max(4, key.offsetWidth * .07))
+
+      press?.cancel()
+      press = sculpture.animate([
+        start,
+        { translate: `0 ${travel}px`, scale: '.97', offset: .28, easing: 'ease-out' },
+        { translate: '0 -2px', scale: '1', offset: .70, easing: 'ease-in-out' },
+        { translate: '0 0', scale: '1' },
+      ], { duration: 290, easing: 'ease-out' })
+    })
+  }
+
+  if (reducedMotion.matches || !('IntersectionObserver' in window)) return
 
   stage.classList.add('is-preparing')
   const ready = Promise.allSettled([...stage.querySelectorAll('img')].map(image => image.decode()))

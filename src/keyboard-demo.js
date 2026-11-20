@@ -1,4 +1,7 @@
 // Monolog Interactive Keyboard Demo
+import { initPhoneModel } from './phone-model.js'
+import { initDemoPlayback } from './demo-playback.js'
+import { initDemoContext } from './demo-context.js'
 
 export function initKeyboardDemo() {
   const container = document.querySelector('#keyboard-demo')
@@ -8,8 +11,9 @@ export function initKeyboardDemo() {
   const demoKeyboard = document.querySelector('#demo-keyboard')
   const surface = document.querySelector('.keyboard-surface')
   const feedback = document.querySelector('#demo-feedback')
-  const reminderSuggestion = document.querySelector('#reminder-suggestion')
-  const reminderSpan = reminderSuggestion ? reminderSuggestion.querySelector('span') : null
+  const suggestion = document.querySelector('#keyboard-suggestion')
+  const suggestionLabel = suggestion.querySelector('span')
+  const suggestionIcon = suggestion.querySelector('use')
   const polishBtn = document.querySelector('#polish-button')
   const spaceKey = document.querySelector('#space-key')
   const periodKey = document.querySelector('#period-key')
@@ -23,31 +27,16 @@ export function initKeyboardDemo() {
   const incognitoBtn = document.querySelector('#keyboard-incognito')
   const voxStage = document.querySelector('#vox-stage')
   const voxTranscript = document.querySelector('#vox-transcript')
-  const voxWave = document.querySelector('#demo-voice-wave')
+  const voxStatus = document.querySelector('#vox-status')
   const demoPanel = document.querySelector('#demo-panel')
-  const demoPanelTitle = document.querySelector('#demo-panel-title')
-  const demoPanelBody = document.querySelector('#demo-panel-body')
-  const autoplayBtn = document.querySelector('#demo-autoplay')
-  const tourStatus = document.querySelector('#tour-status')
-  const restoreDraftBtn = document.querySelector('#restore-draft')
-  const resumeTourBtn = document.querySelector('#resume-tour')
-  const presetButtons = [...document.querySelectorAll('[data-preset]')]
   const themeButtons = [...document.querySelectorAll('[data-demo-theme]')]
+  const { showFront, followDemo, setDemoPose } = initPhoneModel(container)
+  const phoneLogo = container.querySelector('#demo-phone-logo')
 
   let isShifted = false
   let isSymbols = false
-  let isIncognito = false
-  let isVoxActive = false
-  let tourTimer = null
-  let isTourRunning = false
-  const defaultDraft = "Let's meet at the library at four."
-
-  // 1. Set explicit accessible names expected by end-to-end tests
-  if (spaceKey) spaceKey.setAttribute('aria-label', 'Insert a space')
-  if (polishBtn) polishBtn.setAttribute('aria-label', 'Polish this thought')
-  if (periodKey) periodKey.setAttribute('aria-label', 'Type a period')
-  if (memoryKey) memoryKey.setAttribute('aria-label', 'Preview a journal memory')
-  if (reminderSuggestion) reminderSuggestion.setAttribute('aria-label', 'Preview the 5 PM exam reminder')
+  let privacy = 'off'
+  let upcoming
 
   // 2. Keyboard Key Layouts
   const letterRows = [
@@ -133,7 +122,6 @@ export function initKeyboardDemo() {
         btn.innerHTML = content
 
         btn.addEventListener('click', () => {
-          stopTour()
           const char = isShifted ? k.letter.toUpperCase() : k.letter
           insertText(char)
         })
@@ -150,7 +138,6 @@ export function initKeyboardDemo() {
         backspaceBtn.setAttribute('aria-label', 'Delete the previous character')
         backspaceBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24"><use href="#icon-backspace"/></svg>'
         backspaceBtn.addEventListener('click', () => {
-          stopTour()
           deleteChar()
         })
         rowEl.appendChild(backspaceBtn)
@@ -161,7 +148,6 @@ export function initKeyboardDemo() {
   }
 
   function toggleShift() {
-    stopTour()
     isShifted = !isShifted
     const shiftBtn = document.querySelector('#shift-key')
     if (shiftBtn) shiftBtn.setAttribute('aria-pressed', String(isShifted))
@@ -172,7 +158,6 @@ export function initKeyboardDemo() {
   }
 
   function toggleSymbols() {
-    stopTour()
     isSymbols = !isSymbols
     if (symbolsKey) {
       symbolsKey.setAttribute('aria-pressed', String(isSymbols))
@@ -183,42 +168,33 @@ export function initKeyboardDemo() {
   }
 
   function insertText(str) {
-    if (!input) return
-    const start = input.selectionStart ?? input.value.length
-    const end = input.selectionEnd ?? input.value.length
-    const val = input.value
-    input.value = val.slice(0, start) + str + val.slice(end)
-    const newPos = start + str.length
-    input.setSelectionRange(newPos, newPos)
-    input.dispatchEvent(new Event('input', { bubbles: true }))
+    const field = context.noteTarget() ?? input
+    const start = field.selectionStart
+    const end = field.selectionEnd
+    const available = Math.max(0, field.maxLength - field.value.length + end - start)
+    field.setRangeText(str.slice(0, available), start, end, 'end')
+    field.dispatchEvent(new Event('input', { bubbles: true }))
   }
 
   function deleteChar() {
-    if (!input) return
-    const start = input.selectionStart ?? input.value.length
-    const end = input.selectionEnd ?? input.value.length
-    const val = input.value
-    if (start !== end) {
-      input.value = val.slice(0, start) + val.slice(end)
-      input.setSelectionRange(start, start)
-    } else if (start > 0) {
-      input.value = val.slice(0, start - 1) + val.slice(start)
-      input.setSelectionRange(start - 1, start - 1)
-    }
-    input.dispatchEvent(new Event('input', { bubbles: true }))
+    const field = context.noteTarget() ?? input
+    const start = field.selectionStart
+    const end = field.selectionEnd
+    if (start === end && start === 0) return
+    const previous = Array.from(field.value.slice(0, start)).at(-1)?.length ?? 1
+    field.setRangeText('', start === end ? start - previous : start, end, 'end')
+    field.dispatchEvent(new Event('input', { bubbles: true }))
   }
 
   // 3. Attach Bottom Controls
   if (spaceKey) {
     spaceKey.addEventListener('click', () => {
-      stopTour()
       insertText(' ')
     })
   }
 
   if (periodKey) {
     periodKey.addEventListener('click', () => {
-      stopTour()
       insertText('.')
     })
   }
@@ -226,7 +202,6 @@ export function initKeyboardDemo() {
   const returnKey = document.querySelector('#return-key')
   if (returnKey) {
     returnKey.addEventListener('click', () => {
-      stopTour()
       insertText('\n')
     })
   }
@@ -238,58 +213,99 @@ export function initKeyboardDemo() {
   // 4. Polish Thought Action
   if (polishBtn) {
     polishBtn.addEventListener('click', () => {
-      stopTour()
       if (!input) return
       let text = input.value.trim()
       if (text) {
+        text = text.replace(/^lets\b/i, "let's").replace(/\bim\b/g, "I'm").replace(/\bi\b/g, 'I')
         text = text.charAt(0).toUpperCase() + text.slice(1)
         if (!/[.!?]$/.test(text)) text += '.'
         input.value = text
+        refreshSuggestion()
       }
     })
   }
 
-  // 5. Memory Key Feedback
-  if (memoryKey) {
-    memoryKey.addEventListener('click', () => {
-      stopTour()
-      if (feedback) {
-        feedback.hidden = false
-        const span = feedback.querySelector('span')
-        if (span) span.textContent = 'Nothing is saved in this demo.'
-      }
-    })
+  function setUpcoming(event) {
+    upcoming = event
+    refreshSuggestion()
   }
 
-  // 6. Reminder Suggestion
-  if (reminderSuggestion) {
-    reminderSuggestion.addEventListener('click', () => {
-      stopTour()
-      if (feedback) {
-        feedback.hidden = false
-        const span = feedback.querySelector('span')
-        if (span) span.textContent = 'Nothing is scheduled here.'
-      }
-    })
+  function refreshSuggestion() {
+    const text = input.value.trim()
+    const time = text.match(/\b(1[0-2]|[1-9])(?::[0-5]\d)?\s*(AM|PM)\b/i)?.[0]
+    let kind = 'ai'
+    let label = 'Ask'
+    let icon
+    if (privacy !== 'off') {
+      kind = 'privacy'
+      label = privacy === 'manual' ? 'Memory paused · Incognito' : 'Memory paused · Protected'
+      icon = 'lock'
+    } else if (!voxStage.hidden) {
+      kind = 'vox'
+      label = 'Vox mode'
+      icon = 'mic'
+    } else if (time && /\b(remind\w*|exam|alarm|meeting|appointment)\b/i.test(text)) {
+      kind = 'schedule'
+      const action = /\balarm\b/i.test(text) ? 'alarm' : 'reminder'
+      label = `Set ${time.toUpperCase()} ${action}`
+      icon = 'clock'
+    } else if (/\?$|^(?:search|look up|find)\b/i.test(text)) {
+      label = 'Search with AI'
+    } else if (text.length >= 12 && (/^[a-z]/.test(text) || !/[.!?]$/.test(text))) {
+      kind = 'rewrite'
+      label = 'Rewrite this draft'
+    } else if (upcoming) {
+      kind = 'upcoming'
+      label = `${upcoming.label} · ${upcoming.time}`
+      icon = 'clock'
+    }
+    suggestion.dataset.suggestion = kind
+    suggestion.toggleAttribute('data-idle', label === 'Ask')
+    if (suggestionLabel.textContent !== label) suggestionLabel.textContent = label
+    suggestionIcon.parentElement.toggleAttribute('hidden', !icon)
+    if (icon) suggestionIcon.setAttribute('href', `#icon-${icon}`)
+    suggestion.disabled = kind === 'privacy' || kind === 'vox'
   }
 
-  // 7. Incognito Toggle
-  if (incognitoBtn) {
-    incognitoBtn.addEventListener('click', () => {
-      stopTour()
-      isIncognito = !isIncognito
-      incognitoBtn.setAttribute('aria-pressed', String(isIncognito))
-      if (surface) surface.classList.toggle('keyboard-incognito-on', isIncognito)
-      if (reminderSpan) {
-        reminderSpan.textContent = isIncognito ? 'Memory paused' : 'Set 5 PM exam reminder'
-      }
-    })
+  suggestion.addEventListener('click', () => {
+    const kind = suggestion.dataset.suggestion
+    if (kind === 'rewrite') {
+      polishBtn.click()
+    } else if (kind === 'schedule') {
+      feedback.querySelector('span').textContent = 'Nothing is scheduled here.'
+      feedback.hidden = false
+    } else if (kind === 'ai' || kind === 'upcoming') {
+      context.close()
+      demoPanel.querySelector('#demo-panel-title').textContent = kind === 'ai' ? 'Monolog AI' : 'Coming up'
+      const body = demoPanel.querySelector('#demo-panel-body')
+      const query = document.createElement('h5')
+      query.textContent = kind === 'ai' ? (input.value.trim() || 'Ask a question from your draft') : upcoming.label
+      const note = document.createElement('p')
+      note.textContent = kind === 'ai' ? 'Demo search preview. Your question stays in this tab.' : `${upcoming.time} · Demo preview`
+      body.replaceChildren(query, note)
+      demoPanel.hidden = false
+    }
+  })
+
+  input.addEventListener('input', refreshSuggestion)
+
+  function setPrivacy(mode) {
+    privacy = mode
+    surface.dataset.privacy = mode
+    incognitoBtn.setAttribute('aria-pressed', String(mode === 'manual'))
+    memoryKey.disabled = mode !== 'off'
+    if (mode !== 'off') {
+      context.close()
+      context.cancelDraftCue()
+    }
+    refreshSuggestion()
   }
+
+  incognitoBtn.addEventListener('click', () => setPrivacy(privacy === 'manual' ? 'off' : 'manual'))
 
   // 8. Emoji Picker
   if (emojiKey && emojiTray) {
     emojiKey.addEventListener('click', () => {
-      stopTour()
       const isOpen = !emojiTray.hidden
       emojiTray.hidden = isOpen
       emojiKey.setAttribute('aria-expanded', String(!isOpen))
@@ -297,7 +313,6 @@ export function initKeyboardDemo() {
 
     emojiTray.querySelectorAll('[data-emoji]').forEach(btn => {
       btn.addEventListener('click', () => {
-        stopTour()
         insertText(btn.dataset.emoji)
         emojiTray.hidden = true
         emojiKey.setAttribute('aria-expanded', 'false')
@@ -308,16 +323,15 @@ export function initKeyboardDemo() {
   // 9. Voice Toggle / Demo
   if (voiceToggle) {
     voiceToggle.addEventListener('click', () => {
-      stopTour()
       if (!input) return
       input.value = "Hey, let's take the long way home."
+      refreshSuggestion()
     })
   }
 
   // Toolbar Mic opens Vox stage
   if (keyboardMic) {
     keyboardMic.addEventListener('click', () => {
-      stopTour()
       startVoxMode("Hey, let's take the long way home.")
     })
   }
@@ -325,9 +339,9 @@ export function initKeyboardDemo() {
   // 10. Clear Text
   if (clearBtn) {
     clearBtn.addEventListener('click', () => {
-      stopTour()
       if (input) {
         input.value = ''
+        refreshSuggestion()
         input.focus()
       }
     })
@@ -335,29 +349,25 @@ export function initKeyboardDemo() {
 
   // 11. Vox Mode Stage
   function startVoxMode(transcript = "Hey, let's take the long way home.") {
-    isVoxActive = true
+    context.close()
+    closeTools()
     if (voxStage) voxStage.hidden = false
     if (demoKeyboard) demoKeyboard.hidden = true
     if (voxTranscript) voxTranscript.textContent = transcript
-
-    // Setup waveform bars
-    if (voxWave && !voxWave.hasChildNodes()) {
-      for (let i = 0; i < 30; i++) {
-        const bar = document.createElement('i')
-        bar.style.setProperty('--h', `${15 + Math.random() * 75}%`)
-        bar.style.setProperty('--d', `${(i * -0.08).toFixed(2)}s`)
-        voxWave.appendChild(bar)
-      }
-    }
+    surface.dataset.vox = 'listening'
+    voxStatus.textContent = 'Listening…'
+    updateVoxPause(false)
+    refreshSuggestion()
   }
 
   function stopVoxMode(applyTranscript = false) {
-    isVoxActive = false
     if (voxStage) voxStage.hidden = true
     if (demoKeyboard) demoKeyboard.hidden = false
+    delete surface.dataset.vox
     if (applyTranscript && voxTranscript && input) {
       input.value = voxTranscript.textContent || input.value
     }
+    refreshSuggestion()
   }
 
   const voxDoneBtn = document.querySelector('[data-demo-action="vox-done"]')
@@ -366,14 +376,71 @@ export function initKeyboardDemo() {
   }
 
   const voxPauseBtn = document.querySelector('#vox-pause')
+  function updateVoxPause(paused) {
+    voxPauseBtn.setAttribute('aria-label', paused ? 'Resume Vox voice demo' : 'Pause Vox voice demo')
+    voxPauseBtn.querySelector('use').setAttribute('href', paused ? '#icon-play' : '#icon-pause')
+  }
   if (voxPauseBtn) {
     voxPauseBtn.addEventListener('click', () => {
-      const statusEl = document.querySelector('#vox-status')
-      if (statusEl) {
-        statusEl.textContent = statusEl.textContent === 'Paused' ? 'Listening…' : 'Paused'
-      }
+      const paused = surface.dataset.vox !== 'paused'
+      surface.dataset.vox = paused ? 'paused' : 'listening'
+      voxStatus.textContent = paused ? 'Paused' : 'Listening…'
+      updateVoxPause(paused)
     })
   }
+
+  const toolsToggle = container.querySelector('#keyboard-tools')
+  const toolbox = container.querySelector('#demo-toolbox')
+  const clipboard = container.querySelector('#demo-clipboard-tools')
+  const settings = container.querySelector('#demo-settings-tools')
+  const paste = container.querySelector('#demo-paste-draft')
+  let copiedDraft = ''
+
+  function closeTools() {
+    toolbox.hidden = true
+    toolsToggle.setAttribute('aria-expanded', 'false')
+    clipboard.hidden = true
+    settings.hidden = true
+  }
+
+  toolsToggle.addEventListener('click', () => {
+    if (!toolbox.hidden) {
+      closeTools()
+      return
+    }
+    stopVoxMode()
+    emojiTray.hidden = true
+    emojiKey.setAttribute('aria-expanded', 'false')
+    toolbox.hidden = false
+    toolsToggle.setAttribute('aria-expanded', 'true')
+  })
+  toolbox.addEventListener('click', event => {
+    const action = event.target.closest('[data-keyboard-tool]')?.dataset.keyboardTool
+    if (!action) return
+    clipboard.hidden = action !== 'clipboard'
+    settings.hidden = action !== 'settings'
+    if (action === 'privacy' || action === 'emoji') {
+      closeTools()
+      const control = action === 'privacy' ? incognitoBtn : emojiKey
+      control.focus({ preventScroll: true })
+      control.click()
+    }
+  })
+  container.querySelector('#demo-copy-draft').addEventListener('click', () => {
+    copiedDraft = input.value
+    paste.disabled = !copiedDraft
+  })
+  paste.addEventListener('click', () => {
+    closeTools()
+    insertText(copiedDraft)
+    input.focus({ preventScroll: true })
+  })
+  surface.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && !toolbox.hidden) {
+      closeTools()
+      toolsToggle.focus()
+    }
+  })
 
   // 12. Floating Panel
   const panelCloseBtn = document.querySelector('[data-demo-action="close-panel"]')
@@ -392,167 +459,36 @@ export function initKeyboardDemo() {
     })
   }
 
-  // 13. Tour & Presets
-  const presets = {
-    typing: {
-      status: 'Everyday typing with proactive suggestions.',
-      action: () => {
-        stopVoxMode(false)
-        if (demoPanel) demoPanel.hidden = true
-        if (input) input.value = defaultDraft
-      }
-    },
-    vox: {
-      status: 'Vox voice mode — continuous speech, natural punctuation.',
-      action: () => {
-        if (demoPanel) demoPanel.hidden = true
-        startVoxMode("Hey, let's take the long way home.")
-      }
-    },
-    ai: {
-      status: 'Floating AI panel summons answers without leaving the chat.',
-      action: () => {
-        stopVoxMode(false)
-        if (demoPanel) {
-          demoPanel.hidden = false
-          if (demoPanelTitle) demoPanelTitle.textContent = 'Monolog AI'
-          if (demoPanelBody) {
-            demoPanelBody.innerHTML = '<h5>Pack light. Bring the essentials.</h5><p>Water, a light layer, and snacks. Always snacks.</p><span class="source-tag">Sample answer · Cited</span>'
-          }
-        }
-      }
-    },
-    context: {
-      status: 'Tap the m key to capture screen context and notes.',
-      action: () => {
-        stopVoxMode(false)
-        if (demoPanel) {
-          demoPanel.hidden = false
-          if (demoPanelTitle) demoPanelTitle.textContent = 'Context Capture'
-          if (demoPanelBody) {
-            demoPanelBody.innerHTML = '<p>Screenshot & note saved to your private Context Library.</p>'
-          }
-        }
-      }
-    },
-    reminder: {
-      status: 'Proactive reminder pill surfaces right in your suggestion ribbon.',
-      action: () => {
-        stopVoxMode(false)
-        if (demoPanel) demoPanel.hidden = true
-        if (reminderSuggestion) {
-          reminderSuggestion.focus()
-        }
-      }
-    },
-    privacy: {
-      status: 'Manual incognito pauses learning for 15 minutes.',
-      action: () => {
-        stopVoxMode(false)
-        if (demoPanel) demoPanel.hidden = true
-        if (incognitoBtn) incognitoBtn.click()
-      }
-    },
-    journal: {
-      status: 'Your day, remembered in an ambient personal chronicle.',
-      action: () => {
-        stopVoxMode(false)
-        if (demoPanel) {
-          demoPanel.hidden = false
-          if (demoPanelTitle) demoPanelTitle.textContent = 'Daily Journal'
-          if (demoPanelBody) {
-            demoPanelBody.innerHTML = '<p>“Took the long way home. Glad I did.”</p><span class="source-tag">Evening reflection</span>'
-          }
-        }
-      }
-    }
+  function setTheme(theme) {
+    container.dataset.theme = theme
+    themeButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.demoTheme === theme)))
+    const action = theme === 'ink' ? 'Switch phone to Paper' : 'Switch phone to Ink'
+    phoneLogo.setAttribute('aria-label', action)
+    phoneLogo.title = action
   }
 
-  function selectPreset(name) {
-    presetButtons.forEach(btn => {
-      const active = btn.dataset.preset === name
-      btn.setAttribute('aria-pressed', String(active))
-    })
-    const preset = presets[name]
-    if (preset) {
-      if (tourStatus) tourStatus.textContent = preset.status
-      preset.action()
-    }
-  }
-
-  presetButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      stopTour()
-      selectPreset(btn.dataset.preset)
-    })
-  })
-
-  function stopTour() {
-    if (tourTimer) {
-      clearTimeout(tourTimer)
-      tourTimer = null
-    }
-    isTourRunning = false
-    if (autoplayBtn) {
-      autoplayBtn.setAttribute('aria-pressed', 'false')
-      autoplayBtn.textContent = 'Resume tour'
-    }
-    if (resumeTourBtn) resumeTourBtn.hidden = false
-    if (restoreDraftBtn) restoreDraftBtn.hidden = false
-  }
-
-  if (autoplayBtn) {
-    autoplayBtn.addEventListener('click', () => {
-      if (isTourRunning) {
-        stopTour()
-      } else {
-        isTourRunning = true
-        autoplayBtn.setAttribute('aria-pressed', 'true')
-        autoplayBtn.textContent = 'Pause tour'
-        if (resumeTourBtn) resumeTourBtn.hidden = true
-        runTourStep(0)
-      }
-    })
-  }
-
-  if (resumeTourBtn) {
-    resumeTourBtn.addEventListener('click', () => {
-      isTourRunning = true
-      if (autoplayBtn) {
-        autoplayBtn.setAttribute('aria-pressed', 'true')
-        autoplayBtn.textContent = 'Pause tour'
-      }
-      resumeTourBtn.hidden = true
-      runTourStep(0)
-    })
-  }
-
-  if (restoreDraftBtn) {
-    restoreDraftBtn.addEventListener('click', () => {
-      if (input) input.value = defaultDraft
-      restoreDraftBtn.hidden = true
-    })
-  }
-
-  const presetKeys = Object.keys(presets)
-  function runTourStep(index) {
-    if (!isTourRunning) return
-    const key = presetKeys[index % presetKeys.length]
-    selectPreset(key)
-    tourTimer = setTimeout(() => {
-      runTourStep(index + 1)
-    }, 4500)
-  }
-
-  // 14. Theme Switcher for Keyboard Area
+  phoneLogo.addEventListener('click', () => setTheme(container.dataset.theme === 'ink' ? 'paper' : 'ink'))
   themeButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const theme = btn.dataset.demoTheme
-      themeButtons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)))
-      if (container) container.dataset.theme = theme
-    })
+    btn.addEventListener('click', () => setTheme(btn.dataset.demoTheme))
   })
 
-  // Initial render
+  const context = initDemoContext(container, {
+    isPrivate: () => privacy !== 'off',
+    showFront,
+    onOpen() {
+      closeTools()
+      if (!voxStage.hidden) stopVoxMode()
+    },
+    onShortcut(action) {
+      const time = action === 'Alarm' ? '7:00 AM tomorrow' : '5:00 PM today'
+      setUpcoming({ label: action, time })
+      return `${action} for ${time} · Demo preview`
+    },
+  })
+
   renderKeyboard()
+  refreshSuggestion()
+  initDemoPlayback(container, {
+    followDemo, setDemoPose, context, setUpcoming, setPrivacy, startVoxMode, stopVoxMode, closeTools, refreshSuggestion,
+  })
 }

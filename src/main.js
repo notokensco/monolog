@@ -6,51 +6,78 @@ import './styles.css'
 import './keyboard.css'
 import './keyboard-demo.css'
 import './hero-keys.css'
+import './journal-enhanced.css'
+import './journal-phone.css'
+import './context-library.css'
+import './feature-overview.css'
 import { initHeroKeys } from './hero-keys.js'
+import { initJournalPhones } from './journal-phone.js'
+import { initContextLibrary } from './context-library.js'
+import { initFeatureRail } from './feature-rail.js'
 
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
 initHeroKeys(reducedMotion)
+initJournalPhones()
+initContextLibrary()
+initFeatureRail(reducedMotion)
+
+const ticker = document.querySelector('.word-ticker')
+const tickerTrack = ticker.querySelector('.ticker-track')
+const tickerPhrase = tickerTrack.firstElementChild
+function fillTicker() {
+  const phraseWidth = tickerPhrase.getBoundingClientRect().width
+  if (!phraseWidth) return
+  const copies = Math.ceil(ticker.clientWidth / phraseWidth) + 1
+  while (tickerTrack.children.length < copies) tickerTrack.append(tickerPhrase.cloneNode(true))
+  while (tickerTrack.children.length > copies) tickerTrack.lastElementChild.remove()
+  tickerTrack.style.setProperty('--ticker-end', `${-phraseWidth}px`)
+}
+const tickerResize = new ResizeObserver(fillTicker)
+tickerResize.observe(ticker)
+tickerResize.observe(tickerPhrase)
+fillTicker()
+
+document.querySelectorAll('.thought-key').forEach((key, index) => {
+  const face = key.firstElementChild
+  const lift = index % 2 === 0 ? -9 : 7
+  let bounce
+  key.addEventListener('pointerenter', event => {
+    if (event.pointerType === 'touch' || reducedMotion.matches) return
+    bounce?.cancel()
+    bounce = face.animate([
+      { translate: '0 0' },
+      { translate: `0 ${lift}px`, offset: .28, easing: 'ease-out' },
+      { translate: `0 ${-lift * .36}px`, offset: .61 },
+      { translate: '0 0' },
+    ], { duration: 400, easing: 'ease-in-out' })
+  })
+})
+
+const androidMascot = document.querySelector('.android-mascot')
+const androidEyes = [...androidMascot.querySelectorAll('.android-eye')]
+let blink = []
+function blinkAndroid() {
+  if (reducedMotion.matches) return
+  blink.forEach(animation => animation.cancel())
+  blink = androidEyes.map(eye => eye.animate([
+    { transform: 'scaleY(1)' },
+    { transform: 'scaleY(.08)', offset: .19 },
+    { transform: 'scaleY(1)', offset: .37 },
+    { transform: 'scaleY(1)', offset: .56 },
+    { transform: 'scaleY(.08)', offset: .73 },
+    { transform: 'scaleY(1)' },
+  ], { duration: 480, easing: 'ease-in-out' }))
+}
+androidMascot.addEventListener('pointerenter', event => {
+  if (event.pointerType !== 'touch') blinkAndroid()
+})
+androidMascot.addEventListener('click', blinkAndroid)
+
 const icon = name => '<svg class="icon" aria-hidden="true"><use href="#icon-' + name + '"/></svg>'
 for (const svg of document.querySelectorAll('svg')) svg.setAttribute('aria-hidden', 'true')
 
 import { initKeyboardDemo } from './keyboard-demo.js'
 initKeyboardDemo()
-
-// Preview tabs support pointer and keyboard input.
-const tabs = [...document.querySelectorAll('[data-tab]')]
-const panels = [...document.querySelectorAll('.tab-panel')]
-function selectTab(id, focus = false) {
-  for (const panel of panels) panel.hidden = panel.id !== id
-  for (const tab of tabs) {
-    const active = tab.dataset.tab === id
-    tab.setAttribute('aria-selected', String(active))
-    tab.tabIndex = active ? 0 : -1
-    if (active && focus) tab.focus()
-  }
-}
-for (const tab of tabs) {
-  tab.addEventListener('click', () => selectTab(tab.dataset.tab))
-  tab.addEventListener('keydown', event => {
-    let next = tabs.indexOf(tab)
-    if (event.key === 'ArrowDown' || event.key === 'ArrowRight') next = (next + 1) % tabs.length
-    else if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') next = (next - 1 + tabs.length) % tabs.length
-    else if (event.key === 'Home') next = 0
-    else if (event.key === 'End') next = tabs.length - 1
-    else return
-    event.preventDefault()
-    selectTab(tabs[next].dataset.tab, true)
-  })
-}
-function setTheme(theme, persist = true) {
-  document.querySelector('.showcase-stage').dataset.previewTheme = theme
-  const image = document.querySelector('#keyboard-preview-image')
-  image.src = theme === 'ink' ? '/images/ink-theme-keyboard.png' : '/images/smart-reminder-suggestion-on-monolog-keyboard.png'
-  image.alt = 'Monolog ' + (theme === 'ink' ? 'Ink' : 'Paper') + ' keyboard product concept'
-  for (const button of document.querySelectorAll('[data-theme]')) button.setAttribute('aria-pressed', String(button.dataset.theme === theme))
-  if (persist) { try { localStorage.setItem('monolog-preview-theme', theme) } catch { /* Optional preference. */ } }
-}
-for (const button of document.querySelectorAll('[data-theme]')) button.addEventListener('click', () => { setTheme(button.dataset.theme); selectTab('tab-paper') })
-try { if (localStorage.getItem('monolog-preview-theme') === 'ink') setTheme('ink', false) } catch { /* Paper is the default. */ }
 
 // Native document scrolling drives the horizontal story; wheel input is never trapped.
 const storySection = document.querySelector('.possibilities')
@@ -96,7 +123,8 @@ const observer = new IntersectionObserver(entries => {
 document.documentElement.classList.add('motion-ready')
 document.querySelectorAll('.reveal').forEach(element => observer.observe(element))
 document.querySelectorAll('.waveform').forEach(waveform => {
-  for (let index = 0; index < 45; index++) {
+  const count = Number(waveform.dataset.bars) || 45
+  for (let index = 0; index < count; index++) {
     const bar = document.createElement('i')
     bar.style.setProperty('--height', (15 + Math.abs(Math.sin(index * 1.7) * Math.sin(index * .28)) * 85) + '%')
     bar.style.setProperty('--delay', (index * -.09) + 's')

@@ -4,14 +4,12 @@
 .motion-ready .keyboard-demo.reveal.is-visible:hover{
   padding:0;border:0;background:none;box-shadow:none;border-radius:0;transform:none!important;
 }
-.demo-composer{padding:18px 22px 8px;background:#fafaf8;border:1px solid #dedde0;border-radius:16px;margin-bottom:22px}
 .demo-composer .demo-header{color:#807c87}
 .demo-composer .demo-header .mono{font-size:11px}
 .demo-composer-actions{display:flex;align-items:center;gap:15px}
 .demo-composer-actions button{height:30px;min-width:30px;background:none;box-shadow:none;padding:4px;color:#827a8d;font-size:12px;border-radius:6px}
 .demo-composer-actions button:hover{background:#eee9f4}
 .demo-composer-actions .icon{width:18px;height:18px}
-.demo-composer #demo-input{min-height:105px;max-height:180px;padding:18px 0 12px;font-size:clamp(19px,1.8vw,28px);resize:vertical;letter-spacing:-.025em}
 .keyboard-surface{
   --keyboard-ink:#111117;
   container-type:inline-size;
@@ -27,9 +25,9 @@
 .keyboard-toolbar button{display:flex;align-items:center;justify-content:center;border:0;box-shadow:none;color:var(--keyboard-ink);font-family:inherit;font-weight:400;padding:0}
 .keyboard-toolbar-button{width:9cqw;height:10cqw;background:transparent;border-radius:50%;flex-shrink:0}
 .keyboard-toolbar-button>.icon{width:4.8cqw;height:4.8cqw;stroke-width:1.6}
-.reminder-suggestion{height:10cqw;flex:1;min-width:0;gap:2.1cqw;background:#ffffff21;border:1px solid #ffffff35!important;border-radius:7cqw}
-.reminder-suggestion>.icon{width:5.5cqw;height:5.5cqw;stroke-width:1.5}
-.reminder-suggestion>span{white-space:nowrap;font-family:'Roboto',Arial,sans-serif;font-size:3.9cqw;letter-spacing:0}
+.keyboard-suggestion{height:10cqw;flex:1;min-width:0;gap:2.1cqw;background:#ffffff21;border:1px solid #ffffff35!important;border-radius:7cqw}
+.keyboard-suggestion>.icon{width:5.5cqw;height:5.5cqw;stroke-width:1.5}
+.keyboard-suggestion>span{white-space:nowrap;font-family:'Roboto',Arial,sans-serif;font-size:3.9cqw;letter-spacing:0}
 .keyboard-context-key{background:transparent;width:10cqw;height:11cqw;flex-shrink:0}
 .keyboard-context-key img{width:10cqw;height:10cqw;object-fit:contain;filter:drop-shadow(0 .4cqw .5cqw #8573a14d)}
 .demo-keyboard{width:100%}
@@ -83,12 +81,10 @@
 .emoji-tray button{padding:8px;font-size:25px;background:transparent;border-radius:8px}
 .emoji-tray button:hover{background:#eadef5}
 .keyboard-demo .demo-disclaimer{margin-top:20px;font-size:11px;color:#81798c}
-.keyboard-demo .demo-feedback{margin-top:20px}
-.keyboard-demo .keyboard-incognito-on{--keyboard-ink:#24202f}
-.keyboard-demo :is(.keyboard-toolbar-button,.reminder-suggestion,.keyboard-context-key,.emoji-language-control button,#keyboard-incognito,#period-key):focus-visible{outline-offset:-2px;outline-width:2px}
+.keyboard-demo :is(.keyboard-toolbar-button,.keyboard-suggestion,.keyboard-context-key,.emoji-language-control button,#keyboard-incognito,#period-key):focus-visible{outline-offset:-2px;outline-width:2px}
 @media(min-width:1700px){.playground-grid{grid-template-columns:.85fr 1.15fr;gap:6vw}}
-@media(max-width:1000px){.playground-grid{grid-template-columns:.8fr 1.2fr;gap:4vw}.demo-composer{padding:15px 17px 6px}.demo-composer #demo-input{min-height:105px;font-size:23px}}
-@media(max-width:700px){.playground-grid{grid-template-columns:1fr}.keyboard-demo{max-width:580px}.keyboard-surface{border-radius:13px}.demo-composer{padding:14px 17px 5px;margin-bottom:18px}.demo-composer #demo-input{font-size:21px;min-height:105px}.keyboard-demo .demo-disclaimer{font-size:10px}.demo-composer .demo-header .mono{font-size:10px}}
+@media(max-width:1000px){.playground-grid{grid-template-columns:.8fr 1.2fr;gap:4vw}}
+@media(max-width:700px){.playground-grid{grid-template-columns:1fr}.keyboard-demo .demo-disclaimer{font-size:10px}.demo-composer .demo-header .mono{font-size:10px}}
 
 /* Match the inset and stagger of the phone keyboard at every scale. */
 .keyboard-demo .keyboard-surface{padding:0}

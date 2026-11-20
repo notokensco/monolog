@@ -1,0 +1,460 @@
+/* Enhanced Journal and Context Library Styles */
+
+/* ----------------------------------------------------
+   Journal Section Enhancements
+---------------------------------------------------- */
+.journal {
+  position: relative;
+  overflow: hidden;
+}
+
+.journal-header-wrap {
+  margin-bottom: 50px;
+}
+
+.journal-boost-intro {
+  margin: 60px 0 30px;
+  text-align: center;
+}
+
+.journal-boost-intro h3 {
+  font-size: clamp(32px, 3.8vw, 54px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  color: #1a1622;
+  margin-top: 10px;
+}
+
+.journal-boost-intro p {
+  color: #6d6676;
+  font-size: 16px;
+  max-width: 580px;
+  margin: 12px auto 0;
+  line-height: 1.6;
+}
+
+/* 4-Column Life Boost Grid */
+.journal-boost-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 75px;
+}
+
+.boost-card {
+  background: #ffffff;
+  border: 1px solid #e5e1eb;
+  border-radius: 20px;
+  padding: 28px 24px;
+  box-shadow: 0 4px 20px rgba(66, 45, 90, 0.04);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease), border-color 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
+.boost-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(78, 52, 107, 0.08);
+  border-color: #cfc4de;
+}
+
+.boost-icon-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: #f4f0f9;
+  color: #634785;
+  display: grid;
+  place-items: center;
+  margin-bottom: 20px;
+}
+
+.boost-icon-badge .icon {
+  width: 22px;
+  height: 22px;
+}
+
+.boost-card h4 {
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #211c29;
+  margin-bottom: 10px;
+}
+
+.boost-card p {
+  font-size: 14px;
+  color: #6b6474;
+  line-height: 1.6;
+  flex: 1;
+}
+
+.boost-tag {
+  display: inline-block;
+  margin-top: 18px;
+  font-size: 11px;
+  color: #8c7f99;
+  background: #faf8fc;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1px solid #ebe6f2;
+}
+
+/* Detailed Features Split */
+.journal-showcase-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 6vw;
+  align-items: center;
+  padding: 28px 3vw;
+  margin-bottom: 60px;
+}
+
+.journal-phone-frame {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  isolation: isolate;
+}
+
+/* Feature Details Column */
+.journal-details-col {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.journal-feature-block {
+  display: flex;
+  gap: 16px;
+}
+
+.journal-feature-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: #ede7f5;
+  color: #5c3c7e;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.journal-feature-dot .icon {
+  width: 17px;
+  height: 17px;
+}
+
+.journal-feature-text h4 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #1c1824;
+  margin-bottom: 6px;
+}
+
+.journal-feature-text p {
+  font-size: 14px;
+  color: #645e6d;
+  line-height: 1.6;
+}
+
+/* Day Breakdown & Monthly Recap Story Cards */
+.journal-narratives-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+
+.narrative-card {
+  background: #ffffff;
+  border: 1px solid #e5e0ea;
+  border-radius: 24px;
+  padding: 34px 30px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 6px 25px rgba(45, 33, 62, 0.04);
+  transition: transform 0.3s var(--ease), box-shadow 0.3s;
+}
+
+.narrative-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 35px rgba(58, 42, 80, 0.07);
+}
+
+.narrative-badge {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #6c5188;
+  background: #f3eef9;
+  padding: 5px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.narrative-card h4 {
+  font-size: clamp(21px, 2.2vw, 26px);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: #1f1b27;
+  margin-bottom: 12px;
+}
+
+.narrative-card p {
+  font-size: 14px;
+  color: #615a6b;
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+
+.narrative-stream-preview {
+  background: #faf8fc;
+  border: 1px solid #ece7f3;
+  border-radius: 14px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.stream-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: #4b4554;
+}
+
+.stream-time {
+  font-size: 11px;
+  font-weight: 600;
+  color: #887d95;
+  min-width: 58px;
+}
+
+.stream-pill {
+  background: #ffffff;
+  border: 1px solid #ded8e8;
+  border-radius: 8px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.stream-pill .icon {
+  width: 13px;
+  height: 13px;
+  color: #7b6598;
+}
+
+.narrative-quote-box {
+  background: linear-gradient(135deg, #f7f4fc, #efeaf7);
+  border-left: 3px solid #9a80b3;
+  border-radius: 0 12px 12px 0;
+  padding: 14px 18px;
+  font-family: 'Beth Ellen', cursive, serif;
+  font-size: 14px;
+  line-height: 1.8;
+  color: #41384e;
+}
+
+
+/* ----------------------------------------------------
+   Context Library Special Section
+---------------------------------------------------- */
+.context-library-section {
+  position: relative;
+  background-color: #0d0e12;
+  background-image: url('/artwork/context-library-bg.svg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #f7f5fa;
+  padding: 110px 6vw 120px;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.context-library-top {
+  max-width: 780px;
+  margin-bottom: 60px;
+}
+
+.context-library-top .eyebrow {
+  color: #b7a8cb;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.context-library-top .eyebrow::before {
+  content: '';
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #9a80b3;
+  box-shadow: 0 0 10px #9a80b3;
+}
+
+.context-library-top h2 {
+  font-size: clamp(48px, 6vw, 86px);
+  letter-spacing: -0.04em;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 1.05;
+  margin: 18px 0 20px;
+}
+
+.context-library-top h2 em {
+  font-style: italic;
+  font-weight: 400;
+  color: #c9bade;
+}
+
+.context-library-top p {
+  font-size: 17px;
+  color: #aba2b8;
+  line-height: 1.65;
+  max-width: 640px;
+}
+
+/* Context Grid Layout */
+.context-library-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 7vw;
+  align-items: center;
+}
+
+/* Mockup Presentation Container */
+.context-mockup-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Feature Pillars Column */
+.context-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.context-feature-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform 0.3s var(--ease), background 0.3s, border-color 0.3s;
+}
+
+.context-feature-box:hover {
+  transform: translateX(6px);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(206, 185, 235, 0.3);
+}
+
+.context-box-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.context-box-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(154, 128, 179, 0.2);
+  color: #d1bfe8;
+  display: grid;
+  place-items: center;
+}
+
+.context-box-icon .icon {
+  width: 18px;
+  height: 18px;
+}
+
+.context-box-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.context-feature-box p {
+  font-size: 14px;
+  color: #b0a7bd;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.context-bottom-tagline {
+  margin-top: 45px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.context-bottom-tagline span {
+  font-size: 13px;
+  color: #8e839e;
+}
+
+
+/* ----------------------------------------------------
+   Responsive Adjustments
+---------------------------------------------------- */
+@media (max-width: 1024px) {
+  .journal-boost-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .journal-showcase-split {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding: 35px 25px;
+  }
+  .journal-narratives-grid {
+    grid-template-columns: 1fr;
+  }
+  .context-library-grid {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+  .context-mockup-wrapper {
+    order: -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .journal-boost-grid {
+    grid-template-columns: 1fr;
+  }
+  .boost-card {
+    padding: 22px 18px;
+  }
+  .journal-showcase-split {
+    padding: 16px 0;
+  }
+  .context-library-section {
+    padding: 70px 5vw 80px;
+  }
+}

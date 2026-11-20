@@ -6,6 +6,9 @@
   mask-image: none;
 }
 
+.hero-copy { pointer-events: none; }
+.hero-copy > :is(p, a, .hero-note) { pointer-events: auto; }
+
 .constellation-stage {
   position: relative;
   width: 100%;
@@ -30,15 +33,22 @@
   width: var(--width) !important;
   z-index: var(--z, 1);
   mix-blend-mode: normal;
+  padding: 0;
+  border: 0;
+  border-radius: 15%;
+  background: transparent;
+  pointer-events: auto;
+  touch-action: manipulation;
   animation: none;
   transition: none;
   transform-origin: 50% 75%;
   will-change: auto;
 }
 
-.constellation-key:hover { transform: none; filter: none; z-index: var(--z, 1); }
-.key-sculpture { width: 100%; transform: rotate(var(--tilt, 0deg)); }
-.is-preparing .constellation-key { opacity: 0; }
+.constellation-key:active .key-sculpture { filter: brightness(.9); }
+.constellation-key:focus-visible { outline: 2px solid #d7c8f1; outline-offset: 3px; }
+.key-sculpture { display: block; width: 100%; pointer-events: none; transform: rotate(var(--tilt, 0deg)); }
+.is-preparing .constellation-key { opacity: 0; visibility: hidden; }
 .is-visible .constellation-key {
   animation: popcorn-arrive 1050ms linear var(--delay) both;
 }
@@ -70,6 +80,6 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .is-preparing .constellation-key { opacity: 1; }
+  .is-preparing .constellation-key { opacity: 1; visibility: visible; }
   .is-visible .constellation-key, .is-visible .key-sculpture { animation: none; }
 }
