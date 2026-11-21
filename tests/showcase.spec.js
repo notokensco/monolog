@@ -1,5 +1,28 @@
 import { test, expect } from '@playwright/test'
 
+test('homepage renders one of each navigation, journal intro, and footer', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/')
+
+  const desktopNav = page.getByRole('navigation', { name: 'Main navigation' })
+  await expect(desktopNav).toHaveCount(1)
+  await expect(desktopNav.getByRole('link', { name: 'Context library' })).toHaveAttribute('href', '#context-library')
+  await expect(page.locator('#journal .journal-grid')).toHaveCount(1)
+
+  const footer = page.getByRole('contentinfo')
+  await expect(footer).toHaveCount(1)
+  await expect(footer.getByRole('link', { name: 'Terms of Service' })).toHaveAttribute('href', '/tos')
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  const mobileNav = page.locator('#mobile-nav')
+  await expect(mobileNav).toHaveCount(1)
+  await expect(mobileNav).toBeHidden()
+  await page.getByRole('button', { name: 'Open navigation' }).click()
+  await mobileNav.getByRole('link', { name: 'Context library' }).click()
+  await expect(page).toHaveURL(/#context-library$/)
+  await expect(mobileNav).toBeHidden()
+})
+
 test('production loads original artwork, local fonts, valid links and the requested wording', async ({ page, request }) => {
   const errors = []
   page.on('pageerror', error => errors.push(error.message))

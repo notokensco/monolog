@@ -22,20 +22,22 @@ initContextLibrary()
 initFeatureRail(reducedMotion)
 
 const ticker = document.querySelector('.word-ticker')
-const tickerTrack = ticker.querySelector('.ticker-track')
-const tickerPhrase = tickerTrack.firstElementChild
-function fillTicker() {
-  const phraseWidth = tickerPhrase.getBoundingClientRect().width
-  if (!phraseWidth) return
-  const copies = Math.ceil(ticker.clientWidth / phraseWidth) + 1
-  while (tickerTrack.children.length < copies) tickerTrack.append(tickerPhrase.cloneNode(true))
-  while (tickerTrack.children.length > copies) tickerTrack.lastElementChild.remove()
-  tickerTrack.style.setProperty('--ticker-end', `${-phraseWidth}px`)
+const tickerTrack = ticker?.querySelector('.ticker-track')
+const tickerPhrase = tickerTrack?.firstElementChild
+if (ticker && tickerTrack && tickerPhrase) {
+  function fillTicker() {
+    const phraseWidth = tickerPhrase.getBoundingClientRect().width
+    if (!phraseWidth) return
+    const copies = Math.ceil(ticker.clientWidth / phraseWidth) + 1
+    while (tickerTrack.children.length < copies) tickerTrack.append(tickerPhrase.cloneNode(true))
+    while (tickerTrack.children.length > copies) tickerTrack.lastElementChild.remove()
+    tickerTrack.style.setProperty('--ticker-end', `${-phraseWidth}px`)
+  }
+  const tickerResize = new ResizeObserver(fillTicker)
+  tickerResize.observe(ticker)
+  tickerResize.observe(tickerPhrase)
+  fillTicker()
 }
-const tickerResize = new ResizeObserver(fillTicker)
-tickerResize.observe(ticker)
-tickerResize.observe(tickerPhrase)
-fillTicker()
 
 document.querySelectorAll('.thought-key').forEach((key, index) => {
   const face = key.firstElementChild

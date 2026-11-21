@@ -115,8 +115,6 @@
   <header class="site-header">
     <a href="#home" class="wordmark" aria-label="Monolog home">monolog<span>.</span></a>
     <nav class="desktop-nav" aria-label="Main navigation"><a href="#playground">The keyboard</a><a
-        href="#possibilities">Possibilities</a><a href="#journal">Your journal</a><a href="#privacy">Privacy</a></nav>
-    <nav class="desktop-nav" aria-label="Main navigation"><a href="#playground">The keyboard</a><a
         href="#possibilities">Possibilities</a><a href="#journal">Your journal</a><a href="#context-library">Context
         library</a><a href="#privacy">Privacy</a></nav>
     <a class="header-cta" href="mailto:monolog@notokens.co?subject=Monolog%20early%20access">Get in early
@@ -125,9 +123,6 @@
       aria-label="Open navigation"><svg class="icon">
         <use href="#icon-menu" />
       </svg></button>
-    <nav id="mobile-nav" aria-label="Mobile navigation" hidden><a href="#playground">The keyboard</a><a
-        href="#possibilities">Possibilities</a><a href="#journal">Your journal</a><a href="#privacy">Privacy</a><a
-        href="#pricing">Pricing</a><a href="mailto:monolog@notokens.co">Get in touch</a></nav>
     <nav id="mobile-nav" aria-label="Mobile navigation" hidden><a href="#playground">The keyboard</a><a
         href="#possibilities">Possibilities</a><a href="#journal">Your journal</a><a href="#context-library">Context
         library</a><a href="#privacy">Privacy</a><a href="#pricing">Pricing</a><a href="mailto:monolog@notokens.co">Get
@@ -180,10 +175,12 @@
           class="scroll-hint mono">Scroll to get a feel for it <span class="scroll-line"></span></span></div>
     </section>
     <div class="word-ticker" aria-hidden="true">
-      <div><span>Less switching.</span><span class="ticker-star">✳</span><span>More living.</span><span
-          class="ticker-star">✳</span><span>Your words, your world.</span><span class="ticker-star">✳</span><span>Less
-          switching.</span><span class="ticker-star">✳</span><span>More living.</span><span
-          class="ticker-star">✳</span><span>Your words, your world.</span><span class="ticker-star">✳</span></div>
+      <div class="ticker-track">
+        <div class="ticker-phrase">
+          <span>Less switching.</span><span class="ticker-divider">✳</span><span>More living.</span><span
+            class="ticker-divider">✳</span><span>Your words, your world.</span><span class="ticker-divider">✳</span>
+        </div>
+      </div>
     </div>
     <section id="playground" class="playground paper section-pad">
       <div class="section-top reveal"><span class="eyebrow">Familiar keys. A whole new feeling.</span><span
@@ -495,34 +492,6 @@
             closer look at your journal <span class="tiny-key">↵</span></a>
         </div>
       </div>
-      <div class="journal-grid">
-        <div class="journal-art reveal"><img src="/artwork/memory-unfolding.webp" width="1254" height="1254"
-            loading="lazy" decoding="async"
-            alt="An original sculpture of a keyboard key unfolding into delicate journal pages" />
-          <div class="memory-fragment"><span class="mono">A little moment, kept.</span>
-            <p>“Took the long way home.<br />Glad I did.”</p><span class="fragment-tag">Illustrative journal
-              entry</span>
-          </div>
-        </div>
-        <div class="journal-copy reveal">
-          <h2>Your day.<br />In your<br /><em>words.</em></h2>
-          <p>Life doesn't happen in one app. Your journal brings together the thoughts, notes, and moments you choose to
-            keep—without forcing you to sit down with a blank screen at midnight.</p>
-          <p>Find that half-remembered plan. Revisit a good day. Ask your memories a question. It's your story, in your
-            own voice, kept completely private on your device.</p>
-          <div class="journal-feature"><svg class="icon">
-              <use href="#icon-check" />
-            </svg><span>Daily entries woven from your eligible, consensual input</span></div>
-          <div class="journal-feature"><svg class="icon">
-              <use href="#icon-check" />
-            </svg><span>Screenshots, notes, and voice reflections connected</span></div>
-          <div class="journal-feature"><svg class="icon">
-              <use href="#icon-check" />
-            </svg><span>Searchable memories and meaningful monthly recaps</span></div><a class="text-link"
-            href="#context-library">Explore the Context Library <span class="tiny-key">↓</span></a>
-        </div>
-      </div>
-
       <div class="journal-boost-intro reveal"><span class="eyebrow">A boost to your everyday life</span>
         <h3>Less mental clutter.<br />More <em>clarity.</em></h3>
         <p>Traditional journaling requires discipline that runs out by 10 PM. Monolog assists you seamlessly throughout
@@ -894,11 +863,6 @@
           class="footer-space">your side of the day.</span><span class="brand-type">m</span><span>↵</span></div>
     </section>
   </main>
-  <footer class="site-footer"><a class="wordmark" href="#home" aria-label="Monolog home">monolog.</a><span
-      class="mono">An idea by NoTokens. A little more human.</span>
-    <nav aria-label="Footer navigation"><a href="#privacy">Privacy</a><a href="#pricing">Pricing</a><a
-        href="mailto:monolog@notokens.co">Contact</a></nav><span class="mono">© 2026 NoTokens</span>
-  </footer>
   <footer class="site-footer"><a class="wordmark" href="#home" aria-label="Monolog home">monolog.</a><span
       class="mono">An idea by NoTokens. A little more human.</span>
     <nav aria-label="Footer navigation"><a href="#journal">Journal</a><a href="#context-library">Context library</a><a
