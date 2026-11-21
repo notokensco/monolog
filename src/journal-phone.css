@@ -146,7 +146,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: #fffc;
+  background: var(--device-surface, #fffc);
 }
 
 .journal-device-controls,
@@ -163,7 +163,7 @@
   min-height: 32px;
   padding: 2px;
   border-radius: 13px;
-  background: #fff9;
+  background: var(--device-surface-soft, #fff9);
   text-align: center;
 }
 
@@ -202,7 +202,7 @@
 
 .journal-device :is(.journal-device-nav, .journal-device-views) button[aria-pressed="true"],
 .journal-device-icon[aria-pressed="true"] {
-  background: #dedcf5;
+  background: var(--device-selected, #dedcf5);
   color: var(--journal-accent);
   font-weight: 700;
 }
@@ -215,7 +215,7 @@
   border: 0;
   border-radius: 10px;
   padding: 7px 8px;
-  background: #fff;
+  background: var(--device-surface-hover, #fff);
   color: var(--journal-ink);
   font: inherit;
 }
@@ -235,7 +235,7 @@
   margin-bottom: 8px;
   padding: 10px 11px;
   border-radius: 13px;
-  background: #fffc;
+  background: var(--device-surface, #fffc);
   overflow-wrap: anywhere;
 }
 
@@ -301,7 +301,7 @@
 .journal-device-tags span {
   padding: 2px 6px;
   border-radius: 8px;
-  background: #eeecf8;
+  background: var(--device-soft, #eeecf8);
   color: var(--journal-muted);
   font-size: 9px;
 }
@@ -319,7 +319,7 @@
 
 .journal-device button.journal-device-action:hover,
 .journal-device-month button:hover {
-  background: #e5e2f7;
+  background: var(--device-selected, #e5e2f7);
 }
 
 .journal-device-calendar {
@@ -328,7 +328,7 @@
   gap: 4px 2px;
   padding: 7px 3px;
   border-radius: 13px;
-  background: #fffb;
+  background: var(--device-surface, #fffb);
 }
 
 .journal-device-calendar > * {
@@ -342,7 +342,7 @@
 .journal-device-calendar button.journal-device-action {
   margin: 0;
   padding: 0;
-  background: #dedcf5;
+  background: var(--device-selected, #dedcf5);
 }
 
 .journal-device-gallery {
@@ -353,7 +353,7 @@
 
 .journal-device-gallery .journal-device-card {
   padding: 10px 8px;
-  background: linear-gradient(155deg, #fff, #eae6f8);
+  background: var(--device-gallery, linear-gradient(155deg, #fff, #eae6f8));
 }
 
 .journal-device-note {
@@ -381,7 +381,7 @@
   margin: 4px 9px;
   padding: 3px;
   border-radius: 15px;
-  background: #fff9;
+  background: var(--device-surface-soft, #fff9);
 }
 
 .journal-device-ask label {

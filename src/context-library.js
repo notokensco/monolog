@@ -15,8 +15,7 @@ function make(tag, className, text) {
   return element
 }
 
-export function initContextLibrary() {
-  const root = document.querySelector('.context-device')
+function initLibrary(root) {
   const title = root.querySelector('.journal-device-title h3')
   const add = root.querySelector('[data-library-action="add"]')
   const tools = root.querySelector('.context-device-tools')
@@ -140,4 +139,13 @@ export function initContextLibrary() {
   }
   search.addEventListener('input', showList)
   showList()
+}
+
+export function initContextLibrary() {
+  const template = document.querySelector('#context-library-template')
+  for (const host of document.querySelectorAll('[data-context-library-demo]')) {
+    const library = template.content.firstElementChild.cloneNode(true)
+    host.append(library)
+    initLibrary(library)
+  }
 }

@@ -10,10 +10,12 @@ import './journal-enhanced.css'
 import './journal-phone.css'
 import './context-library.css'
 import './feature-overview.css'
+import './showcase.css'
 import { initHeroKeys } from './hero-keys.js'
 import { initJournalPhones } from './journal-phone.js'
 import { initContextLibrary } from './context-library.js'
 import { initFeatureRail } from './feature-rail.js'
+import { initShowcase } from './showcase.js'
 
 const menuButton = document.querySelector('#menu-toggle')
 const mobileMenu = document.querySelector('#mobile-nav')
@@ -34,6 +36,7 @@ initHeroKeys(reducedMotion)
 initJournalPhones()
 initContextLibrary()
 initFeatureRail(reducedMotion)
+initShowcase(reducedMotion)
 
 const ticker = document.querySelector('.word-ticker')
 const tickerTrack = ticker?.querySelector('.ticker-track')

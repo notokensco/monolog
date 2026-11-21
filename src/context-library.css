@@ -1,6 +1,8 @@
-.context-mockup-wrapper .context-device {
+.context-mockup-wrapper [data-context-library-demo] {
   width: min(100%, 356px);
 }
+
+.context-mockup-wrapper .context-device { width: 100%; }
 
 .context-box-brand,
 .m-key-badge {
@@ -35,7 +37,7 @@
   gap: 6px;
   padding: 7px 9px;
   border-radius: 13px;
-  background: #fffc;
+  background: var(--device-surface, #fffc);
 }
 
 .context-device-search input {
@@ -57,12 +59,12 @@
 .context-device-filters button {
   padding: 5px 6px;
   border-radius: 9px;
-  background: #fff9;
+  background: var(--device-surface-soft, #fff9);
   font-size: 10px;
 }
 
 .context-device-filters button[aria-pressed="true"] {
-  background: #dedcf5;
+  background: var(--device-selected, #dedcf5);
   color: var(--journal-accent);
   font-weight: 700;
 }
@@ -80,12 +82,12 @@
   gap: 3px;
   padding: 5px;
   border-radius: 13px;
-  background: #fffc;
+  background: var(--device-surface, #fffc);
   text-align: left;
 }
 
 .context-item:hover {
-  background: #fff;
+  background: var(--device-surface-hover, #fff);
 }
 
 .context-item-title,
@@ -154,10 +156,10 @@
   gap: 6px;
   padding: 7px;
   border-radius: 9px;
-  background: #fff9;
+  background: var(--device-surface-soft, #fff9);
   color: var(--journal-accent);
   font-size: 11px;
 }
 
 .context-device-footer a span { margin-inline-start: auto; }
-.context-device-footer a:hover { background: #fff; }
+.context-device-footer a:hover { background: var(--device-surface-hover, #fff); }
