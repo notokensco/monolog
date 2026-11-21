@@ -15,6 +15,20 @@ import { initJournalPhones } from './journal-phone.js'
 import { initContextLibrary } from './context-library.js'
 import { initFeatureRail } from './feature-rail.js'
 
+const menuButton = document.querySelector('#menu-toggle')
+const mobileMenu = document.querySelector('#mobile-nav')
+function closeMenu() { mobileMenu.hidden = true; menuButton.setAttribute('aria-expanded', 'false'); menuButton.setAttribute('aria-label', 'Open navigation') }
+menuButton.addEventListener('click', () => {
+  const open = menuButton.getAttribute('aria-expanded') !== 'true'
+  mobileMenu.hidden = !open
+  menuButton.setAttribute('aria-expanded', String(open))
+  menuButton.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation')
+})
+mobileMenu.addEventListener('click', event => { if (event.target.closest('a')) closeMenu() })
+document.addEventListener('click', event => { if (!event.target.closest('.site-header')) closeMenu() })
+document.addEventListener('keydown', event => { if (event.key === 'Escape' && !mobileMenu.hidden) { closeMenu(); menuButton.focus() } })
+matchMedia('(min-width: 1001px)').addEventListener('change', event => { if (event.matches) closeMenu() })
+
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
 initHeroKeys(reducedMotion)
 initJournalPhones()
@@ -152,19 +166,6 @@ for (const button of document.querySelectorAll('[data-billing]')) button.addEven
   document.querySelector('#pro-contact').href = 'mailto:monolog@notokens.co?subject=Monolog%20Pro%20' + (yearly ? 'Yearly' : 'Monthly')
 })
 
-const menuButton = document.querySelector('#menu-toggle')
-const mobileMenu = document.querySelector('#mobile-nav')
-function closeMenu() { mobileMenu.hidden = true; menuButton.setAttribute('aria-expanded', 'false'); menuButton.setAttribute('aria-label', 'Open navigation') }
-menuButton.addEventListener('click', () => {
-  const open = menuButton.getAttribute('aria-expanded') !== 'true'
-  mobileMenu.hidden = !open
-  menuButton.setAttribute('aria-expanded', String(open))
-  menuButton.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation')
-})
-mobileMenu.addEventListener('click', event => { if (event.target.closest('a')) closeMenu() })
-document.addEventListener('click', event => { if (!event.target.closest('.site-header')) closeMenu() })
-document.addEventListener('keydown', event => { if (event.key === 'Escape' && !mobileMenu.hidden) { closeMenu(); menuButton.focus() } })
-matchMedia('(min-width: 1001px)').addEventListener('change', event => { if (event.matches) closeMenu() })
 document.querySelector('#copy-email').addEventListener('click', async event => {
   const label = event.currentTarget.querySelector('span')
   try { await navigator.clipboard.writeText('monolog@notokens.co'); label.textContent = 'Copied. Say hello.' }
