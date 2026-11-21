@@ -8,15 +8,24 @@ await build({
     rollupOptions: {
       input: {
         main: resolve('index.html'),
-        privacy: resolve('privacy/index.html')
+        privacy: resolve('privacy/index.html'),
+        tos: resolve('tos/index.html')
       }
     }
   }
 })
 
-const privacyIndex = resolve('dist/privacy/index.html')
-const privacyHtml = resolve('dist/privacy.html')
-if (existsSync(privacyIndex)) {
-  copyFileSync(privacyIndex, privacyHtml)
-  console.log('✓ Created dist/privacy.html fallback')
+// Ensure clean URL fallbacks for static hosting
+const fallbacks = [
+  { src: 'dist/privacy/index.html', dest: 'dist/privacy.html' },
+  { src: 'dist/tos/index.html', dest: 'dist/tos.html' }
+]
+
+for (const { src, dest } of fallbacks) {
+  const srcPath = resolve(src)
+  const destPath = resolve(dest)
+  if (existsSync(srcPath)) {
+    copyFileSync(srcPath, destPath)
+    console.log(`✓ Created ${dest} fallback`)
+  }
 }

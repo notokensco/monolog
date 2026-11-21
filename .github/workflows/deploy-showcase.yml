@@ -7,9 +7,11 @@ on:
     paths:
       - 'index.html'
       - 'privacy/**'
+      - 'tos/**'
       - 'src/**'
       - 'public/**'
       - 'scripts/**'
+      - 'vite.config.js'
       - 'package.json'
       - 'package-lock.json'
       - 'postcss.config.js'
