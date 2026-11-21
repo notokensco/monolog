@@ -13,11 +13,11 @@ An original Vite product website with oversized editorial typography, generated 
 
 ## Run and build
 
-- Install: npm install
-- Develop: npm run dev
-- Production build: npm run build
-- Preview production: npm run preview
-- Browser checks after building: npm test
+- Install: pnpm install
+- Develop: pnpm run dev
+- Production build: pnpm run build
+- Preview production: pnpm run preview
+- Browser checks after building: pnpm test
 
 The production output is dist/. Tests use installed Microsoft Edge on Windows; other hosts can install Chromium using npx playwright install chromium.
 
