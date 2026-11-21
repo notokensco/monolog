@@ -6,8 +6,10 @@ on:
       - main
     paths:
       - 'index.html'
+      - 'privacy/**'
       - 'src/**'
       - 'public/**'
+      - 'scripts/**'
       - 'package.json'
       - 'package-lock.json'
       - 'postcss.config.js'
