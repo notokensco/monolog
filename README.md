@@ -14,7 +14,7 @@ An original Vite product website with oversized editorial typography, generated 
 ## Run and build
 
 - Install: pnpm install
-- Develop: pnpm run dev
+- Develop: pnpm run dev 
 - Production build: pnpm run build
 - Preview production: pnpm run preview
 - Browser checks after building: pnpm test
