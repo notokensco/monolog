@@ -21,6 +21,14 @@ An original Vite product website with oversized editorial typography, generated 
 
 The production output is dist/. Tests use installed Microsoft Edge on Windows; other hosts can install Chromium using npx playwright install chromium.
 
+## Waitlist
+
+The waitlist uses `POST /api/waitlist` on the Cloudflare Worker. For local end-to-end testing, copy `.env.example` to `.env`, fill in the Upstash REST values for a test database, then run `pnpm run build` and `npx wrangler dev`.
+
+For production, set `UPSTASH_REDIS_REST_URL` and `UPSTASH_REDIS_REST_TOKEN` as Cloudflare Worker secrets and deploy with Wrangler. GitHub Pages serves static files only and cannot process signups.
+
+Signups are stored in the `monolog:waitlist:emails` sorted set. Each member is a normalized email address and its score is the first signup time in Unix milliseconds. Use `ZRANGE monolog:waitlist:emails 0 -1 WITHSCORES` to retrieve addresses in signup order.
+
 ## Design and interactions
 
 - Editable Beth Ellen wordmarks and handwritten accents, with Manrope and IBM Plex Mono. All fonts are hosted locally.
@@ -29,7 +37,7 @@ The production output is dist/. Tests use installed Microsoft Edge on Windows; o
 - Working keyboard playground: letter keys, shift, backspace, space, punctuation polish and a clearly labelled voice-typing simulation. Drafts stay in memory in the current browser tab.
 - Native scrolling drives a pinned horizontal feature story on desktop. Mobile and reduced-motion users get a regular vertical layout.
 - Scroll reveals, animated waveform, Paper/Ink product previews, accessible tabs, incognito illustration and monthly/yearly pricing.
-- Every contact action uses monolog@notokens.co. No signup or payment backend is implied.
+- The launch waitlist collects email addresses. Direct inquiries use monolog@notokens.co.
 
 ## Files
 

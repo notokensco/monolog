@@ -11,11 +11,15 @@ import './journal-phone.css'
 import './context-library.css'
 import './feature-overview.css'
 import './showcase.css'
+import './waitlist.css'
 import { initHeroKeys } from './hero-keys.js'
 import { initJournalPhones } from './journal-phone.js'
 import { initContextLibrary } from './context-library.js'
 import { initFeatureRail } from './feature-rail.js'
 import { initShowcase } from './showcase.js'
+import { initWaitlist } from './waitlist.js'
+
+initWaitlist()
 
 const menuButton = document.querySelector('#menu-toggle')
 const mobileMenu = document.querySelector('#mobile-nav')

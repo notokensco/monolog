@@ -79,8 +79,8 @@
     <nav class="desktop-nav" aria-label="Main navigation"><a href="#playground">The keyboard</a><a
         href="#possibilities">Possibilities</a><a href="#journal">Your journal</a><a href="#context-library">Context
         library</a><a href="#privacy">Privacy</a></nav>
-    <a class="header-cta" href="mailto:monolog@notokens.co?subject=Monolog%20early%20access">Get in early
-      <kbd>↵</kbd></a>
+    <a class="header-cta" href="#waitlist">Get in early
+      <kbd aria-hidden="true">↵</kbd></a>
     <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav"
       aria-label="Open navigation"><svg class="icon">
         <use href="#icon-menu" />
@@ -93,7 +93,25 @@
   <main id="main-content">
     <section id="home" class="hero">
 <div class="hero-topline mono"><span>A little more possibility. In every key.</span><span class="android-label">Made for Android <button class="android-mascot" type="button" aria-label="Blink Android mascot"><svg class="icon android-glyph" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17a9 9 0 0 1 18 0v2H3zM6.8 9.7 4.8 6.4m12.4 3.3 2-3.3"/><circle class="android-eye" cx="8.3" cy="14.7" r=".85" fill="currentColor" stroke="none"/><circle class="android-eye" cx="15.7" cy="14.7" r=".85" fill="currentColor" stroke="none"/></svg></button></span></div>
-<div class="hero-copy"><h1>A keyboard.<br/>With a <em>memory.</em></h1><p>Your words do more here. Type naturally, speak freely, get things done — and keep <span>your side of the day.</span></p><a class="button button-paper" href="#playground">Meet your next keyboard <span class="button-key"><svg class="icon"><use href="#icon-enter"/></svg></span></a><span class="hero-note mono">Android-first. Private by choice. Yours by design.</span></div>
+<div class="hero-copy">
+  <h1>A keyboard.<br/>With a <em>memory.</em></h1>
+  <p>Your words do more here. Type naturally, speak freely, get things done — and keep <span>your side of the day.</span></p>
+  <a class="button button-paper" href="#playground">Meet your next keyboard <span class="button-key"><svg class="icon"><use href="#icon-enter"/></svg></span></a>
+  <section id="waitlist" class="waitlist" aria-labelledby="waitlist-title" tabindex="-1">
+    <h2 id="waitlist-title">Get in early</h2>
+    <form class="waitlist-form" method="post" action="/api/waitlist">
+      <div class="waitlist-fields">
+        <label class="sr-only" for="waitlist-email">Email address</label>
+        <input id="waitlist-email" name="email" type="email" autocomplete="email" autocapitalize="none" maxlength="254" placeholder="Your email address" required />
+        <button type="submit" disabled>Join the waitlist</button>
+      </div>
+      <p class="waitlist-help">Get Android launch updates. <a href="/privacy">Privacy policy</a></p>
+      <p class="waitlist-status" role="status" aria-atomic="true"></p>
+      <noscript><p>Please enable JavaScript to join the waitlist.</p></noscript>
+    </form>
+  </section>
+  <span class="hero-note mono">Android-first. Private by choice. Yours by design.</span>
+</div>
 <div class="hero-art" role="group" aria-label="Hero keyboard keys">
 <div class="constellation-stage">
 <div class="constellation-keys">
@@ -493,7 +511,7 @@
             <li>Vox and on-device writing assistance</li>
             <li>Incognito, encryption and data controls</li>
           </ul><a class="button button-outline"
-            href="mailto:monolog@notokens.co?subject=Monolog%20Free%20release%20updates">Keep me in the loop <span
+            href="#waitlist">Keep me in the loop <span
               class="tiny-key">↵</span></a>
         </article>
         <article class="price-plan price-pro reveal">
@@ -518,6 +536,7 @@
       <p class="pricing-footnote mono">Proposed launch pricing. Final allowances and release availability will be
         confirmed before launch.</p>
     </section>
+    <div class="waitlist-mobile section-pad" hidden></div>
     <section id="faq" class="faq paper section-pad">
       <div class="faq-title reveal"><span class="eyebrow">A few things on your mind.</span>
         <h2>Good<br /><em>questions.</em></h2><a href="mailto:monolog@notokens.co">Ask us something else</a>
@@ -550,8 +569,7 @@
         <details>
           <summary>When can I get Monolog?<span>+</span></summary>
           <p>Monolog is in development. This website is an interactive product preview; the keyboard, journal and AI
-            features shown describe the intended product. Email <a
-              href="mailto:monolog@notokens.co">monolog@notokens.co</a> to ask about Android release updates.</p>
+            features shown describe the intended product. <a href="#waitlist">Join the waitlist</a> for Android launch updates.</p>
         </details>
       </div>
     </section>

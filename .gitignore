@@ -31,6 +31,8 @@ google-services.json
 .env
 .env.*
 !.env.example
+.dev.vars*
+.wrangler/
 
 # OS generated files
 .DS_Store
