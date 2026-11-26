@@ -20,6 +20,9 @@ importers:
       '@fontsource/roboto':
         specifier: ^5.3.0
         version: 5.3.0
+      '@fontsource/science-gothic':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@lottiefiles/dotlottie-web':
         specifier: ^0.83.2
         version: 0.83.2
@@ -84,6 +87,9 @@ packages:
 
   '@fontsource/roboto@5.3.0':
     resolution: {integrity: sha512-BapRJOWYP+LZ21zp+wBQjfpPYKRoxc4LspJ/RLuI+HSMBD5u/X4O+ESDrSvEqDSy0rAl7GwBJ+09mdc16cVQ1Q==}
+
+  '@fontsource/science-gothic@5.3.0':
+    resolution: {integrity: sha512-QWs9FRPJXdth0BLeimMGFruQXSiv1F2+NR6PSuFKk4N1u492brjTF9eE7TdgIdCeOzmbpm9eSJSx8kNnDTPJiw==}
 
   '@img/colour@1.1.0':
     resolution: {integrity: sha512-Td76q7j57o/tLVdgS746cYARfSyxk8iEfRxewL9h4OMzYhbW4TAcppl0mT4eyqXddh6L/jwoM75mo7ixa/pCeQ==}
@@ -917,6 +923,8 @@ snapshots:
   '@fontsource/ibm-plex-mono@5.3.0': {}
 
   '@fontsource/roboto@5.3.0': {}
+
+  '@fontsource/science-gothic@5.3.0': {}
 
   '@img/colour@1.1.0': {}
 
