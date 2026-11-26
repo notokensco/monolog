@@ -67,11 +67,30 @@ function initPreview(root) {
   const searchPanel = root.querySelector('.journal-device-search')
   const search = searchPanel.querySelector('input')
   const ask = root.querySelector('.journal-device-ask')
+  const periodGroup = root.querySelector('[data-journal-periods]')
+  const periodButtons = [...root.querySelectorAll('[data-journal-period]')]
   let page = 'Journal'
   let view = 'Timeline'
+  let period = 'Day'
   let month = new Date('2026-11-01')
   let searchOpen = false
   let detail = null
+
+  function briefCard() {
+    const isMonth = period === 'Month'
+    const node = element('article', 'journal-device-card jd-brief-card')
+    const meta = element('p', 'journal-device-meta', isMonth ? 'November 2026' : 'Sunday, 15 November 2026')
+    const heading = element('h4', '', isMonth ? 'Your month in brief' : 'Your day in brief')
+    const copy = element(
+      'p',
+      '',
+      isMonth
+        ? 'Coffee with Sam, the riverside art walk, and steady outline progress — one calm story to revisit.'
+        : 'Study plans in the library, coffee with Sam, and a reminder to call Amma at 6:00 PM.'
+    )
+    node.append(meta, heading, copy)
+    return node
+  }
 
   function card(label, heading, description) {
     const node = element('article', 'journal-device-card')
@@ -134,6 +153,7 @@ function initPreview(root) {
     const query = search.value.trim().toLowerCase()
     const prefix = month.toISOString().slice(0, 7)
     const items = days.filter(day => day.date.startsWith(prefix) && searchable(day).includes(query))
+    if (!query) content.append(briefCard())
     if (view === 'Calendar') content.append(calendar(items))
     else if (view === 'Gallery') content.append(sourceCards(items, true))
     else if (items.length) {
@@ -181,11 +201,13 @@ function initPreview(root) {
   function render(focusContent = false) {
     const journal = page === 'Journal' && !detail
     controls.hidden = !journal
+    if (periodGroup) periodGroup.hidden = !journal
     searchToggle.hidden = !journal
     searchPanel.hidden = !journal || !searchOpen
     searchToggle.setAttribute('aria-pressed', String(searchOpen))
     title.textContent = detail ? { day: 'Day view', note: 'New note', answers: 'Your days' }[detail.kind] : page
     monthLabel.textContent = monthFormat.format(month)
+    for (const button of periodButtons) button.setAttribute('aria-pressed', String(button.dataset.journalPeriod === period))
     for (const button of views) button.setAttribute('aria-pressed', String(button.dataset.journalView === view))
     for (const button of nav) button.setAttribute('aria-pressed', String(button.dataset.journalPage === page))
     content.replaceChildren()
@@ -194,9 +216,20 @@ function initPreview(root) {
     else if (journal) renderJournal()
     else if (page === 'Library') content.append(sourceCards(days))
     else {
-      const today = card('24° · Partly cloudy', 'Your day, remembered.', 'A sample view of your journal and reminders.')
-      today.append(action('Continue writing', 'note'))
-      content.append(today, card('Reminder', 'Call Amma', '6:00 PM today'), dayCard(days[0]))
+      const hero = element('article', 'journal-device-card jd-today-hero')
+      hero.append(
+        element('p', 'journal-device-meta', 'Today’s journal'),
+        element('h4', '', 'Your day, remembered.'),
+        element('p', '', 'A calm space for your thoughts, conversations, and progress.'),
+        action('Continue writing', 'note')
+      )
+      const grid = element('div', 'jd-today-grid')
+      const reminderTile = card('Reminders', 'Call Amma', '6:00 PM today')
+      const libraryTile = card('Context library', 'Photos & notes', 'Saved moments')
+      const libBtn = action('View all →', 'open-library')
+      libraryTile.append(libBtn)
+      grid.append(reminderTile, libraryTile)
+      content.append(hero, grid, dayCard(days[0]))
     }
 
     content.scrollTop = 0
@@ -206,10 +239,14 @@ function initPreview(root) {
   root.addEventListener('click', event => {
     const button = event.target.closest('button')
     if (!button) return
-    const { journalView, journalPage, journalAction, value } = button.dataset
-    if (journalView) view = journalView
+    const { journalView, journalPage, journalAction, journalPeriod, value } = button.dataset
+    if (journalPeriod) period = journalPeriod
+    else if (journalView) view = journalView
     else if (journalPage) {
       page = journalPage
+      detail = null
+    } else if (journalAction === 'open-library') {
+      page = 'Library'
       detail = null
     } else if (journalAction === 'search') {
       searchOpen = !searchOpen

@@ -1,6 +1,7 @@
 import '@fontsource-variable/manrope'
 import '@fontsource/beth-ellen/400.css'
 import '@fontsource/ibm-plex-mono/400.css'
+import '@fontsource/science-gothic/600.css'
 import '@fontsource/roboto/latin-400.css'
 import './styles.css'
 import './keyboard.css'
@@ -19,6 +20,7 @@ import { initContextLibrary } from './context-library.js'
 import { initFeatureRail } from './feature-rail.js'
 import { initShowcase } from './showcase.js'
 import { initWaitlist } from './waitlist.js'
+import { initFooterAurora } from './footer-aurora.js'
 
 initWaitlist()
 
@@ -136,6 +138,17 @@ const storyTrack = document.querySelector('.story-track')
 const storyCards = [...document.querySelectorAll('.story-card')]
 const storyButtons = [...document.querySelectorAll('[data-story]')]
 const desktopStory = matchMedia('(min-width: 901px)')
+const footerKeyboard = document.querySelector('.footer-keyboard')
+const footerKeys = footerKeyboard ? [...footerKeyboard.children] : []
+const footerKeyOffsets = [
+  [-115, -4],
+  [-175, 3],
+  [-135, -2.5],
+  [-195, 4.5],
+  [-92, -1.2],
+  [-168, 3.5],
+  [-125, -3],
+]
 let ticking = false
 function updateScroll() {
   ticking = false
@@ -155,6 +168,21 @@ function updateScroll() {
     document.querySelector('.story-progress span').style.transform = 'scaleX(' + Math.max(.05, progress) + ')'
   } else storyTrack.style.transform = ''
   if (!reducedMotion.matches && scrollY < 1100) document.querySelector('.hero-art').style.transform = 'translate3d(0, ' + Math.min(100, scrollY * .12) + 'px, 0)'
+  if (footerKeyboard) {
+    if (reducedMotion.matches) {
+      footerKeys.forEach(key => { key.style.transform = '' })
+    } else {
+      const kbRect = footerKeyboard.getBoundingClientRect()
+      const detach = Math.max(0, Math.min(1, (kbRect.bottom - innerHeight * 0.88) / (innerHeight * 0.55)))
+      const eased = detach * detach
+      footerKeys.forEach((key, index) => {
+        const [lift, tilt] = footerKeyOffsets[index] || [-120, 0]
+        key.style.transform = eased > 0.002
+          ? `translate3d(0, ${(lift * eased).toFixed(1)}px, 0) rotate(${(tilt * eased).toFixed(2)}deg)`
+          : ''
+      })
+    }
+  }
 }
 function requestScroll() { if (!ticking) { ticking = true; requestAnimationFrame(updateScroll) } }
 addEventListener('scroll', requestScroll, { passive: true })
@@ -241,3 +269,5 @@ if (notokensCanvas) {
     }
   })
 }
+
+initFooterAurora(reducedMotion)

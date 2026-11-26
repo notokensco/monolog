@@ -23,8 +23,19 @@
 .context-bottom-tagline a:hover { text-decoration: underline; }
 .context-bottom-tagline .m-key-badge { width: 28px; height: 28px; }
 
-.context-device .journal-device-title button {
-  font-size: 20px;
+.context-device .journal-device-title {
+  align-items: start;
+  padding-top: 2px;
+}
+.context-device .journal-device-title h3 {
+  font-size: 19px;
+}
+.context-subline {
+  display: block;
+  margin-top: 2px;
+  color: var(--journal-muted);
+  font-size: 9.5px;
+  font-weight: 500;
 }
 
 .context-device-tools {

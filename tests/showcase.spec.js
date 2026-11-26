@@ -46,15 +46,23 @@ test('Find your type runs live previews in both themes', async ({ page }) => {
 
   await showcase.getByRole('button', { name: 'Ink', exact: true }).click()
   await expect(showcase.locator('.showcase-stage')).toHaveAttribute('data-preview-theme', 'ink')
+  await showcase.getByRole('button', { name: 'Iris', exact: true }).click()
+  await expect(showcase.locator('.showcase-stage')).toHaveAttribute('data-preview-theme', 'iris')
+  await showcase.getByRole('button', { name: 'Key borders', exact: true }).click()
+  await expect(showcase.locator('.showcase-stage')).toHaveAttribute('data-preview-borders', 'true')
+  await showcase.getByRole('button', { name: 'Compact keys', exact: true }).click()
+  await expect(showcase.locator('.showcase-stage')).toHaveAttribute('data-preview-compact', 'true')
+  await showcase.getByRole('button', { name: 'Key borders', exact: true }).click()
+  await showcase.getByRole('button', { name: 'Ink', exact: true }).click()
   await tab(/Everyday typing/).press('ArrowRight')
-  await expect(tab(/Vox voice/)).toBeFocused()
+  await expect(tab(/VOX voice/i)).toBeFocused()
   await expect(draft).toHaveValue('h')
   await panel.getByRole('button', { name: 'Clear preview draft' }).click()
   await panel.getByRole('button', { name: 'Play sample dictation' }).click()
   await panel.getByRole('button', { name: 'Insert transcript' }).click()
   await expect(draft).toHaveValue('I’ll take the bus and be there by four.')
 
-  await tab(/Floating AI/).click()
+  await tab(/AI Ask/).click()
   await panel.getByRole('button', { name: 'Ask', exact: true }).click()
   await expect(panel.getByText('Sample source · Riverside Library hours')).toBeVisible()
   await panel.getByRole('button', { name: 'Clear preview draft' }).click()
@@ -88,7 +96,7 @@ test('Find your type runs live previews in both themes', async ({ page }) => {
 
   await page.getByRole('link', { name: 'Try Vox dictation' }).click()
   await expect(page).toHaveURL('/')
-  await expect(tab(/Vox voice/)).toHaveAttribute('aria-selected', 'true')
+  await expect(tab(/VOX voice/i)).toHaveAttribute('aria-selected', 'true')
 })
 
 test('production loads original artwork, local fonts, valid links and the requested wording', async ({ page, request }) => {
@@ -97,9 +105,11 @@ test('production loads original artwork, local fonts, valid links and the reques
   await page.goto('/')
   await expect(page.getByRole('heading', { level: 1 })).toContainText('A keyboard.')
   await expect(page.getByRole('button', { name: 'Press Monolog key' }).locator('img')).toHaveAttribute('src', '/artwork/keys-v2/monolog-key.webp')
-  const brandKeys = page.locator('.footer-brand-key img, .panel-brand, .feature-brand, .context-box-brand, .context-shortcut-brand')
-  await expect(brandKeys).toHaveCount(5)
+  const brandKeys = page.locator('.panel-brand, .feature-brand, .context-box-brand, .context-shortcut-brand')
+  await expect(brandKeys).toHaveCount(4)
   expect(await brandKeys.evaluateAll(keys => keys.every(key => key.getAttribute('src') === '/images/monolog-icon.png'))).toBe(true)
+  await expect(page.locator('.footer-brand-key .footer-brand-glyph')).toHaveCount(1)
+  await expect(page.locator('#footer-m-mask image')).toHaveAttribute('href', '/images/monolog-icon.png')
   await page.evaluate(() => document.fonts.ready)
   expect(await page.evaluate(() => document.fonts.check('24px "Beth Ellen"'))).toBeTruthy()
   const images = await page.locator('img').evaluateAll(elements => elements.map(image => image.getAttribute('src')))
@@ -338,7 +348,7 @@ test('toolbar suggests from the draft and the tools menu and Vox controls work',
   await expect(tools).toHaveAttribute('aria-expanded', 'false')
 
   await page.getByRole('button', { name: 'Preview Vox mode' }).click()
-  await expect(pill).toHaveText('Vox mode')
+  await expect(pill).toHaveText('VOX')
   await expect(page.locator('#demo-voice-wave i')).toHaveCount(37)
   await expect(page.locator('#vox-pause use')).toHaveAttribute('href', '#icon-pause')
   await page.getByRole('button', { name: 'Pause Vox voice demo' }).click()
@@ -484,7 +494,7 @@ test('the coded Context Library searches source text, filters items and saves a 
   await expect(library.getByText(/Hotel Namba/)).toBeVisible()
   await library.getByRole('button', { name: /Back to Library/ }).click()
   await search.fill('')
-  await library.getByRole('button', { name: 'Voice', exact: true }).click()
+  await library.getByRole('button', { name: 'Audio Notes', exact: true }).click()
   await expect(library.locator('.context-item')).toHaveCount(1)
   await library.getByRole('button', { name: /On the way home/ }).click()
   await expect(library.getByText('I took the long way home. Glad I did.')).toBeVisible()
@@ -520,11 +530,12 @@ test('incognito illustration and annual pricing communicate their state', async 
 
 test('native scroll reveals all three desktop feature chapters', async ({ page }) => {
   await page.goto('/')
-  const branding = page.locator('#possibilities :is(.story-brand, .answer-brand, .giant-m-key)')
-  await expect(branding).toHaveCount(4)
+  const branding = page.locator('#possibilities :is(.answer-brand, .giant-m-key)')
+  await expect(branding).toHaveCount(2)
   expect(await branding.evaluateAll(images => images.every(image =>
     image.getAttribute('src') === '/images/monolog-icon.png' && image.complete && image.naturalWidth > 0
   ))).toBe(true)
+  await expect(page.locator('#possibilities .story-m')).toHaveCount(2)
   const info = await page.locator('#possibilities').evaluate(section => ({ top: section.offsetTop, height: section.offsetHeight }))
   const distance = info.height - 1000 + 80
   await page.evaluate(y => scrollTo({ top: y, behavior: 'instant' }), info.top - 80 + distance * .5)

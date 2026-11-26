@@ -2470,9 +2470,11 @@ body {
 
 .vox-title {
   text-align: center;
+  font-family: 'Science Gothic', sans-serif;
   font-size: clamp(19px, 6.3cqw, 29px);
   letter-spacing: .06em;
-  font-weight: 900;
+  font-weight: 600;
+  text-transform: uppercase;
 }
 
 .vox-back-btn,

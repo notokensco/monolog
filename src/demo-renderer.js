@@ -287,7 +287,7 @@ function renderMonologApp(state) {
         <div class="library-chips">
           ${['All', 'Photos', 'Screenshots', 'Voice'].map(chip => `
             <button type="button" class="filter-chip ${state.libraryFilter === chip ? 'is-active' : ''}" data-demo-target="library-filter-${chip.toLowerCase()}" aria-pressed="${state.libraryFilter === chip}">
-              ${chip === 'All' ? '' : icon({ Photos: 'image', Screenshots: 'capture', Voice: 'mic' }[chip])}${chip}
+              ${chip === 'All' ? '' : icon({ Photos: 'image', Screenshots: 'capture', Voice: 'mic' }[chip])}${chip === 'Voice' ? 'Audio Notes' : chip}
             </button>
           `).join('')}
         </div>
@@ -686,7 +686,7 @@ function renderKeyboardOverlay(state) {
       <div class="kb-overlay-card kb-ai-panel">
         <div class="kb-overlay-head">
           ${icon('bolt')}
-          <strong>Monolog AI</strong>
+          <strong>AI Ask</strong>
           <span class="kb-close-x">${icon('close')}</span>
         </div>
         <div class="ai-query-box">

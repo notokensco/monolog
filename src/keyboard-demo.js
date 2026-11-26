@@ -29,8 +29,15 @@ export function initKeyboardDemo() {
   const voxTranscript = document.querySelector('#vox-transcript')
   const voxStatus = document.querySelector('#vox-status')
   const demoPanel = document.querySelector('#demo-panel')
+  const incognitoStrip = document.querySelector('#demo-incognito-strip')
+  const bordersButtons = [...container.querySelectorAll('[data-demo-borders]')]
+  const compactButton = container.querySelector('[data-demo-compact]')
+  const layoutButtons = [...container.querySelectorAll('[data-demo-layout]')]
+  const voxLangButton = container.querySelector('[data-demo-action="language"]')
   const { showFront, followDemo, setDemoPose } = initPhoneModel(container)
 
+  const voxLanguages = ['English', 'English (India)', 'Hindi', 'Spanish']
+  let voxLangIndex = 0
   let isShifted = false
   let isSymbols = false
   let privacy = 'off'
@@ -55,12 +62,30 @@ export function initKeyboardDemo() {
     },
     {
       className: 'keyboard-row row-1',
-      keys: ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'].map(k => ({ letter: k }))
+      keys: [
+        { letter: 'a', sub: '@' },
+        { letter: 's', sub: '#' },
+        { letter: 'd', sub: '£' },
+        { letter: 'f', sub: '_' },
+        { letter: 'g', sub: '&' },
+        { letter: 'h', sub: '-' },
+        { letter: 'j', sub: '+' },
+        { letter: 'k', sub: '(' },
+        { letter: 'l', sub: ')' },
+      ]
     },
     {
       className: 'keyboard-row row-2',
       special: true,
-      keys: ['z', 'x', 'c', 'v', 'b', 'n', 'm'].map(k => ({ letter: k }))
+      keys: [
+        { letter: 'z', sub: '*' },
+        { letter: 'x', sub: '"' },
+        { letter: 'c', sub: "'" },
+        { letter: 'v', sub: ':' },
+        { letter: 'b', sub: ';' },
+        { letter: 'n', sub: '!' },
+        { letter: 'm', sub: '?' },
+      ]
     }
   ]
 
@@ -115,6 +140,8 @@ export function initKeyboardDemo() {
         let content = ''
         if (k.num) {
           content += `<span class="key-number">${k.num}</span>`
+        } else if (k.sub) {
+          content += `<span class="key-sub">${k.sub}</span>`
         }
         content += `<span class="key-glyph">${isShifted ? k.letter.toUpperCase() : k.letter}</span>`
         btn.innerHTML = content
@@ -240,7 +267,7 @@ export function initKeyboardDemo() {
       icon = 'lock'
     } else if (!voxStage.hidden) {
       kind = 'vox'
-      label = 'Vox mode'
+      label = 'VOX'
       icon = 'mic'
     } else if (time && /\b(remind\w*|exam|alarm|meeting|appointment)\b/i.test(text)) {
       kind = 'schedule'
@@ -274,13 +301,27 @@ export function initKeyboardDemo() {
       feedback.hidden = false
     } else if (kind === 'ai' || kind === 'upcoming') {
       context.close()
-      demoPanel.querySelector('#demo-panel-title').textContent = kind === 'ai' ? 'Monolog AI' : 'Coming up'
+      demoPanel.querySelector('#demo-panel-title').textContent = kind === 'ai' ? 'AI Ask' : 'Coming up'
       const body = demoPanel.querySelector('#demo-panel-body')
-      const query = document.createElement('h5')
-      query.textContent = kind === 'ai' ? (input.value.trim() || 'Ask a question from your draft') : upcoming.label
-      const note = document.createElement('p')
-      note.textContent = kind === 'ai' ? 'Demo search preview. Your question stays in this tab.' : `${upcoming.time} · Demo preview`
-      body.replaceChildren(query, note)
+      if (kind === 'ai') {
+        const question = input.value.trim() || 'Ask or search…'
+        body.innerHTML = `
+          <div class="ai-query-box"><span>🔍</span><span></span></div>
+          <div class="ai-mode-toggles">
+            <span class="ai-chip is-on">Personal on</span>
+            <span class="ai-chip">Web on</span>
+          </div>
+          <p class="ai-result-answer">Demo search preview. Your question stays in this tab.</p>
+          <span class="source-tag">Personal + Web · Sample</span>
+        `
+        body.querySelector('.ai-query-box span:last-child').textContent = question
+      } else {
+        const query = document.createElement('h5')
+        query.textContent = upcoming.label
+        const note = document.createElement('p')
+        note.textContent = `${upcoming.time} · Demo preview`
+        body.replaceChildren(query, note)
+      }
       demoPanel.hidden = false
     }
   })
@@ -292,11 +333,57 @@ export function initKeyboardDemo() {
     surface.dataset.privacy = mode
     incognitoBtn.setAttribute('aria-pressed', String(mode === 'manual'))
     memoryKey.disabled = mode !== 'off'
+    polishBtn.hidden = mode !== 'off'
+    if (incognitoStrip) {
+      incognitoStrip.hidden = mode === 'off'
+      const label = incognitoStrip.querySelector('[data-incognito-label]')
+      const timer = incognitoStrip.querySelector('[data-incognito-timer]')
+      if (label) label.textContent = mode === 'protected' ? 'Memory paused for this field' : 'Incognito'
+      if (timer) timer.hidden = mode === 'protected'
+    }
     if (mode !== 'off') {
       context.close()
       context.cancelDraftCue()
     }
     refreshSuggestion()
+  }
+
+  function setKeyBorders(enabled) {
+    container.dataset.keyBorders = String(enabled)
+    for (const button of bordersButtons) button.setAttribute('aria-pressed', String(enabled))
+    if (compactButton) {
+      compactButton.hidden = !enabled
+      if (!enabled) {
+        container.dataset.compactKeys = 'false'
+        compactButton.setAttribute('aria-pressed', 'false')
+      }
+    }
+  }
+
+  for (const button of bordersButtons) {
+    button.addEventListener('click', () => setKeyBorders(container.dataset.keyBorders !== 'true'))
+  }
+  if (compactButton) {
+    compactButton.addEventListener('click', () => {
+      const next = container.dataset.compactKeys !== 'true'
+      container.dataset.compactKeys = String(next)
+      compactButton.setAttribute('aria-pressed', String(next))
+    })
+  }
+  for (const button of layoutButtons) {
+    button.addEventListener('click', () => {
+      const next = button.dataset.demoLayout
+      container.dataset.layout = next
+      for (const option of layoutButtons) option.setAttribute('aria-pressed', String(option === button))
+    })
+  }
+  if (voxLangButton) {
+    voxLangButton.addEventListener('click', () => {
+      voxLangIndex = (voxLangIndex + 1) % voxLanguages.length
+      const label = voxLanguages[voxLangIndex]
+      const strong = voxLangButton.querySelector('strong')
+      if (strong) strong.textContent = `${label} ⌄`
+    })
   }
 
   incognitoBtn.addEventListener('click', () => setPrivacy(privacy === 'manual' ? 'off' : 'manual'))

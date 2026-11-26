@@ -339,8 +339,38 @@
 
 .demo-context-panel {
   inset-inline-start: auto;
-  width: min(calc(100% - 16px), 270px);
+  width: min(calc(100% - 16px), 278px);
   z-index: 2;
+  overflow: visible;
+  border-radius: 18px;
+}
+
+.demo-context-panel::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  right: 22px;
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  border-right: 1px solid #d8cde8;
+  border-bottom: 1px solid #d8cde8;
+  transform: rotate(45deg);
+}
+
+.keyboard-demo[data-theme="ink"] .demo-context-panel::after {
+  border-color: #676074;
+}
+
+.demo-shortcuts-edit {
+  margin-left: auto;
+  font-size: 10px;
+  font-weight: 600;
+  color: #635876;
+}
+
+.demo-context-panel .demo-panel-head button:last-child {
+  margin-left: 6px;
 }
 
 .demo-context-shortcuts {
@@ -352,8 +382,8 @@
 .demo-context-shortcuts :is(button, a),
 #demo-context-note button {
   border: 1px solid #8e7eab50;
-  border-radius: 10px;
-  padding: 6px 4px;
+  border-radius: 11px;
+  padding: 7px 4px;
   background: #a491bf22;
   color: inherit;
   font-size: 11px;
@@ -365,10 +395,16 @@
   gap: 3px;
 }
 
+.demo-context-shortcuts small {
+  font-size: 9px;
+  opacity: .72;
+  line-height: 1;
+}
+
 .demo-context-shortcuts :is(button, a):last-child {
   grid-column: 1 / -1;
-  justify-self: start;
-  padding-inline: 8px;
+  justify-self: stretch;
+  padding-inline: 10px;
 }
 
 .demo-context-shortcuts :is(.icon, .context-shortcut-brand) {
@@ -580,173 +616,371 @@
   opacity: .55;
 }
 
-/* Vox uses the same waveform motion as the showcase card. */
+/* Vox uses the exact Android VoxPanel glass stage & Sci-Fi wordmark */
 .vox-stage {
   --vox-subtle: #564b68;
-  --vox-wave-light: #b09add;
-  --vox-wave-dark: #5d438d;
-  padding: 8px 12px 12px;
+  --vox-wave-light: #9ca5c2;
+  --vox-wave-dark: #404f91;
+  padding: 6px 10px 10px;
   text-align: center;
-  animation: fadeIn 0.3s ease;
-  min-height: max(205px, 61cqw);
+  animation: fadeIn 0.28s ease;
+  min-height: max(208px, 62cqw);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 5px;
   color: var(--keyboard-ink);
 }
-.keyboard-demo[data-theme="ink"] .vox-stage {
-  --vox-subtle: #d3c5e3;
-  --vox-wave-light: #f0d6fa;
-  --vox-wave-dark: #a081e2;
+.keyboard-demo[data-theme="ink"] .vox-stage,
+.keyboard-demo[data-theme="photo"] .vox-stage {
+  --vox-subtle: #c8cee2;
+  --vox-wave-light: #d7e2ff;
+  --vox-wave-dark: #7d8ee8;
+}
+.vox-stage-head {
+  display: grid;
+  grid-template-columns: 32px 1fr 32px;
+  align-items: center;
+}
+.vox-stage-back,
+.vox-stage-hint {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--kb-pill);
+  border: 1px solid var(--kb-pill-border);
+  color: var(--keyboard-ink);
+}
+.vox-stage-back .icon,
+.vox-stage-hint .icon {
+  width: 14px;
+  height: 14px;
+}
+.vox-stage-head .vox-title {
+  font-size: clamp(16px, 5cqw, 20px);
+  color: var(--keyboard-ink);
 }
 .vox-live-state {
+  align-self: center;
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  padding: 4px 12px;
+  gap: 6px;
+  padding: 3px 10px;
   border-radius: 20px;
-  background: #a286ca29;
-  border: 1px solid #a286ca48;
-  font-size: 12px;
+  background: #404f911c;
+  border: 1px solid #404f913d;
+  font-size: 11px;
   color: var(--keyboard-ink);
-  margin-bottom: 5px;
 }
 .vox-live-state .icon {
-  width: 13px;
-  height: 13px;
+  width: 12px;
+  height: 12px;
 }
 .vox-live-state span {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
-  background: #8b5cf6;
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25);
+  background: #5b74e8;
+  box-shadow: 0 0 0 3px rgba(91, 116, 232, 0.25);
   animation: pulse 1.6s infinite;
 }
+.vox-stage-canvas {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 78px;
+  padding: 8px 10px;
+  border-radius: 16px;
+  border: 1px solid var(--kb-pill-border);
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(114, 136, 232, 0.22), transparent 68%),
+    var(--kb-pill);
+  overflow: hidden;
+}
 .vox-stage .demo-voice-wave {
+  position: absolute;
+  inset: 14% 6%;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(2px, .9cqw, 3px);
-  height: 49px;
-  width: 100%;
-  max-width: 280px;
-  margin: 3px auto 6px;
+  gap: clamp(2px, .85cqw, 3px);
+  height: auto;
+  width: auto;
+  margin: 0;
+  opacity: .52;
+  mask-image: linear-gradient(90deg, #0002, #000 38%, #000 62%, #0002);
 }
 .vox-stage .demo-voice-wave i {
-  max-width: 4px;
+  max-width: 3px;
   background: linear-gradient(var(--vox-wave-light), var(--vox-wave-dark));
 }
 .keyboard-surface:is([data-vox="paused"], [data-vox="refined"]) :is(.demo-voice-wave i, .vox-live-state span) {
   animation-play-state: paused;
-  opacity: .65;
-}
-.vox-promise {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--vox-subtle);
-  margin-bottom: 3px;
+  opacity: .55;
 }
 .vox-transcript {
-  font-size: 14px;
+  position: relative;
+  z-index: 1;
+  font-size: 13.5px;
   color: var(--keyboard-ink);
-  font-style: italic;
-  min-height: 28px;
-  max-width: 90%;
-  line-height: 1.4;
-  margin-bottom: 4px;
+  font-weight: 600;
+  min-height: 22px;
+  max-width: 96%;
+  line-height: 1.35;
+  margin: 0;
 }
 .vox-subtitle {
-  font-size: 11px;
+  font-size: 10.5px;
   color: var(--vox-subtle);
-  margin-bottom: 6px;
+  margin-bottom: 2px;
   display: block;
 }
 .vox-controls {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 .vox-controls button {
-  padding: 7px 16px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 16px;
+  font-size: 11px;
   font-weight: 500;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  color: #3f3651;
+  background: var(--kb-pill);
+  border: 1px solid var(--kb-pill-border);
+  color: var(--keyboard-ink);
   transition: all 0.15s ease;
 }
+.vox-controls [data-demo-action="language"] {
+  justify-self: start;
+  display: grid;
+  text-align: left;
+  padding: 5px 10px;
+  line-height: 1.15;
+}
+.vox-controls [data-demo-action="language"] span {
+  font-size: 9px;
+  color: var(--vox-subtle);
+}
+.vox-controls [data-demo-action="language"] strong {
+  font-size: 11px;
+}
 .vox-controls button:hover {
-  background: rgba(255, 255, 255, 0.95);
-  color: #1a1523;
+  background: var(--kb-key-card);
 }
 .vox-controls #vox-pause {
   display: grid;
   flex: none;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   border-radius: 50%;
 }
-
-.vox-controls #vox-pause .icon {
-  width: 17px;
-  height: 17px;
-}
-
-.keyboard-demo[data-theme="ink"] #vox-pause {
-  border-color: #bcafd04f;
-  background: #ffffff1a;
-  color: #f7f0ff;
-}
-
-.keyboard-demo[data-theme="ink"] #vox-pause:hover {
-  background: #ffffff30;
-}
 .vox-controls .vox-done {
-  background: #47395f;
+  justify-self: end;
+  background: #404f91;
   color: #ffffff;
-  border-color: #47395f;
+  border-color: #404f91;
 }
 .vox-controls .vox-done:hover {
-  background: #2f2541;
+  background: #2f3b72;
 }
 
-/* Demo Theme Switcher */
+/* Demo Theme Switcher & Key Borders */
 .demo-theme-controls {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
-  gap: 6px;
+  gap: 5px;
 }
-.demo-theme-controls button {
-  padding: 4px 12px;
+.demo-theme-controls button,
+.demo-borders-pill,
+.demo-style-switches button,
+.demo-layout-controls button {
+  padding: 4px 10px;
   border-radius: 14px;
   font-size: 11px;
   font-weight: 500;
   background: #f1ecf7;
   border: 1px solid #ded6e9;
-  color: #635876;
+  color: #544b66;
   cursor: pointer;
   transition: all 0.15s ease;
 }
-.demo-theme-controls button[aria-pressed="true"] {
+.demo-theme-controls button[aria-pressed="true"],
+.demo-borders-pill[aria-pressed="true"],
+.demo-style-switches button[aria-pressed="true"],
+.demo-layout-controls button[aria-pressed="true"] {
   background: #3c344d;
   color: #ffffff;
   border-color: #3c344d;
 }
+.demo-style-switches,
+.demo-layout-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+.demo-incognito-strip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px 0;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--kb-sub);
+}
+.demo-incognito-strip .icon {
+  width: 11px;
+  height: 11px;
+  flex: none;
+}
+.demo-incognito-strip time {
+  margin-left: auto;
+  font-family: 'IBM Plex Mono', monospace;
+}
+
+/* Android Theme Mode Backdrops & Tokens */
+.keyboard-demo[data-theme="paper"] .keyboard-surface {
+  --keyboard-ink: #151823;
+  --kb-sub: #535b6b;
+  --kb-pill: rgba(255, 255, 255, 0.72);
+  --kb-pill-border: rgba(255, 255, 255, 0.88);
+  --kb-pill-active: #e3e5ef;
+  --kb-key-card: rgba(255, 255, 255, 0.86);
+  --kb-key-card-border: rgba(21, 24, 35, 0.08);
+  --kb-key-shadow: 0 1.5px 0 rgba(21, 24, 35, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  background: linear-gradient(145deg, #faf9f7, #eeedea 52%, #f8f7f4);
+}
+.keyboard-demo[data-theme="iris"] .keyboard-surface {
+  --keyboard-ink: #161b2e;
+  --kb-sub: #4e5674;
+  --kb-pill: rgba(255, 255, 255, 0.62);
+  --kb-pill-border: rgba(255, 255, 255, 0.84);
+  --kb-pill-active: #d8dff9;
+  --kb-key-card: rgba(255, 255, 255, 0.78);
+  --kb-key-card-border: rgba(64, 79, 145, 0.14);
+  --kb-key-shadow: 0 1.5px 0 rgba(64, 79, 145, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  background:
+    radial-gradient(ellipse at 0% 68%, rgba(166, 185, 239, 0.72) 0%, transparent 57%),
+    radial-gradient(ellipse at 100% 67%, rgba(255, 217, 211, 0.76) 0%, transparent 59%),
+    radial-gradient(ellipse at 55% 100%, rgba(192, 179, 234, 0.68) 0%, transparent 66%),
+    linear-gradient(150deg, #f1f2fb, #dde2fb 55%, #f1e8f4);
+}
+.keyboard-demo[data-theme="ocean"] .keyboard-surface {
+  --keyboard-ink: #102b33;
+  --kb-sub: #3d646e;
+  --kb-pill: rgba(255, 255, 255, 0.62);
+  --kb-pill-border: rgba(255, 255, 255, 0.86);
+  --kb-pill-active: #bde5e7;
+  --kb-key-card: rgba(255, 255, 255, 0.78);
+  --kb-key-card-border: rgba(24, 95, 115, 0.14);
+  --kb-key-shadow: 0 1.5px 0 rgba(24, 95, 115, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  background:
+    radial-gradient(ellipse at 15% 25%, rgba(183, 226, 232, 0.78) 0%, transparent 58%),
+    radial-gradient(ellipse at 85% 82%, rgba(212, 234, 218, 0.78) 0%, transparent 60%),
+    linear-gradient(150deg, #e7f6f5, #b7e2e8 58%, #d4eada);
+}
+.keyboard-demo[data-theme="terracotta"] .keyboard-surface {
+  --keyboard-ink: #2f1b17;
+  --kb-sub: #6d4d46;
+  --kb-pill: rgba(255, 255, 255, 0.62);
+  --kb-pill-border: rgba(255, 255, 255, 0.86);
+  --kb-pill-active: #fad7c7;
+  --kb-key-card: rgba(255, 255, 255, 0.78);
+  --kb-key-card-border: rgba(134, 62, 53, 0.14);
+  --kb-key-shadow: 0 1.5px 0 rgba(134, 62, 53, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  background:
+    radial-gradient(ellipse at 14% 22%, rgba(243, 207, 197, 0.8) 0%, transparent 58%),
+    radial-gradient(ellipse at 86% 78%, rgba(239, 218, 233, 0.78) 0%, transparent 60%),
+    linear-gradient(150deg, #fff1e5, #f3cfc5 56%, #efdae9);
+}
+.keyboard-demo[data-theme="photo"] .keyboard-surface {
+  --keyboard-ink: #f7f8fc;
+  --kb-sub: #cbd2e6;
+  --kb-pill: rgba(24, 28, 42, 0.56);
+  --kb-pill-border: rgba(255, 255, 255, 0.24);
+  --kb-pill-active: rgba(195, 201, 255, 0.24);
+  --kb-key-card: rgba(22, 25, 38, 0.64);
+  --kb-key-card-border: rgba(255, 255, 255, 0.18);
+  --kb-key-shadow: 0 1.5px 0 rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  background:
+    linear-gradient(rgba(10, 12, 20, 0.57), rgba(10, 12, 20, 0.57)),
+    url('/artwork/memory-unfolding.webp') center / cover no-repeat;
+}
 
 /* Ink Mode in Keyboard Demo */
 .keyboard-demo[data-theme="ink"] .keyboard-surface {
-  --keyboard-ink: #f0edf8;
+  --keyboard-ink: #f7f8fc;
+  --kb-sub: #b9bfcc;
+  --kb-pill: rgba(255, 255, 255, 0.12);
+  --kb-pill-border: rgba(255, 255, 255, 0.16);
+  --kb-pill-active: rgba(195, 201, 255, 0.24);
+  --kb-key-card: rgba(34, 37, 48, 0.88);
+  --kb-key-card-border: rgba(255, 255, 255, 0.14);
+  --kb-key-shadow: 0 1.5px 0 rgba(0, 0, 0, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.12);
   background:
     radial-gradient(ellipse at 0% 68%, #362f4acc 0%, transparent 57%),
     radial-gradient(ellipse at 100% 67%, #452a3bce 0%, transparent 59%),
     radial-gradient(ellipse at 55% 100%, #2a223bad 0%, transparent 66%),
-    linear-gradient(115deg, #131217, #1b1922 56%, #1a161f);
+    linear-gradient(145deg, #08090b, #18191d 56%, #25262c);
+}
+
+/* Android Key Borders (false = Borderless, true = Material glass keycaps) */
+.keyboard-demo[data-key-borders="true"] :is(.demo-keyboard, .keyboard-bottom) {
+  padding-inline: 1cqw;
+}
+.keyboard-demo[data-key-borders="true"] .keyboard-row {
+  gap: 1.1cqw;
+  padding-block: .65cqw;
+}
+.keyboard-demo[data-key-borders="true"] .letter-key,
+.keyboard-demo[data-key-borders="true"] .demo-utility,
+.keyboard-demo[data-key-borders="true"] .emoji-language-control,
+.keyboard-demo[data-key-borders="true"] .period-control {
+  background: var(--kb-key-card);
+  border: 1px solid var(--kb-key-card-border);
+  border-radius: 2.6cqw;
+  box-shadow: var(--kb-key-shadow);
+}
+.keyboard-demo[data-key-borders="true"] .keyboard-bottom {
+  gap: 1.1cqw;
+  padding-block: .8cqw;
+}
+.keyboard-demo[data-key-borders="true"] .space-key-group {
+  margin: 0;
+  border-radius: 3.4cqw;
+  background: var(--kb-key-card);
+  border-color: var(--kb-key-card-border);
+  box-shadow: var(--kb-key-shadow);
+}
+.keyboard-demo[data-key-borders="true"] .shift-key[aria-pressed="true"] {
+  background: var(--kb-pill-active);
+}
+.keyboard-demo[data-key-borders="true"][data-compact-keys="true"] .keyboard-row {
+  gap: 1.9cqw;
+  padding-block: 1.05cqw;
+}
+.keyboard-demo[data-key-borders="true"][data-compact-keys="true"] .keyboard-bottom {
+  gap: 1.9cqw;
+}
+
+/* One-handed Keyboard Placement (Left / Right) */
+.keyboard-demo[data-layout="left"] :is(.demo-keyboard, .keyboard-bottom),
+.keyboard-demo[data-layout="right"] :is(.demo-keyboard, .keyboard-bottom) {
+  width: 85%;
+}
+.keyboard-demo[data-layout="left"] :is(.demo-keyboard, .keyboard-bottom) {
+  margin-right: auto;
+}
+.keyboard-demo[data-layout="right"] :is(.demo-keyboard, .keyboard-bottom) {
+  margin-left: auto;
 }
 .keyboard-demo[data-theme="ink"] .keyboard-toolbar button {
   color: #e4dcf2;
@@ -827,23 +1061,28 @@
 .keyboard-demo .space-key-group:has(.demo-action-pressed) {
   background: #987bcc68;
 }
-.keyboard-demo[data-theme="ink"] .letter-key {
+.keyboard-demo:is([data-theme="ink"], [data-theme="photo"]) .keyboard-toolbar button {
   color: #f0edf8;
 }
-.keyboard-demo[data-theme="ink"] .letter-key:hover {
+.keyboard-demo:is([data-theme="ink"], [data-theme="photo"]) .keyboard-suggestion {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.14) !important;
+  color: #f0edf8;
+}
+.keyboard-demo:is([data-theme="ink"], [data-theme="photo"]) .letter-key {
+  color: #f7f8fc;
+}
+.keyboard-demo:is([data-theme="ink"], [data-theme="photo"]) .letter-key:hover {
   background: rgba(255, 255, 255, 0.1);
 }
-.keyboard-demo[data-theme="ink"] .key-number {
-  color: #a49cb5;
+.keyboard-demo:is([data-theme="ink"], [data-theme="photo"]) .space-key-group {
+  background: rgba(255, 255, 255, 0.14);
 }
-.keyboard-demo[data-theme="ink"] .space-key-group {
-  background: rgba(255, 255, 255, 0.12);
+.keyboard-demo:is([data-theme="ink"], [data-theme="photo"])[data-key-borders="true"] .space-key-group {
+  background: var(--kb-key-card);
 }
-.keyboard-demo[data-theme="ink"] .keyboard-gesture > span {
-  background: #ded9eb;
-}
-.keyboard-demo[data-theme="ink"] #polish-button {
-  color: #f0edf8;
+.keyboard-demo:is([data-theme="ink"], [data-theme="photo"]) #polish-button {
+  color: #f7f8fc;
 }
 
 @keyframes fadeIn {

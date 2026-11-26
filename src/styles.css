@@ -158,141 +158,21 @@ a:hover .nav-ext {
   pointer-events: none;
   overflow: hidden;
   background: #08080b;
-  -webkit-mask-image: linear-gradient(to top, #000 0px, #000 108px, rgba(0, 0, 0, .5) 170px, transparent 228px);
-  mask-image: linear-gradient(to top, #000 0px, #000 108px, rgba(0, 0, 0, .5) 170px, transparent 228px);
 }
 
-.footer-aurora-sky {
+.footer-aurora-svg {
   position: absolute;
-  left: 50%;
-  bottom: -64px;
-  width: clamp(820px, 104vw, 1600px);
-  height: clamp(230px, 23vw, 330px);
-  translate: -50% 0;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  background: radial-gradient(
-    ellipse 72% 82% at 50% 78%,
-    rgba(206, 198, 229, .18) 0%,
-    rgba(164, 202, 246, .14) 36%,
-    rgba(126, 148, 224, .07) 64%,
-    transparent 86%
-  );
-  filter: blur(36px);
-  animation: footer-sunset-breathe 28s ease-in-out infinite alternate;
+  left: -4%;
+  right: -4%;
+  bottom: -22px;
+  width: 108%;
+  height: 256px;
+  display: block;
+  filter: blur(15px);
 }
 
-.footer-rays {
-  position: absolute;
-  left: 50%;
-  bottom: -36px;
-  width: clamp(1140px, 122vw, 1960px);
-  height: clamp(1140px, 122vw, 1960px);
-  translate: -50% 50%;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  transform-origin: center center;
-  will-change: transform;
-  -webkit-mask-image: radial-gradient(circle at center, rgba(0, 0, 0, .75) 10%, rgba(0, 0, 0, .72) 30%, rgba(0, 0, 0, .36) 52%, transparent 72%);
-  mask-image: radial-gradient(circle at center, rgba(0, 0, 0, .75) 10%, rgba(0, 0, 0, .72) 30%, rgba(0, 0, 0, .36) 52%, transparent 72%);
-}
-
-.footer-rays-a {
-  background: repeating-conic-gradient(
-    from 0deg,
-    rgba(164, 206, 248, .16) 0deg 7deg,
-    rgba(206, 198, 229, .18) 11deg 18deg,
-    transparent 22deg 30deg,
-    rgba(244, 206, 222, .14) 34deg 40deg,
-    rgba(248, 162, 134, .12) 43deg 48deg,
-    transparent 51deg 60deg
-  );
+#fa-rays-group {
   filter: blur(14px);
-  animation: footer-rays-spin 76s linear infinite;
-}
-
-.footer-rays-b {
-  width: clamp(1280px, 134vw, 2140px);
-  height: clamp(1280px, 134vw, 2140px);
-  background: repeating-conic-gradient(
-    from 22deg,
-    rgba(206, 198, 229, .16) 0deg 9deg,
-    transparent 13deg 24deg,
-    rgba(156, 204, 248, .14) 27deg 34deg,
-    rgba(244, 188, 204, .13) 38deg 45deg,
-    transparent 50deg 72deg
-  );
-  filter: blur(20px);
-  opacity: .85;
-  animation: footer-rays-counter 98s linear infinite reverse;
-}
-
-.footer-aurora-horizon {
-  position: absolute;
-  left: 50%;
-  bottom: -32px;
-  width: clamp(540px, 70vw, 1020px);
-  height: clamp(148px, 15vw, 212px);
-  translate: -50% 0;
-  border-radius: 999px 999px 0 0;
-  mix-blend-mode: screen;
-  background: radial-gradient(
-    ellipse 86% 90% at 50% 100%,
-    rgba(248, 152, 118, .12) 0%,
-    rgba(244, 198, 214, .11) 44%,
-    rgba(206, 198, 229, .1) 74%,
-    rgba(164, 206, 248, .04) 100%
-  );
-  box-shadow: inset 0 12px 30px rgba(220, 232, 247, .06);
-  filter: blur(14px);
-  transform-origin: center bottom;
-  animation: footer-arch-pulse 28s ease-in-out infinite alternate;
-}
-
-.footer-aurora-sunset {
-  position: absolute;
-  left: 50%;
-  bottom: -48px;
-  width: clamp(640px, 82vw, 1240px);
-  height: clamp(135px, 14vw, 200px);
-  translate: -50% 0;
-  border-radius: 50%;
-  mix-blend-mode: screen;
-  background: radial-gradient(
-    ellipse 76% 88% at 50% 82%,
-    rgba(248, 144, 98, .21) 0%,
-    rgba(244, 168, 182, .16) 36%,
-    rgba(206, 198, 229, .11) 68%,
-    transparent 92%
-  );
-  filter: blur(30px);
-  transform-origin: center bottom;
-  animation: footer-core-burn 24s ease-in-out infinite alternate;
-}
-
-@keyframes footer-rays-spin {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes footer-rays-counter {
-  0% { transform: rotate(0deg) scale(1); }
-  50% { transform: rotate(180deg) scale(1.06); }
-  100% { transform: rotate(360deg) scale(1); }
-}
-
-@keyframes footer-sunset-breathe {
-  0% { transform: scale(.96); opacity: .82; }
-  100% { transform: scale(1.07); opacity: 1; }
-}
-
-@keyframes footer-arch-pulse {
-  0% { transform: scale(.98); opacity: .84; }
-  100% { transform: scale(1.04); opacity: 1; }
-}
-
-@keyframes footer-core-burn {
-  0% { transform: scale(.96); opacity: .84; }
-  100% { transform: scale(1.06); opacity: 1; }
 }
 
 .footer-glass {
@@ -300,9 +180,7 @@ a:hover .nav-ext {
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(16, 16, 22, .32) 0%, rgba(10, 10, 14, .54) 100%);
-  backdrop-filter: blur(26px) saturate(135%);
-  -webkit-backdrop-filter: blur(26px) saturate(135%);
+  background: linear-gradient(180deg, rgba(12, 12, 17, .22) 0%, rgba(8, 8, 12, .42) 100%);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07);
 }
 
@@ -480,18 +358,19 @@ a:hover .nav-ext {
   gap: 12px 24px;
   padding-top: 24px;
   font-size: 11px;
-  color: #a79db6;
+  color: #c2bad0;
 }
 
 .footer-bottom a {
-  color: #d7cde6;
-  border-bottom: 1px solid #483f57;
-  transition: color .2s, border-color .2s;
+  color: #ff7728;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 0;
+  transition: color .2s;
 }
 
 .footer-bottom a:hover {
-  color: #ffffff;
-  border-color: #b7a4d6;
+  color: #ff985c;
 }
 
 @media (max-width: 1000px) {
@@ -534,5 +413,56 @@ a:hover .nav-ext {
   .site-footer .footer-nav {
     grid-template-columns: 1fr;
     gap: 24px;
+  }
+}
+
+.story-m {
+  display: block;
+  font-size: 42px;
+  line-height: 1.15;
+  color: #f3f3ef;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 700px) {
+  .story-m {
+    font-size: 36px;
+  }
+}
+
+.vox-wordmark,
+.vox-badge,
+.keyboard-suggestion[data-suggestion="vox"] {
+  font-family: 'Science Gothic', sans-serif;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.vox-badge {
+  color: #e6ddf2;
+}
+
+.footer-keyboard > span {
+  will-change: transform;
+}
+
+.footer-keyboard > .footer-brand-key {
+  background: linear-gradient(#e6dfee, #bdb0d0);
+  border: 1px solid #dcd1e7;
+  box-shadow: 0 13px 0 #9680af, 0 20px 30px #5c3d7522;
+}
+
+.footer-brand-glyph {
+  display: block;
+  width: 58%;
+  height: auto;
+  transform: translate(-1%, -2%);
+}
+
+@media (max-width: 700px) {
+  .footer-keyboard > .footer-brand-key {
+    box-shadow: 0 9px 0 #9680af;
   }
 }

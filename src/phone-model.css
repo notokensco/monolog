@@ -33,6 +33,50 @@
   --phone-brand-light: #f2ecf8;
 }
 
+[data-theme="iris"] .demo-phone-body {
+  --phone-metal: #9ca5c8;
+  --phone-metal-highlight: #f3f5ff;
+  --phone-seam: #8791b8;
+  --phone-face: linear-gradient(125deg, #eef0fc, #dce1f8 52%, #f4eef8);
+  --phone-back: linear-gradient(146deg, #f3f5ff, #dfe3f8 50%, #cfc8ea);
+  --phone-camera: linear-gradient(150deg, #f6f7ff, #d3daf2);
+  --phone-brand: #404f91;
+  --phone-brand-light: #a6b9ef;
+}
+
+[data-theme="ocean"] .demo-phone-body {
+  --phone-metal: #7db4bd;
+  --phone-metal-highlight: #ecfaf9;
+  --phone-seam: #6ca1aa;
+  --phone-face: linear-gradient(125deg, #ebf9f8, #cbe9ed 52%, #e4f3eb);
+  --phone-back: linear-gradient(146deg, #effbfa, #c3e4e8 48%, #b9dccb);
+  --phone-camera: linear-gradient(150deg, #f2fcfb, #badde0);
+  --phone-brand: #185f73;
+  --phone-brand-light: #9fd8dc;
+}
+
+[data-theme="terracotta"] .demo-phone-body {
+  --phone-metal: #c59b94;
+  --phone-metal-highlight: #fff4ec;
+  --phone-seam: #af857e;
+  --phone-face: linear-gradient(125deg, #fff5ed, #f2d4cb 52%, #f0dfea);
+  --phone-back: linear-gradient(146deg, #fff6ee, #f2cdc3 48%, #e4ccd9);
+  --phone-camera: linear-gradient(150deg, #fff7f0, #ecc8bf);
+  --phone-brand: #863e35;
+  --phone-brand-light: #e7b5a8;
+}
+
+[data-theme="photo"] .demo-phone-body {
+  --phone-metal: #2b2d38;
+  --phone-metal-highlight: #80889e;
+  --phone-seam: #262934;
+  --phone-face: linear-gradient(125deg, #4b5063, #191c26 55%, #2f3342);
+  --phone-back: linear-gradient(146deg, #42485c, #242938 49%, #161923);
+  --phone-camera: linear-gradient(150deg, #565d74, #252936);
+  --phone-brand: #9aa6c8;
+  --phone-brand-light: #f2f5ff;
+}
+
 .demo-phone-stage[data-dragging] .demo-phone-body {
   transition: none;
 }

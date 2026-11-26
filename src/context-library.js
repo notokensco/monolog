@@ -80,18 +80,24 @@ function initLibrary(root) {
     for (const item of matches) {
       const button = make('button', 'context-item')
       button.type = 'button'
-      button.append(thumb(item), make('span', 'context-item-title', item.title), make('span', 'journal-device-meta', item.type))
+      const badgeText = { Photo: 'Photo', Screenshot: '1 photo', Voice: 'Audio Note', Note: 'Note' }[item.type] || item.type
+      button.append(thumb(item), make('span', 'context-item-title', item.title), make('span', 'journal-device-meta', badgeText))
       button.addEventListener('click', () => showDetail(item))
       grid.append(button)
     }
     content.append(grid)
+    const driveHint = make('p', 'journal-device-meta', 'Load past years from Drive')
+    driveHint.style.textAlign = 'center'
+    driveHint.style.marginTop = '8px'
+    content.append(driveHint)
   }
 
   function showDetail(item) {
     clear('Saved item')
     const detail = make('article', 'journal-device-card context-item-detail')
+    const typeLabel = item.type === 'Voice' ? 'Audio Note' : item.type
     const label = { Screenshot: 'Text in this screenshot', Voice: 'Transcript' }[item.type]
-    detail.append(thumb(item), make('p', 'journal-device-meta', `${item.type} · ${item.date}`), make('h4', '', item.title))
+    detail.append(thumb(item), make('p', 'journal-device-meta', `${typeLabel} · ${item.date}`), make('h4', '', item.title))
     if (item.type === 'Voice') {
       const audio = make('audio')
       audio.controls = true

@@ -53,7 +53,7 @@
   animation: popcorn-arrive 1050ms linear var(--delay) both;
 }
 .is-visible .key-sculpture {
-  animation: sculpture-drift var(--float-duration, 7s) ease-in-out calc(var(--delay) + 1050ms) infinite alternate;
+  animation: sculpture-drift var(--float-duration, 3.4s) ease-in-out calc(var(--delay) + 1050ms) infinite alternate;
 }
 
 @keyframes popcorn-arrive {
@@ -66,8 +66,8 @@
 }
 
 @keyframes sculpture-drift {
-  from { transform: translateY(0) rotate(var(--tilt, 0deg)); }
-  to { transform: translateY(-7px) rotate(calc(var(--tilt, 0deg) + 1deg)); }
+  from { transform: translate3d(0, 0, 0) rotate(var(--tilt, 0deg)); }
+  to { transform: translate3d(var(--drift-x, 2px), -14px, 0) rotate(calc(var(--tilt, 0deg) + 2.2deg)); }
 }
 
 @media (max-width: 1000px) and (min-width: 701px) {

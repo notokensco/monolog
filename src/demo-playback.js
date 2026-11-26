@@ -185,11 +185,11 @@ export function initDemoPlayback(container, {
       yield* type('When does the Riverside Library study room close?')
       highlight(suggestion)
       yield 1050
-      card('Monolog AI', '<h5>Web search</h5><p>When does the Riverside Library study room close?</p><span class="source-tag">Searching demo sources…</span>')
+      card('AI Ask', '<h5>Web search</h5><p>When does the Riverside Library study room close?</p><span class="source-tag">Searching demo sources…</span>')
       yield 1750
       highlight()
       setDemoPose('reading')
-      card('Monolog AI', '<h5>The study room closes at 8 PM.</h5><p>Last entry is at 7:30 PM.</p><span class="source-tag">1 · Riverside Library hours (sample)</span>')
+      card('AI Ask', '<h5>The study room closes at 8 PM.</h5><p>Last entry is at 7:30 PM.</p><span class="source-tag">1 · Riverside Library hours (sample)</span>')
       yield 2400
       closePanel()
       input.value = 'It closes at 8 PM. Last entry is at 7:30.'

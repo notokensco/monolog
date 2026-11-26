@@ -110,9 +110,96 @@
   font-size: 10px;
 }
 
+.jd-header-badges {
+  margin-inline-start: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.jd-ai-pill,
+.jd-connect-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  background: var(--device-surface-soft, #fff9);
+  color: var(--journal-accent);
+  font-size: 9px;
+  font-weight: 700;
+}
+.jd-ai-pill .icon {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+.jd-weather-pill {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 2px 12px 4px;
+  padding: 5px 9px;
+  border-radius: 12px;
+  background: var(--device-surface-soft, #fff9);
+  color: var(--journal-muted);
+  font-size: 9.5px;
+}
+.jd-weather-pill strong {
+  color: var(--journal-ink);
+  font-weight: 650;
+}
+
 .journal-device-title {
   justify-content: space-between;
-  min-height: 43px;
+  min-height: 41px;
+}
+.jd-title-actions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.jd-period-group {
+  display: inline-flex;
+  gap: 2px;
+  padding: 2px;
+  border-radius: 999px;
+  background: var(--device-surface-soft, #fff9);
+}
+.jd-period-group button {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 650;
+  background: transparent;
+}
+.jd-period-group button[aria-pressed="true"] {
+  background: var(--device-selected, #dedcf5);
+  color: var(--journal-accent);
+}
+.jd-brief-card,
+.jd-today-hero {
+  position: relative;
+  border: 1px solid var(--preview-control, rgba(110, 100, 180, 0.16));
+  background: linear-gradient(145deg, var(--device-surface, #fffd), var(--device-selected, #ebe8fa));
+}
+.jd-today-hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 18px;
+  height: 18px;
+  border-bottom-left-radius: 8px;
+  background: var(--device-soft, #dedbf5);
+  opacity: .75;
+}
+.jd-today-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+}
+.jd-today-grid .journal-device-card {
+  margin-bottom: 6px;
 }
 
 .journal-device-title h3 {
