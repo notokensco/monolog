@@ -9,7 +9,7 @@ test('early access links lead to the same signup form in the appropriate layout'
 
   await expect(page.locator('.hero-copy > #waitlist')).toBeVisible()
   await earlyAccess.click()
-  await expect(page).toHaveURL(/#waitlist$/)
+  await expect(page).toHaveURL('/')
   await expect(waitlist).toBeInViewport()
   await email.fill('draft@example.com')
 
@@ -28,7 +28,14 @@ test('early access links lead to the same signup form in the appropriate layout'
   await page.setViewportSize({ width: 1440, height: 1000 })
   await expect(page.locator('.hero-copy > #waitlist')).toBeVisible()
   expect(await page.evaluate(() => scrollY)).toBe(0)
-  await expect(page).toHaveURL(/#waitlist$/)
+  await expect(page).toHaveURL('/')
+
+  await page.evaluate(() => { location.hash = '#pricing' })
+  await expect(page.locator('#pricing')).toBeInViewport()
+  await expect(page).toHaveURL('/')
+  await page.getByRole('contentinfo').getByRole('link', { name: 'Monolog home' }).click()
+  await expect.poll(() => page.evaluate(() => scrollY)).toBe(0)
+  await expect(page).toHaveURL('/')
 })
 
 test('waitlist keeps the email after a failed signup and confirms a successful retry', async ({ page }) => {

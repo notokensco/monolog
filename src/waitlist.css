@@ -1,7 +1,3 @@
-html:has(#waitlist:target) {
-  scroll-behavior: auto;
-}
-
 .waitlist {
   width: min(100%, 430px);
   pointer-events: auto;

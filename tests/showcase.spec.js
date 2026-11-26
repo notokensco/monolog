@@ -6,12 +6,20 @@ test('homepage renders one of each navigation, journal intro, and footer', async
 
   const desktopNav = page.getByRole('navigation', { name: 'Main navigation' })
   await expect(desktopNav).toHaveCount(1)
-  await expect(desktopNav.getByRole('link', { name: 'Context library' })).toHaveAttribute('href', '#context-library')
+  await expect(desktopNav.getByRole('link', { name: 'The Keyboard', exact: true })).toHaveAttribute('href', '#playground')
+  await expect(desktopNav.getByRole('link', { name: 'Your Journal', exact: true })).toHaveAttribute('href', '#journal')
+  await expect(desktopNav.getByRole('link', { name: 'Context Library', exact: true })).toHaveAttribute('href', '#context-library')
+  await expect(desktopNav.getByRole('link', { name: 'Monolog Web', exact: true })).toHaveAttribute('href', 'https://web.monolog.notokens.co/')
   await expect(page.locator('#journal .journal-grid')).toHaveCount(1)
 
   const footer = page.getByRole('contentinfo')
   await expect(footer).toHaveCount(1)
   await expect(footer.getByRole('link', { name: 'Terms of Service' })).toHaveAttribute('href', '/tos')
+  await expect(footer.getByRole('link', { name: 'Monolog Web', exact: true })).toHaveAttribute('href', 'https://web.monolog.notokens.co/')
+  await expect(footer.getByRole('link', { name: 'Interactive Demo', exact: true })).toHaveAttribute('href', '/demo')
+  await expect(footer.getByRole('link', { name: 'Built by NoTokens — visit notokens.co' })).toHaveAttribute('href', 'https://notokens.co')
+  await expect(footer.locator('.footer-notokens img')).toHaveAttribute('src', '/images/notokens-logo.webp')
+  await expect(footer.locator('#notokens-lottie')).toHaveCount(1)
 
   await page.setViewportSize({ width: 390, height: 844 })
   const mobileNav = page.locator('#mobile-nav')
@@ -19,7 +27,7 @@ test('homepage renders one of each navigation, journal intro, and footer', async
   await expect(mobileNav).toBeHidden()
   await page.getByRole('button', { name: 'Open navigation' }).click()
   await mobileNav.getByRole('link', { name: 'Context library' }).click()
-  await expect(page).toHaveURL(/#context-library$/)
+  await expect(page).toHaveURL('/')
   await expect(mobileNav).toBeHidden()
 })
 
@@ -79,7 +87,7 @@ test('Find your type runs live previews in both themes', async ({ page }) => {
   await expect(draft).toBeEmpty()
 
   await page.getByRole('link', { name: 'Try Vox dictation' }).click()
-  await expect(page).toHaveURL(/#preview-vox$/)
+  await expect(page).toHaveURL('/')
   await expect(tab(/Vox voice/)).toHaveAttribute('aria-selected', 'true')
 })
 
@@ -106,8 +114,12 @@ test('production loads original artwork, local fonts, valid links and the reques
   expect([...new Set(emails)]).toEqual(['mailto:monolog@notokens.co'])
   await expect(page.locator('body')).not.toContainText(/Gboard|SwiftKey|hello@notokens/)
   await expect(page.locator('summary').first()).toContainText('How does Monolog differ from its competitors?')
+  await expect(page.locator('#notokens-lottie')).toHaveClass(/is-ready/, { timeout: 10000 })
   expect(errors).toEqual([])
   await page.screenshot({ path: 'test-results/redesign-desktop-hero.png' })
+  await page.locator('.site-footer').scrollIntoViewIfNeeded()
+  await page.waitForTimeout(400)
+  await page.locator('.site-footer').screenshot({ path: 'test-results/redesign-desktop-footer.png' })
 })
 
 test('Android badge and footer links work at the smallest mobile width', async ({ page }) => {
@@ -125,7 +137,7 @@ test('Android badge and footer links work at the smallest mobile width', async (
     ['Privacy', 'privacy'], ['Pricing', 'pricing'], ['FAQ', 'faq'], ['Contact', 'contact'],
   ]) {
     await footer.getByRole('link', { name: label, exact: true }).click()
-    await expect(page).toHaveURL(new RegExp(`#${target}$`))
+    await expect(page).toHaveURL('/')
     await expect(page.locator(`#${target}`)).toBeInViewport()
   }
   await expect(page.locator('#contact a[href="mailto:monolog@notokens.co"]')).toBeVisible()
@@ -375,7 +387,7 @@ test('holding m opens shortcuts and keeps notes and memory cues inside the demo'
   await page.getByRole('button', { name: 'Toggle keyboard incognito preview' }).click()
   await key.click()
   await page.locator('#demo-context-shortcuts').getByRole('link', { name: 'Journal' }).click()
-  await expect(page).toHaveURL(/#journal$/)
+  await expect(page).toHaveURL('/')
   await expect(page.locator('#journal')).toBeInViewport()
 })
 test('the feature overview keeps moving until paused and can wrap to the next card', async ({ page }) => {
@@ -409,7 +421,7 @@ test('the feature rail keeps shortcut links usable on a reduced-motion phone', a
   await page.getByRole('button', { name: 'Next feature' }).click()
   await expect.poll(() => rail.evaluate(view => view.scrollLeft)).toBeGreaterThan(0)
   await rail.getByRole('link', { name: 'Reminder', exact: true }).click()
-  await expect(page).toHaveURL(/#keyboard-demo$/)
+  await expect(page).toHaveURL('/')
   await expect(page.getByRole('heading', { name: 'Reminder preview' })).toBeVisible()
   await page.getByRole('button', { name: 'Close context' }).click()
   await rail.getByRole('link', { name: '+ Save a note' }).click()
@@ -488,7 +500,7 @@ test('the coded Context Library searches source text, filters items and saves a 
   await library.getByRole('button', { name: 'Notes', exact: true }).click()
   await expect(library.getByRole('button', { name: /Your note/ })).toBeVisible()
   await library.getByRole('link', { name: 'Open Journal' }).click()
-  await expect(page).toHaveURL(/#journal$/)
+  await expect(page).toHaveURL('/')
 })
 
 test('incognito illustration and annual pricing communicate their state', async ({ page }) => {
@@ -533,7 +545,7 @@ test('mobile navigation, FAQ, and layouts fit compact and wide screens', async (
   const menu = page.getByRole('button', { name: 'Open navigation' })
   await menu.click()
   await page.getByRole('navigation', { name: 'Mobile navigation' }).getByRole('link', { name: 'Pricing' }).click()
-  await expect(page).toHaveURL(/#pricing$/)
+  await expect(page).toHaveURL('/')
   await expect(menu).toHaveAttribute('aria-expanded', 'false')
   await menu.click()
   await page.keyboard.press('Escape')
@@ -552,7 +564,7 @@ test('artwork, playable keyboard and journal look complete at desktop and mobile
     await page.screenshot({ path: 'test-results/redesign-desktop-' + filename + '.png' })
   }
   await page.setViewportSize({ width: 390, height: 844 })
-  for (const [selector, filename] of [['.keyboard-demo', 'keyboard'], ['#vox', 'vox'], ['.journal-art', 'journal'], ['.feature-rail', 'showcase']]) {
+  for (const [selector, filename] of [['.keyboard-demo', 'keyboard'], ['#vox', 'vox'], ['.journal-art', 'journal'], ['.feature-rail', 'showcase'], ['.site-footer', 'footer']]) {
     await page.locator(selector).scrollIntoViewIfNeeded()
     await page.waitForTimeout(1100)
     await page.screenshot({ path: 'test-results/redesign-mobile-' + filename + '.png' })

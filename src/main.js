@@ -12,6 +12,7 @@ import './context-library.css'
 import './feature-overview.css'
 import './showcase.css'
 import './waitlist.css'
+import { DotLottie } from '@lottiefiles/dotlottie-web'
 import { initHeroKeys } from './hero-keys.js'
 import { initJournalPhones } from './journal-phone.js'
 import { initContextLibrary } from './context-library.js'
@@ -41,6 +42,33 @@ initJournalPhones()
 initContextLibrary()
 initFeatureRail(reducedMotion)
 initShowcase(reducedMotion)
+
+function scrollToSection(section) {
+  if (location.hash) history.replaceState(history.state, '', location.pathname + location.search)
+  section.scrollIntoView({ behavior: 'instant' })
+  if (!section.contains(document.activeElement)) {
+    if (section.tabIndex < 0) section.tabIndex = -1
+    section.focus({ preventScroll: true })
+  }
+}
+
+function openSectionFromHash() {
+  const section = document.getElementById(location.hash.slice(1))
+  if (section) scrollToSection(section)
+}
+
+openSectionFromHash()
+window.addEventListener('hashchange', openSectionFromHash)
+
+window.addEventListener('click', event => {
+  if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return
+  const link = event.target.closest('a[href^="#"]')
+  if (!link || link.target || link.hasAttribute('download')) return
+  const section = document.getElementById(link.hash.slice(1))
+  if (!section) return
+  event.preventDefault()
+  scrollToSection(section)
+})
 
 const ticker = document.querySelector('.word-ticker')
 const tickerTrack = ticker?.querySelector('.ticker-track')
@@ -178,3 +206,38 @@ document.querySelector('#copy-email').addEventListener('click', async event => {
   try { await navigator.clipboard.writeText('monolog@notokens.co'); label.textContent = 'Copied. Say hello.' }
   catch { label.textContent = 'monolog@notokens.co' }
 })
+
+const notokensCanvas = document.querySelector('#notokens-lottie')
+if (notokensCanvas) {
+  DotLottie.setWasmUrl('/wasm/dotlottie-player.wasm')
+  let notokensPlayer = null
+  const startNotokensLottie = () => {
+    if (reducedMotion.matches || notokensPlayer) return
+    notokensPlayer = new DotLottie({
+      canvas: notokensCanvas,
+      src: '/animations/notokens-logo.lottie',
+      autoplay: true,
+      loop: true,
+      layout: { fit: 'contain', align: [0.5, 0.5] },
+      renderConfig: { autoResize: true },
+    })
+    notokensPlayer.addEventListener('load', () => {
+      notokensCanvas.classList.add('is-ready')
+      notokensCanvas.parentElement?.classList.add('is-lottie-ready')
+    })
+  }
+  startNotokensLottie()
+  reducedMotion.addEventListener('change', event => {
+    if (event.matches) {
+      notokensPlayer?.pause()
+      notokensCanvas.classList.remove('is-ready')
+      notokensCanvas.parentElement?.classList.remove('is-lottie-ready')
+    } else if (notokensPlayer) {
+      notokensCanvas.classList.add('is-ready')
+      notokensCanvas.parentElement?.classList.add('is-lottie-ready')
+      notokensPlayer.play()
+    } else {
+      startNotokensLottie()
+    }
+  })
+}

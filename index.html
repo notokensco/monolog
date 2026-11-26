@@ -76,19 +76,23 @@
   <div class="scroll-progress" aria-hidden="true"></div>
   <header class="site-header">
     <a href="#home" class="wordmark" aria-label="Monolog home">monolog<span>.</span></a>
-    <nav class="desktop-nav" aria-label="Main navigation"><a href="#playground">The keyboard</a><a
-        href="#possibilities">Possibilities</a><a href="#journal">Your journal</a><a href="#context-library">Context
-        library</a><a href="#privacy">Privacy</a></nav>
-    <a class="header-cta" href="#waitlist">Get in early
+    <nav class="desktop-nav" aria-label="Main navigation"><a href="#playground">The Keyboard</a><a
+        href="#possibilities">Possibilities</a><a href="#journal">Your Journal</a><a href="#context-library">Context
+        Library</a><a href="#privacy">Privacy</a><a href="https://web.monolog.notokens.co/" target="_blank"
+        rel="noopener noreferrer" title="Monolog Web — Your side of the day.">Monolog Web <span class="nav-ext"
+          aria-hidden="true">↗</span></a></nav>
+    <a class="header-cta" href="#waitlist">Get In Early
       <kbd aria-hidden="true">↵</kbd></a>
     <button id="menu-toggle" class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-nav"
       aria-label="Open navigation"><svg class="icon">
         <use href="#icon-menu" />
       </svg></button>
-    <nav id="mobile-nav" aria-label="Mobile navigation" hidden><a href="#playground">The keyboard</a><a
-        href="#possibilities">Possibilities</a><a href="#journal">Your journal</a><a href="#context-library">Context
-        library</a><a href="#privacy">Privacy</a><a href="#pricing">Pricing</a><a href="mailto:monolog@notokens.co">Get
-        in touch</a></nav>
+    <nav id="mobile-nav" aria-label="Mobile navigation" hidden><a href="#playground">The Keyboard</a><a
+        href="#possibilities">Possibilities</a><a href="#journal">Your Journal</a><a href="#context-library">Context
+        Library</a><a href="#privacy">Privacy</a><a href="https://web.monolog.notokens.co/" target="_blank"
+        rel="noopener noreferrer" title="Monolog Web — Your side of the day.">Monolog Web <span class="nav-ext"
+          aria-hidden="true">↗</span></a><a href="#pricing">Pricing</a><a href="mailto:monolog@notokens.co">Get In
+        Touch</a></nav>
   </header>
   <main id="main-content">
     <section id="home" class="hero">
@@ -586,20 +590,61 @@
 </section>
 </main>
 <footer class="site-footer">
-<a class="wordmark" href="#home" aria-label="Monolog home">monolog.</a>
-<span class="mono">An Android keyboard and private journal by NoTokens.</span>
-<nav aria-label="Footer navigation">
-<a href="#playground">Keyboard</a>
-<a href="#journal">Journal</a>
-<a href="#context-library">Context Library</a>
-<a href="#privacy">Privacy</a>
-<a href="/tos">Terms of Service</a>
-<a href="#pricing">Pricing</a>
-<a href="#faq">FAQ</a>
-<a href="#contact">Contact</a>
-</nav>
-<span class="mono">© 2026 NoTokens</span>
-  </footer>
+  <div class="footer-aurora" aria-hidden="true">
+    <span class="footer-aurora-sky"></span>
+    <span class="footer-rays footer-rays-a"></span>
+    <span class="footer-rays footer-rays-b"></span>
+    <span class="footer-aurora-horizon"></span>
+    <span class="footer-aurora-sunset"></span>
+  </div>
+  <div class="footer-glass" aria-hidden="true"></div>
+  <div class="footer-main">
+    <div class="footer-brand">
+      <a class="wordmark" href="#home" aria-label="Monolog home">monolog<span>.</span></a>
+      <p class="footer-tagline">Type. Speak. Act. Remember your side of the day.</p>
+      <p class="footer-description">An Android-first AI keyboard with Vox voice typing, floating AI search, one-tap context capture, quick phone actions, and an encrypted on-device personal journal — plus Monolog Web.</p>
+      <a class="footer-notokens" href="https://notokens.co" target="_blank" rel="noopener noreferrer" aria-label="Built by NoTokens — visit notokens.co">
+        <span class="footer-notokens-mark">
+          <img src="/images/notokens-logo.webp" alt="NoTokens" width="40" height="40" loading="lazy" decoding="async" />
+          <canvas id="notokens-lottie" class="footer-notokens-lottie" width="80" height="80" aria-hidden="true"></canvas>
+        </span>
+        <span class="footer-notokens-copy">
+          <strong>NoTokens</strong>
+          <small class="mono">notokens.co <span aria-hidden="true">↗</span></small>
+        </span>
+      </a>
+    </div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <div class="footer-col">
+        <span class="footer-col-title mono">Product</span>
+        <a href="#playground">Keyboard</a>
+        <a href="#possibilities">Possibilities</a>
+        <a href="#journal">Journal</a>
+        <a href="#context-library">Context Library</a>
+        <a href="#privacy">Privacy</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title mono">Experience</span>
+        <a href="https://web.monolog.notokens.co/" target="_blank" rel="noopener noreferrer" title="Monolog Web — Your side of the day.">Monolog Web <span class="nav-ext" aria-hidden="true">↗</span></a>
+        <a href="/demo">Interactive Demo</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-title mono">NoTokens &amp; Legal</span>
+        <a href="https://notokens.co" target="_blank" rel="noopener noreferrer">NoTokens <span class="nav-ext" aria-hidden="true">↗</span></a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/tos">Terms of Service</a>
+        <a href="#contact">Contact</a>
+        <a href="mailto:monolog@notokens.co">monolog@notokens.co</a>
+      </div>
+    </nav>
+  </div>
+  <div class="footer-bottom">
+    <span class="mono">© 2026 <a href="https://notokens.co" target="_blank" rel="noopener noreferrer">NoTokens</a>. All rights reserved.</span>
+    <span class="mono">Android-first · Local by default · Type. Speak. Act. Remember.</span>
+  </div>
+</footer>
 <template id="journal-demo-template">
   <div class="journal-device" role="group" aria-label="Interactive Monolog journal preview">
     <div class="journal-device-screen">

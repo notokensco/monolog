@@ -22,7 +22,6 @@ export function initWaitlist() {
   }
 
   placeWaitlist()
-  if (location.hash === '#waitlist') waitlist.scrollIntoView({ behavior: 'instant' })
   mobile.addEventListener('change', placeWaitlist)
   button.disabled = false
 
