@@ -1,5 +1,5 @@
 // Monolog Interactive Keyboard Demo
-import { initPhoneModel } from './phone-model.js'
+import { initPhoneFinish, initPhoneModel } from './phone-model.js'
 import { initDemoPlayback } from './demo-playback.js'
 import { initDemoContext } from './demo-context.js'
 
@@ -29,9 +29,7 @@ export function initKeyboardDemo() {
   const voxTranscript = document.querySelector('#vox-transcript')
   const voxStatus = document.querySelector('#vox-status')
   const demoPanel = document.querySelector('#demo-panel')
-  const themeButtons = [...document.querySelectorAll('[data-demo-theme]')]
   const { showFront, followDemo, setDemoPose } = initPhoneModel(container)
-  const phoneLogo = container.querySelector('#demo-phone-logo')
 
   let isShifted = false
   let isSymbols = false
@@ -459,18 +457,7 @@ export function initKeyboardDemo() {
     })
   }
 
-  function setTheme(theme) {
-    container.dataset.theme = theme
-    themeButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.demoTheme === theme)))
-    const action = theme === 'ink' ? 'Switch phone to Paper' : 'Switch phone to Ink'
-    phoneLogo.setAttribute('aria-label', action)
-    phoneLogo.title = action
-  }
-
-  phoneLogo.addEventListener('click', () => setTheme(container.dataset.theme === 'ink' ? 'paper' : 'ink'))
-  themeButtons.forEach(btn => {
-    btn.addEventListener('click', () => setTheme(btn.dataset.demoTheme))
-  })
+  initPhoneFinish(container)
 
   const context = initDemoContext(container, {
     isPrivate: () => privacy !== 'off',

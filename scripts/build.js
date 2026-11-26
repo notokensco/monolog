@@ -8,6 +8,7 @@ await build({
     rollupOptions: {
       input: {
         main: resolve('index.html'),
+        demo: resolve('demo/index.html'),
         privacy: resolve('privacy/index.html'),
         tos: resolve('tos/index.html')
       }
@@ -17,6 +18,7 @@ await build({
 
 // Ensure clean URL fallbacks for static hosting
 const fallbacks = [
+  { src: 'dist/demo/index.html', dest: 'dist/demo.html' },
   { src: 'dist/privacy/index.html', dest: 'dist/privacy.html' },
   { src: 'dist/tos/index.html', dest: 'dist/tos.html' }
 ]

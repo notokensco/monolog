@@ -43,7 +43,12 @@ function buildRails(body, front, rails) {
   rails.replaceChildren(...edges)
 }
 
-export function initPhoneModel(container) {
+function observePhoneRails(body, front, rails) {
+  const rebuild = () => buildRails(body, front, rails)
+  new ResizeObserver(rebuild).observe(body)
+}
+
+export function initPhoneModel(container, { keyboardRotation = true, presentation = false } = {}) {
   const stage = container.querySelector('.demo-phone-stage')
   const body = stage.querySelector('.demo-phone-body')
   const front = stage.querySelector('#demo-phone-front')
@@ -56,11 +61,12 @@ export function initPhoneModel(container) {
   let manualView = false
   const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)')
 
-  new ResizeObserver(() => buildRails(body, front, rails)).observe(body)
+  observePhoneRails(body, front, rails)
 
   function rotate(nextYaw, nextPitch) {
     yaw = nextYaw
-    pitch = Math.max(-28, Math.min(28, nextPitch))
+    const tiltLimit = presentation ? 15 : 28
+    pitch = Math.max(-tiltLimit, Math.min(tiltLimit, nextPitch))
     body.style.setProperty('--phone-yaw', `${yaw}deg`)
     body.style.setProperty('--phone-pitch', `${pitch}deg`)
     const side = Math.cos(yaw * radians) >= 0 ? 'front' : 'rear'
@@ -114,13 +120,20 @@ export function initPhoneModel(container) {
 
   function stopDragging(event) {
     if (drag?.id !== event.pointerId) return
+    const changed = stage.hasAttribute('data-dragging')
     drag = undefined
     stage.removeAttribute('data-dragging')
+    if (presentation && changed) {
+      const center = nearestTurn(stage.dataset.phoneSide === 'rear' ? 180 : 0)
+      // Keep the selected face readable when the presenter releases the device.
+      const offset = Math.max(-38, Math.min(38, yaw - center))
+      rotate(center + offset, pitch)
+    }
   }
 
   stage.addEventListener('lostpointercapture', stopDragging)
   stage.addEventListener('keydown', event => {
-    if (event.target !== stage) return
+    if (!keyboardRotation || event.target !== stage) return
     const step = {
       ArrowLeft: [-15, 0],
       ArrowRight: [15, 0],
@@ -134,10 +147,14 @@ export function initPhoneModel(container) {
   })
 
   function setDemoPose(pose) {
-    if (manualView || drag || reducedMotion.matches || stage.dataset.phoneSide !== 'front') return
+    if (manualView || drag || stage.dataset.phoneSide !== 'front') return
+    if (reducedMotion.matches) {
+      if (!keyboardRotation) rotate(nearestTurn(0), 0)
+      return
+    }
     const [angle, tilt] = demoPoses[pose]
     stage.dataset.demoPose = pose
-    rotate(nearestTurn(angle), tilt)
+    rotate(nearestTurn(presentation ? angle * .24 : angle), presentation ? tilt * .2 : tilt)
   }
 
   function followDemo() {
@@ -146,4 +163,23 @@ export function initPhoneModel(container) {
   }
 
   return { showFront, followDemo, setDemoPose }
+}
+
+export function initPhoneFinish(container, onChange) {
+  const logo = container.querySelector('#demo-phone-logo')
+  const choices = container.querySelectorAll('[data-demo-theme]')
+
+  function setFinish(finish) {
+    container.dataset.theme = finish
+    for (const choice of choices) {
+      choice.setAttribute('aria-pressed', String(choice.dataset.demoTheme === finish))
+    }
+    const action = finish === 'ink' ? 'Switch phone to Paper' : 'Switch phone to Ink'
+    logo.setAttribute('aria-label', action)
+    logo.title = action
+    onChange?.(finish)
+  }
+
+  logo.addEventListener('click', () => setFinish(container.dataset.theme === 'ink' ? 'paper' : 'ink'))
+  for (const choice of choices) choice.addEventListener('click', () => setFinish(choice.dataset.demoTheme))
 }

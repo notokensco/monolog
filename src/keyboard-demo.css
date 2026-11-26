@@ -1,3 +1,5 @@
+@import './phone-model.css';
+
 /* Monolog Interactive Keyboard Demo Styles */
 
 .keyboard-demo {
@@ -52,14 +54,6 @@
   pointer-events: none;
 }
 
-.demo-phone-float,
-.demo-phone-body,
-.demo-phone-frame,
-.demo-phone-rails {
-  transform-style: preserve-3d;
-  pointer-events: none;
-}
-
 .demo-phone-float {
   animation: phone-hover 6s ease-in-out infinite;
   animation-play-state: paused;
@@ -78,135 +72,6 @@
 @keyframes phone-hover {
   0%, 20%, 100% { transform: translateY(-4px); }
   50%, 70% { transform: translateY(5px); }
-}
-
-.demo-phone-body {
-  --phone-corner: clamp(27px, 10cqw, 37px);
-  --half-depth: clamp(11px, 2.9cqw, 16px);
-  --phone-metal: #bdb9c7;
-  --phone-metal-highlight: #f8f6fb;
-  --phone-seam: #a5a0af;
-  --phone-face: linear-gradient(125deg, #fff, #eeebf3 50%, #fcfbfd);
-  --phone-back: linear-gradient(146deg, #fff, #faf9fc 48%, #e7e4ed);
-  --phone-camera: linear-gradient(150deg, #fff, #e4dfe9);
-  --phone-brand: #665e73;
-  --phone-brand-light: #bdb7c9;
-  position: relative;
-  transform: rotateX(var(--phone-pitch, 3deg)) rotateY(var(--phone-yaw, -12deg));
-  transition: transform .48s cubic-bezier(.22, .7, .25, 1);
-}
-
-.keyboard-demo[data-theme="ink"] .demo-phone-body {
-  --phone-metal: #25242c;
-  --phone-metal-highlight: #696674;
-  --phone-seam: #23212a;
-  --phone-face: linear-gradient(125deg, #4c4956, #17151d 55%, #302d39);
-  --phone-back: linear-gradient(146deg, #42404b, #25232c 49%, #141319);
-  --phone-camera: linear-gradient(150deg, #54505d, #25222c);
-  --phone-brand: #8f8b9b;
-  --phone-brand-light: #f2ecf8;
-}
-
-.demo-phone-stage[data-dragging] .demo-phone-body {
-  transition: none;
-}
-
-.demo-phone-frame,
-.demo-phone-rails,
-.demo-phone-rear {
-  position: absolute;
-  inset: 0;
-}
-
-.demo-phone-face {
-  border: 1px solid var(--phone-seam);
-  border-radius: var(--phone-corner);
-  backface-visibility: hidden;
-  pointer-events: auto;
-}
-
-.demo-phone-face[inert] {
-  pointer-events: none;
-}
-
-.demo-phone-front {
-  padding: 6px;
-  background: var(--phone-face);
-  box-shadow: inset 0 0 0 1px #ffffff35;
-  transform: translateZ(var(--half-depth));
-}
-
-.demo-phone-edge {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--edge-width);
-  height: calc(2 * var(--half-depth));
-  transform-origin: 0 0;
-  transform: translate(var(--edge-x), var(--edge-y)) rotateZ(var(--edge-angle))
-    rotateX(90deg) translate(-50%, -50%);
-  backface-visibility: hidden;
-  background: linear-gradient(to bottom, var(--phone-seam), var(--phone-metal) 12%,
-    color-mix(in srgb, var(--phone-metal-highlight) var(--edge-light), var(--phone-metal)) 62%,
-    var(--phone-seam));
-}
-
-.demo-phone-buttons,
-.demo-phone-ports {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  backface-visibility: hidden;
-}
-
-.demo-phone-buttons {
-  top: 22%;
-  right: 0;
-  width: calc(2 * var(--half-depth));
-  height: 23%;
-  flex-direction: column;
-  gap: 14%;
-  transform: translateX(50%) rotateY(90deg) translateZ(1px);
-}
-
-.demo-phone-buttons i {
-  width: 45%;
-  height: 44%;
-  border: 1px solid var(--phone-seam);
-  border-radius: 999px;
-  background: var(--phone-face);
-  box-shadow: 1px 0 2px #1b172c66;
-}
-
-.demo-phone-buttons i:last-child {
-  height: 24%;
-}
-
-.demo-phone-ports {
-  bottom: 0;
-  left: 50%;
-  width: 86px;
-  height: calc(2 * var(--half-depth));
-  justify-content: center;
-  gap: 7px;
-  transform: translate(-50%, 50%) rotateX(-90deg) translateZ(1px);
-}
-
-.demo-phone-ports i {
-  width: 20px;
-  height: 7px;
-  border: 1px solid var(--phone-metal-highlight);
-  border-radius: 5px;
-  background: #201e26;
-}
-
-.demo-phone-ports::after {
-  position: absolute;
-  left: 68%;
-  width: 22px;
-  height: 4px;
-  background: radial-gradient(circle, #28242e 0 1px, transparent 1.4px) 0 0 / 5px 4px;
-  content: "";
 }
 
 .demo-phone-screen {
@@ -268,66 +133,6 @@
   height: 8px;
   border-radius: 2px;
   background: currentColor;
-}
-
-.demo-phone-rear {
-  display: grid;
-  place-items: center;
-  background: var(--phone-back);
-  box-shadow: inset 0 0 0 2px #ffffff32;
-  transform: rotateY(180deg) translateZ(var(--half-depth));
-  touch-action: none;
-}
-
-#demo-phone-logo {
-  display: grid;
-  place-items: center;
-  min-width: 76px;
-  min-height: 76px;
-  background: transparent;
-}
-
-#demo-phone-logo .rear-mark {
-  display: block;
-  width: clamp(27px, 9cqw, 51px);
-  height: auto;
-  filter: drop-shadow(0 -1px 0 #fff6) drop-shadow(0 1px 0 #100e23a3);
-}
-
-#demo-phone-logo:hover .rear-mark {
-  filter: brightness(1.15) drop-shadow(0 1px 0 #100e23a3);
-}
-
-.demo-phone-cameras {
-  position: absolute;
-  top: 4%;
-  left: 8%;
-  display: grid;
-  gap: 6px;
-  width: 22%;
-  max-width: 54px;
-  padding: 5px;
-  border: 1px solid var(--phone-seam);
-  border-radius: 999px;
-  background: var(--phone-camera);
-  box-shadow: 0 3px 1px var(--phone-seam), 0 6px 10px #21182e38;
-}
-
-.demo-phone-cameras span {
-  aspect-ratio: 1;
-  border: 2px solid #9d98a7;
-  border-radius: 50%;
-  background: radial-gradient(circle at 44% 39%, #8995b2 0%, #30384e 19%, #131319 48%, #23212a 74%);
-}
-
-.demo-phone-cameras i {
-  justify-self: center;
-  width: 8px;
-  height: 8px;
-  margin-bottom: 2px;
-  border-radius: 50%;
-  box-shadow: 0 0 0 1px var(--phone-seam);
-  background: radial-gradient(circle, #fff7e2, #c8bfab);
 }
 
 @media (prefers-reduced-motion: reduce) {
