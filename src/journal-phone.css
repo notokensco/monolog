@@ -7,6 +7,130 @@
   pointer-events: none;
 }
 
+.journal-android {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.journal-theme-picker {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.journal-theme-options,
+.journal-screen-options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+
+.journal-theme-options button,
+.journal-screen-options button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 0 11px;
+  border: 1px solid #d9d1e2;
+  border-radius: 999px;
+  background: #fbf9fc;
+  color: #433951;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.journal-theme-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  width: min(100%, 300px);
+}
+
+.journal-theme-options button { justify-content: center; }
+
+.android-screen-nav {
+  position: absolute;
+  inset: auto 4% 3%;
+  height: 6%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.journal-android .android-screen-nav button {
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  background: transparent;
+}
+
+.android-screen-nav button:focus-visible { outline: 2px solid #b9a0e7; outline-offset: -3px; }
+.context-mockup-wrapper { display: grid; justify-items: center; gap: 18px; }
+.context-mockup-wrapper .text-link { color: #e2d6f3; margin-top: 0; }
+.context-screen-journal { position: absolute; inset: auto 5% 43%; height: 6%; border-radius: 20px; }
+
+.journal-theme-options button::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border: 1px solid #a49aab;
+  border-radius: 50%;
+  background: var(--theme-swatch);
+}
+
+[data-journal-theme="paper"] { --theme-swatch: #f3f0eb; }
+[data-journal-theme="ink"] { --theme-swatch: #26262d; }
+[data-journal-theme="iris"] { --theme-swatch: #c5c8ef; }
+[data-journal-theme="ocean"] { --theme-swatch: #b7e2e8; }
+[data-journal-theme="terracotta"] { --theme-swatch: #f3cfc5; }
+[data-journal-theme="photo"] { --theme-swatch: url('/artwork/memory-unfolding.webp') center / cover; }
+[data-journal-theme="system"] { --theme-swatch: linear-gradient(135deg, #faf9f7 50%, #26262d 50%); }
+
+.journal-theme-options button:hover,
+.journal-screen-options button:hover { background: #eee8f3; }
+.journal-theme-options button[aria-pressed="true"],
+.journal-screen-options button[aria-pressed="true"] { background: #31283d; color: #fff; }
+
+.journal-screen-options button {
+  min-height: 36px;
+  border-color: transparent;
+  background: transparent;
+}
+
+.journal-android .journal-phone-frame {
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin: 3px 0 0;
+}
+
+.journal-device.journal-android-device {
+  aspect-ratio: auto;
+  padding: var(--rim);
+}
+
+.journal-android-device img {
+  position: static;
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.journal-android-device .journal-device-camera { top: 13px; }
+
+.journal-android figcaption {
+  margin-top: 15px;
+  color: #5b5266;
+  font-size: 13px;
+  text-align: center;
+}
+
+.journal-interactive-link { align-self: start; margin-top: 0; }
+
 .journal-device {
   --rim: 6px;
   --corner: clamp(26px, 10vw, 37px);

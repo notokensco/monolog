@@ -10,6 +10,7 @@ import './hero-keys.css'
 import './journal-enhanced.css'
 import './journal-phone.css'
 import './context-library.css'
+import './monolog-web.css'
 import './feature-overview.css'
 import './showcase.css'
 import './waitlist.css'
@@ -21,6 +22,7 @@ import { initFeatureRail } from './feature-rail.js'
 import { initShowcase } from './showcase.js'
 import { initWaitlist } from './waitlist.js'
 import { initFooterAurora } from './footer-aurora.js'
+import { initMonologWeb } from './monolog-web.js'
 
 initWaitlist()
 
@@ -44,6 +46,7 @@ initJournalPhones()
 initContextLibrary()
 initFeatureRail(reducedMotion)
 initShowcase(reducedMotion)
+initMonologWeb(reducedMotion)
 
 function scrollToSection(section) {
   if (location.hash) history.replaceState(history.state, '', location.pathname + location.search)

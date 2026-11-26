@@ -1,0 +1,68 @@
+
+.monolog-web { border-top: 1px solid #dbd3e3; background: radial-gradient(ellipse at 80% 55%, #e3d9ee, transparent 65%), #f4f1f6; }
+.monolog-web-inner { display:grid; grid-template-columns:minmax(0,.75fr) minmax(0,1.5fr); gap:clamp(28px,4vw,70px); align-items:center; max-width:1560px; margin:auto; }
+.monolog-web-copy h2 { margin-top:18px; font-size:clamp(42px,4.2vw,76px); line-height:1.12; }
+.monolog-web-copy h2 em { color:#665477; }
+.monolog-web-copy > p { margin-top:26px; color:#534c5c; font-size:16px; line-height:1.7; max-width:40ch; }
+.monolog-web-connections { display:grid; gap:18px; margin:26px 0; }
+.monolog-web-connections > div { border-top:1px solid #d5cadf; padding-top:12px; }
+.monolog-web-connections dt { display:flex; align-items:center; gap:8px; font-size:14px; font-weight:800; }
+.monolog-web-connections .icon { width:16px; height:16px; color:#665477; }
+.monolog-web-connections dd { margin:6px 0 0; color:#534c5c; font-size:14px; line-height:1.6; }
+.monolog-web-button { display:inline-flex; align-items:center; min-height:48px; padding:0 20px; border-radius:12px; background:#31283d; color:#fff; font-size:14px; font-weight:750; }
+.monolog-web-button:hover { background:#514161; }
+.monolog-web-figure { min-width:0; margin:0; }
+.monolog-web-figure figcaption { margin-top:16px; color:#5b5266; font-size:13px; line-height:1.6; text-align:center; }
+.web-workspace { container-type:inline-size; overflow:hidden; border:1px solid #4c4c60; border-radius:20px; background:#111319; color:#f3f4fa; box-shadow:0 28px 60px #3e284d30; font-family:Roboto,sans-serif; text-align:left; }
+.web-workspace-top { position:relative; display:grid; place-items:center; height:36px; background:#242530; color:#d4d3e0; font-size:11px; border-bottom:1px solid #444555; }
+.web-window-buttons { position:absolute; left:14px; display:flex; gap:5px; }
+.web-window-buttons i { width:6px; height:6px; border-radius:50%; background:#88869e; }
+.web-workspace-body { display:grid; grid-template-columns:150px minmax(0,1fr); height:590px; }
+.web-workspace-sidebar { padding:22px 12px; background:linear-gradient(160deg,#12151e,#24252c); border-right:1px solid #383b49; }
+.web-workspace-wordmark { display:block; font-family:'Beth Ellen',cursive; font-size:24px; margin-bottom:22px; }
+.web-workspace-profile { display:flex; align-items:center; gap:8px; padding:10px; background:#2e303f; border:1px solid #4c4e61; border-radius:15px; margin-bottom:16px; font-size:12px; }
+.web-workspace-profile b { display:grid; place-items:center; width:25px; height:28px; border:1px solid #5f6071; border-radius:8px; }
+.web-workspace-profile small { display:block; font-size:10px; color:#c5c9d6; margin-top:3px; }
+.web-workspace button, .web-workspace input, .web-workspace textarea { font:inherit; }
+.web-workspace button { cursor:pointer; color:inherit; border:0; }
+.web-workspace button:focus-visible, .web-workspace input:focus-visible, .web-workspace textarea:focus-visible { outline:2px solid #c4b6f4; outline-offset:2px; }
+.web-workspace .web-compose { width:100%; padding:11px 6px; border-radius:18px; background:#d8d9e2; color:#242630; font-size:12px; font-weight:700; }
+.web-workspace-sidebar nav { display:grid; gap:8px; margin-top:18px; }
+.web-workspace-sidebar nav button { display:flex; align-items:center; gap:9px; padding:11px 9px; border-radius:12px; background:transparent; text-align:left; font-size:12px; }
+.web-workspace-sidebar nav button[aria-pressed="true"] { background:#353640; font-weight:700; }
+.web-workspace .icon { width:16px; height:16px; flex:none; }
+.web-workspace-main { min-width:0; overflow:auto; padding:24px; background:radial-gradient(ellipse at 80% 0%,#27233666,transparent 65%),linear-gradient(#0c0f15,#24252b); scrollbar-width:thin; scrollbar-color:#66637c transparent; overscroll-behavior:contain; font-size:13px; }
+.web-workspace-main h3 { margin:0; font-size:clamp(24px,4cqi,36px); line-height:1.15; letter-spacing:-.04em; }
+.web-workspace-main h4 { font-size:15px; margin:0 0 6px; }
+.web-workspace-main p { color:#c9ccda; line-height:1.55; }
+.web-hero, .web-card { border:1px solid #606277; border-radius:20px; background:linear-gradient(135deg,#454a5b,#25262e 65%,#39364c); padding:18px; }
+.web-hero { background:linear-gradient(135deg,#303544,#494059 75%,#2a2b35); margin-bottom:14px; }
+.web-hero p { margin-top:6px; }
+.web-preview-search { width:100%; border:1px solid #606277; border-radius:18px; background:linear-gradient(#414555,#22242c); padding:10px 13px; color:#f5f4fa; margin:14px 0; }
+.web-preview-search::placeholder, .web-workspace textarea::placeholder { color:#bec2d3; }
+.web-today-layout { display:grid; grid-template-columns:1.3fr 1fr; gap:12px; align-items:start; }
+.web-tiles { display:grid; gap:10px; }
+.web-card textarea { width:100%; min-height:145px; resize:vertical; margin:12px 0; padding:12px; border:1px solid #787b92; border-radius:12px; color:#fff; background:#555c744a; }
+.web-workspace .web-action { display:inline-block; border:1px solid #75788d; border-radius:18px; padding:7px 12px; background:#4d5064; font-size:12px; margin:6px 4px 0 0; }
+.web-workspace .web-action:hover { background:#66617e; }
+.web-workspace .web-link { background:transparent; padding:7px 0 0; color:#c7c3ff; font-size:12px; text-align:left; }
+.web-toolbar { display:flex; align-items:center; flex-wrap:wrap; gap:6px; margin:15px 0; }
+.web-toolbar button { background:#30333f; border:1px solid #56596a; padding:7px 11px; border-radius:20px; font-size:12px; }
+.web-toolbar button[aria-pressed="true"] { background:#68627f; }
+.web-entry { margin-bottom:12px; }
+.web-entry small { display:block; color:#c4c7d6; margin-bottom:10px; }
+.web-library-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.web-library-grid button { text-align:left; }
+.web-library-grid img { display:block; width:100%; aspect-ratio:1.6; object-fit:cover; border-radius:10px; margin-bottom:12px; }
+.web-calendar { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:4px; }
+.web-calendar button { padding:8px 0; border-radius:8px; background:#393c4c; }
+.web-note-form label { display:grid; gap:8px; margin:14px 0; }
+.web-note-form input { padding:10px; border-radius:10px; border:1px solid #77798f; background:#353949; color:#fff; width:100%; }
+.web-preview-notice { min-height:20px; margin-top:10px; color:#d4c9ff; }
+.monolog-web-figure.web-entering { opacity:0; transform:translateY(35px) rotate(1.5deg); transition:opacity .8s ease,transform .8s cubic-bezier(.2,.75,.2,1); }
+.monolog-web-figure.web-entering.web-entered { opacity:1; transform:none; }
+@media(min-width:1600px) { .web-workspace-body { height:650px; } }
+@media(max-width:1100px) { .monolog-web-inner { grid-template-columns:minmax(0,.7fr) minmax(0,1.3fr); gap:26px; } .web-workspace-body { grid-template-columns:112px minmax(0,1fr); } .web-workspace-main { padding:16px; } .web-workspace-profile b { display:none; } .web-workspace-wordmark { font-size:20px; } .web-today-layout { grid-template-columns:1fr; } .web-tiles { grid-template-columns:1fr 1fr; } }
+@media(max-width:860px) { .monolog-web-inner { grid-template-columns:1fr; max-width:680px; gap:32px; } .monolog-web-copy h2 { font-size:clamp(44px,8vw,70px); } .monolog-web-connections { grid-template-columns:1fr 1fr; } .web-workspace-body { height:580px; grid-template-columns:140px minmax(0,1fr); } }
+@media(max-width:500px) { .web-workspace { border-radius:16px; } .web-workspace-body { height:600px; grid-template-columns:1fr; grid-template-rows:auto minmax(0,1fr); } .web-workspace-sidebar { padding:10px; border:0; border-bottom:1px solid #444555; } .web-workspace-wordmark,.web-workspace-profile,.web-workspace .web-compose { display:none; } .web-workspace-sidebar nav { grid-template-columns:repeat(4,minmax(0,1fr)); margin:0; gap:2px; } .web-workspace-sidebar nav button { flex-direction:column; gap:5px; padding:7px 2px; font-size:11px; } .web-workspace-main { padding:16px 12px; } .web-today-layout { grid-template-columns:1fr; } .web-library-grid { grid-template-columns:1fr; } .web-workspace-main h3 { font-size:27px; } }
+@media(prefers-reduced-motion:reduce) { .monolog-web-figure.web-entering { opacity:1; transform:none; transition:none; } }

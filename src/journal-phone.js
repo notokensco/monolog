@@ -289,4 +289,60 @@ export function initJournalPhones() {
     root.append(template.content.cloneNode(true))
     initPreview(root)
   }
+
+  const gallery = document.querySelector('[data-journal-android]')
+  if (!gallery) return
+
+  const capture = gallery.querySelector('[data-journal-capture]')
+  const status = gallery.querySelector('[data-journal-preview-status]')
+  const themes = [...gallery.querySelectorAll('[data-journal-theme]')]
+  const screens = [...gallery.querySelectorAll('[data-journal-screen]')]
+  let theme = themes.find(option => option.getAttribute('aria-pressed') === 'true')
+  let screen = screens[0]
+  const updatedScreens = new Set(['ink-today', 'ink-library', 'terracotta-today', 'terracotta-journal', 'terracotta-library'])
+
+  function capturePath(themeId, screenId) {
+    const key = `${themeId}-${screenId}`
+    return updatedScreens.has(key)
+      ? `/images/android-preview/updated-${key}.png`
+      : `/images/android-preview/${key}.webp`
+  }
+
+  function showCapture() {
+    const themeId = theme.dataset.journalTheme
+    const fileTheme = themeId
+    const themeLabel = theme.textContent
+    const label = `Monolog ${screen.textContent} screen in ${themeLabel} theme`
+    capture.src = capturePath(fileTheme, screen.dataset.journalScreen)
+    capture.alt = label
+    status.textContent = label
+    for (const button of gallery.querySelectorAll('[data-phone-screen]')) {
+      button.setAttribute('aria-pressed', String(button.dataset.phoneScreen === screen.dataset.journalScreen))
+    }
+  }
+
+  for (const option of themes) {
+    option.addEventListener('click', () => {
+      theme.setAttribute('aria-pressed', 'false')
+      theme = option
+      theme.setAttribute('aria-pressed', 'true')
+      showCapture()
+    })
+  }
+
+  for (const option of screens) {
+    option.addEventListener('click', () => {
+      screen.setAttribute('aria-pressed', 'false')
+      screen = option
+      screen.setAttribute('aria-pressed', 'true')
+      showCapture()
+    })
+  }
+
+  for (const button of gallery.querySelectorAll('[data-phone-screen]')) {
+    button.addEventListener('click', () => {
+      screens.find(option => option.dataset.journalScreen === button.dataset.phoneScreen).click()
+    })
+  }
+
 }

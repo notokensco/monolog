@@ -9,13 +9,14 @@ test('homepage renders one of each navigation, journal intro, and footer', async
   await expect(desktopNav.getByRole('link', { name: 'The Keyboard', exact: true })).toHaveAttribute('href', '#playground')
   await expect(desktopNav.getByRole('link', { name: 'Your Journal', exact: true })).toHaveAttribute('href', '#journal')
   await expect(desktopNav.getByRole('link', { name: 'Context Library', exact: true })).toHaveAttribute('href', '#context-library')
-  await expect(desktopNav.getByRole('link', { name: 'Monolog Web', exact: true })).toHaveAttribute('href', 'https://web.monolog.notokens.co/')
+  await expect(desktopNav.getByRole('link', { name: 'Monolog Web', exact: true })).toHaveAttribute('href', '#monolog-web')
+  await expect(page.locator('#monolog-web').getByRole('link', { name: /Open Monolog Web/ })).toHaveAttribute('href', 'https://web.monolog.notokens.co/')
   await expect(page.locator('#journal .journal-grid')).toHaveCount(1)
 
   const footer = page.getByRole('contentinfo')
   await expect(footer).toHaveCount(1)
   await expect(footer.getByRole('link', { name: 'Terms of Service' })).toHaveAttribute('href', '/tos')
-  await expect(footer.getByRole('link', { name: 'Monolog Web', exact: true })).toHaveAttribute('href', 'https://web.monolog.notokens.co/')
+  await expect(footer.getByRole('link', { name: 'Monolog Web', exact: true })).toHaveAttribute('href', '#monolog-web')
   await expect(footer.getByRole('link', { name: 'Interactive Demo', exact: true })).toHaveAttribute('href', '/demo')
   await expect(footer.getByRole('link', { name: 'Built by NoTokens — visit notokens.co' })).toHaveAttribute('href', 'https://notokens.co')
   await expect(footer.locator('.footer-notokens img')).toHaveAttribute('src', '/images/notokens-logo.webp')
@@ -438,11 +439,57 @@ test('the feature rail keeps shortcut links usable on a reduced-motion phone', a
   await expect(page.getByRole('textbox', { name: 'Your note' })).toBeVisible()
 })
 
-test('the coded Journal phone opens real sample views and saves an in-demo note', async ({ page }) => {
+test('Android captures switch Ink and Terracotta with transparent phone tabs', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce', colorScheme: 'light' })
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/#journal')
+  const gallery = page.locator('[data-journal-android]')
+  const capture = gallery.getByRole('img')
+  const themes = gallery.getByRole('group', { name: 'Preview a theme' })
+  const screens = gallery.getByRole('group', { name: 'Android screen' })
+
+  for (const [name, theme] of [
+    ['Ink', 'ink'], ['Terracotta', 'terracotta'],
+  ]) {
+    await themes.getByRole('button', { name, exact: true }).click()
+    for (const [screenName, screen] of [['Today', 'today'], ['Journal', 'journal'], ['Context Library', 'library']]) {
+      await screens.getByRole('button', { name: screenName, exact: true }).click()
+      const updated = theme === 'terracotta' || (theme === 'ink' && screen !== 'journal')
+      await expect(capture).toHaveAttribute('src', updated
+        ? `/images/android-preview/updated-${theme}-${screen}.png`
+        : `/images/android-preview/${theme}-${screen}.webp`)
+      await expect.poll(() => capture.evaluate(image => image.complete && image.naturalWidth > 0)).toBe(true)
+    }
+  }
+
+  await expect(themes.getByRole('button')).toHaveCount(2)
+  await gallery.getByRole('button', { name: 'Show Today', exact: true }).click()
+  await expect(screens.getByRole('button', { name: 'Today', exact: true })).toHaveAttribute('aria-pressed', 'true')
+  await gallery.getByRole('button', { name: 'Show Journal', exact: true }).click()
+  await expect(screens.getByRole('button', { name: 'Journal', exact: true })).toHaveAttribute('aria-pressed', 'true')
+  await gallery.getByRole('button', { name: 'Show Library', exact: true }).click()
+  await expect(screens.getByRole('button', { name: 'Context Library', exact: true })).toHaveAttribute('aria-pressed', 'true')
+  const phoneTab = gallery.getByRole('button', { name: 'Show Library', exact: true })
+  await phoneTab.hover()
+  await expect(phoneTab).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+  await expect(gallery.getByRole('button', { name: 'Show Journal', exact: true })).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)')
+  for (const width of [320, 390, 1440]) {
+    await page.setViewportSize({ width, height: 1000 })
+    const boxes = await themes.getByRole('button').evaluateAll(buttons => buttons.map(button => {
+      const rect = button.getBoundingClientRect()
+      return { top: rect.top, left: rect.left }
+    }))
+    expect(boxes[0].top).toBe(boxes[1].top)
+    expect(boxes[1].left).toBeGreaterThan(boxes[0].left)
+  }
+})
+
+test('the interactive Journal phone opens sample views and saves an in-demo note', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/#journal')
-  const phone = page.locator('.journal-phone-frame').getByRole('group', { name: 'Interactive Monolog journal preview' })
+  await page.getByRole('link', { name: 'Try the interactive journal demo' }).click()
+  const phone = page.locator('#showcase-journal').getByRole('group', { name: 'Interactive Monolog journal preview' })
   await expect(phone.getByRole('heading', { name: 'A focused day' })).toBeVisible()
   await expect(phone.locator('img')).toHaveAttribute('src', '/images/monolog-icon.png')
   const card = phone.getByRole('article').filter({ hasText: 'A focused day' })
@@ -484,6 +531,7 @@ test('the coded Context Library searches source text, filters items and saves a 
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.setViewportSize({ width: 320, height: 800 })
   await page.goto('/#context-library')
+  await page.getByRole('link', { name: 'Try the interactive Context Library demo' }).click()
   const library = page.getByRole('group', { name: 'Interactive Monolog Context Library preview' })
   const search = library.getByRole('searchbox', { name: 'Search saved context' })
   await expect(library.locator('img')).toHaveAttribute('src', '/images/monolog-icon.png')
