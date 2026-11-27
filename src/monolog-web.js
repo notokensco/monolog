@@ -5,11 +5,11 @@ export function initMonologWeb(reducedMotion) {
   const content = root.querySelector('[data-web-content]')
   const navigation = [...root.querySelectorAll('[data-web-page]')]
   const notes = [
-    { title: 'Quiet morning desk notes', body: 'Pick up the library hold and bring a notebook to meet Sam.', kind: 'Notes', date: '26 November', image: '/images/today-dashboard-mockup.jpg' },
+    { title: 'Client call notes', body: 'Send Sam the revised floor plan and confirm a time for the walkthrough.', kind: 'Notes', date: '26 November', image: '' },
     { title: 'Riverside art walk', body: 'A coffee stop with Sam after the walk.', kind: 'Photos', date: '25 November', image: '/images/journal-timeline-mockup.jpg' },
     { title: 'A thought on the way home', body: 'Make time for the small things this week.', kind: 'Audio Notes', date: '24 November', image: '' },
   ]
-  const reminders = ['Take an evening walk']
+  const reminders = ['Confirm the walkthrough']
   let page = 'today'
   let view = 'Timeline'
   let filter = 'All'
@@ -48,7 +48,7 @@ export function initMonologWeb(reducedMotion) {
       query = input.value
       renderResults()
     })
-    content.append(input)
+    return input
   }
 
   function toolbar(items, action, selected) {
@@ -70,7 +70,9 @@ export function initMonologWeb(reducedMotion) {
       (note.title + ' ' + note.body).toLowerCase().includes(query.toLowerCase())
     )
     if (!matches.length) {
-      results.append(node('p', '', 'No sample notes match this search.'))
+      results.append(node('p', '', page === 'today' && !query
+        ? 'No entries logged for today yet. Write above or click New note.'
+        : 'No sample notes match this search.'))
       return
     }
     if (page === 'journal' && view === 'Calendar') {
@@ -83,7 +85,11 @@ export function initMonologWeb(reducedMotion) {
     }
     const gallery = page === 'library' || view === 'Gallery'
     results.className = gallery ? 'web-library-grid' : ''
-    for (const note of matches) {
+    const displayedNotes = page === 'today' && !query ? matches.filter(note => note.date === '27 November') : matches
+    if (!displayedNotes.length) {
+      results.append(node('p', '', 'No entries logged for today yet. Write above or click New note.'))
+    }
+    for (const note of displayedNotes) {
       const item = card(note.title, note.body)
       if (gallery && note.image) {
         const image = node('img')
@@ -97,10 +103,10 @@ export function initMonologWeb(reducedMotion) {
     }
   }
 
-  function results() {
+  function results(parent = content) {
     const element = node('div')
     element.dataset.webResults = ''
-    content.append(element)
+    parent.append(element)
     renderResults()
   }
 
@@ -109,41 +115,82 @@ export function initMonologWeb(reducedMotion) {
     navigation.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.webPage === page)))
     if (page === 'today') {
       const hero = node('header', 'web-hero')
-      hero.append(node('h3', '', 'Good evening'), node('p', '', 'Your side of the day.'))
-      content.append(hero)
-      search('Search notes and captures…')
+      const greeting = node('div')
+      greeting.append(node('h3', '', 'Good afternoon'), node('p', '', 'Your side of the day.'))
+      hero.append(greeting, node('span', 'web-date-pill', 'Friday, November 27'))
+      const find = node('form', 'web-today-search')
+      const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg')
+      const use = document.createElementNS('http://www.w3.org/2000/svg', 'use')
+      icon.setAttribute('class', 'icon')
+      icon.setAttribute('aria-hidden', 'true')
+      use.setAttribute('href', '#icon-search')
+      icon.append(use)
+      const openJournal = button('Open in Journal', 'open-journal', undefined, 'web-search-action')
+      openJournal.type = 'submit'
+      find.append(icon, search('Search notes and captures…'), openJournal)
+      find.addEventListener('submit', event => {
+        event.preventDefault()
+        view = 'Timeline'
+        navigate('journal', query)
+      })
+      content.append(hero, find)
       const layout = node('div', 'web-today-layout')
-      const journal = card('Today’s journal', 'A little space for today’s thoughts.')
+      const journal = card('Today’s journal', 'Your draft stays in this preview.')
+      journal.classList.add('web-journal-draft')
       const field = node('textarea')
       field.value = draft
       field.placeholder = 'Write down today’s thoughts, progress, or reminders…'
       field.setAttribute('aria-label', 'Today’s preview draft')
       field.addEventListener('input', () => { draft = field.value })
-      journal.append(field, button('Save as journal note', 'save-draft'))
+      const draftActions = node('div', 'web-draft-actions')
+      draftActions.append(node('span', 'web-sync-pill', 'Preview mode'), button('Save as journal note', 'save-draft'))
+      journal.append(field, draftActions)
+      const entries = node('section', 'web-card web-today-entries')
+      const entriesHeader = node('div', 'web-entries-header')
+      entriesHeader.append(node('h4', '', 'Today’s entries & moments'), button('Full timeline →', 'navigate', 'journal', 'web-link'))
+      entries.append(entriesHeader)
+      const journalColumn = node('div', 'web-journal-column')
+      journalColumn.append(journal, entries)
       const tiles = node('div', 'web-tiles')
-      for (const [title, text, destination] of [
-        ['Reminders', reminders[0] || 'Nothing coming up', 'reminders'],
-        ['Recent memory', notes[0].title, 'journal'],
-        ['Context library', 'Notes, photos, and saved moments', 'library'],
+      for (const [title, text, label, artwork, action, destination] of [
+        ['Reminders', reminders[0] || 'Nothing coming up', 'Add a reminder', 'reminder', 'reminder'],
+        ['Recent memory', notes[0].title, 'Open Journal', 'journal', 'navigate', 'journal'],
+        ['Context library', '', `View all (${notes.length})`, 'library', 'navigate', 'library'],
+        ['Add a note', '', 'Write something', 'note', 'new'],
       ]) {
         const tile = card(title, text)
-        tile.append(button('View ' + title.toLowerCase(), 'navigate', destination, 'web-link'))
+        tile.classList.add('web-tile', 'web-tile-' + artwork)
+        const illustration = node('img', 'web-tile-art')
+        illustration.src = '/artwork/web-dashboard/' + artwork + '.svg'
+        illustration.alt = ''
+        tile.append(illustration)
+        if (artwork === 'library') {
+          const thumbnails = node('div', 'web-tile-thumbnails')
+          for (const note of notes.filter(note => note.image).slice(0, 3)) {
+            const thumbnail = node('img')
+            thumbnail.src = note.image
+            thumbnail.alt = ''
+            thumbnails.append(thumbnail)
+          }
+          tile.append(thumbnails)
+        }
+        tile.append(button(label + ' →', action, destination, 'web-link'))
         tiles.append(tile)
       }
-      layout.append(journal, tiles)
-      content.append(layout, node('h4', '', 'Today’s entries & moments'))
-      results()
+      layout.append(journalColumn, tiles)
+      content.append(layout)
+      results(entries)
     } else if (page === 'journal') {
       content.append(node('h3', '', 'Journal'))
       toolbar(['Timeline', 'Calendar', 'Gallery'], 'view', view)
-      search('Search journal…')
+      content.append(search('Search journal…'))
       results()
     } else if (page === 'library') {
       content.append(node('h3', '', 'Context Library'), node('p', '', 'Notes, photos, and moments you’ve saved.'))
-      search('Search the library…')
+      content.append(search('Search the library…'))
       toolbar(['All', 'Photos', 'Notes', 'Audio Notes'], 'filter', filter)
       results()
-    } else {
+    } else if (page === 'reminders') {
       content.append(node('h3', '', 'Reminders'), button('+ Add reminder', 'reminder'))
       reminders.forEach((text, index) => {
         const item = card(text, 'Tomorrow · 6:30 PM')
@@ -151,15 +198,21 @@ export function initMonologWeb(reducedMotion) {
         content.append(item)
       })
       if (!reminders.length) content.append(node('p', '', 'All caught up. Add a reminder when you need one.'))
+    } else {
+      const settings = node('div', 'web-journal-column')
+      settings.append(card('Local Connect', 'Pair a phone on the same Wi-Fi to sync live.'),
+        card('Web Connect', 'Pair through encrypted Google Drive sync.'))
+      content.append(node('h3', '', 'Settings'),
+        settings)
     }
     const status = node('p', 'web-preview-notice')
     status.setAttribute('role', 'status')
     content.append(status)
   }
 
-  function navigate(destination) {
+  function navigate(destination, searchQuery = '') {
     page = destination
-    query = ''
+    query = searchQuery
     filter = 'All'
     render()
     content.scrollTop = 0
@@ -189,7 +242,7 @@ export function initMonologWeb(reducedMotion) {
       if (!title.value.trim()) return
       if (reminder) reminders.push(title.value.trim())
       else if (note) Object.assign(note, { title: title.value.trim(), body: body.value })
-      else notes.unshift({ title: title.value.trim(), body: body.value, kind: 'Notes', date: '26 November', image: '' })
+      else notes.unshift({ title: title.value.trim(), body: body.value, kind: 'Notes', date: '27 November', image: '' })
       render()
       content.querySelector('[role="status"]').textContent = 'Saved in this preview.'
     })
@@ -220,7 +273,7 @@ export function initMonologWeb(reducedMotion) {
         content.querySelector('[role="status"]').textContent = 'Write a thought before saving.'
         return
       }
-      notes.unshift({ title: 'Today’s note', body: draft.trim(), kind: 'Notes', date: '26 November', image: '' })
+      notes.unshift({ title: 'Today’s note', body: draft.trim(), kind: 'Notes', date: '27 November', image: '' })
       draft = ''
       render()
       content.querySelector('[role="status"]').textContent = 'Saved in this preview. Find it in Journal or Library.'

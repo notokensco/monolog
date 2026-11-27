@@ -32,6 +32,30 @@ test('homepage renders one of each navigation, journal intro, and footer', async
   await expect(mobileNav).toBeHidden()
 })
 
+test('Monolog Web preview renders the illustrated dashboard and keeps interactions local', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/#monolog-web')
+  const preview = page.getByRole('group', { name: 'Interactive Monolog Web preview' })
+  await expect(preview.getByRole('heading', { name: 'Good afternoon' })).toBeVisible()
+  const artwork = preview.locator('.web-tile-art')
+  await expect(artwork).toHaveCount(4)
+  await expect.poll(() => artwork.evaluateAll(images => images.every(image => image.naturalWidth > 0))).toBe(true)
+
+  await preview.getByRole('searchbox', { name: 'Search notes and captures…' }).fill('floor plan')
+  await preview.getByRole('button', { name: 'Open in Journal' }).click()
+  await expect(preview.getByRole('searchbox', { name: 'Search journal…' })).toHaveValue('floor plan')
+  await expect(preview.getByRole('heading', { name: 'Client call notes' })).toBeVisible()
+
+  await page.setViewportSize({ width: 375, height: 800 })
+  await preview.getByRole('button', { name: 'Today', exact: true }).click()
+  await preview.getByRole('textbox', { name: 'Today’s preview draft' }).fill('Follow up with Sam')
+  await preview.getByRole('button', { name: 'Save as journal note' }).click()
+  await expect(preview.getByText('Follow up with Sam')).toBeVisible()
+  await preview.getByRole('button', { name: 'Settings', exact: true }).click()
+  await expect(preview.getByRole('heading', { name: 'Web Connect', exact: true })).toBeVisible()
+  expect(await preview.evaluate(element => element.scrollWidth - element.clientWidth)).toBeLessThanOrEqual(1)
+})
+
 test('Find your type runs live previews in both themes', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' })
   await page.goto('/#showcase')
