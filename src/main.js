@@ -227,8 +227,9 @@ for (const button of document.querySelectorAll('[data-billing]')) button.addEven
   const yearly = button.dataset.billing === 'yearly'
   for (const option of document.querySelectorAll('[data-billing]')) option.setAttribute('aria-pressed', String(option === button))
   document.querySelector('#pro-price').textContent = yearly ? '₹3,372' : '₹299'
+  document.querySelector('#pro-reference-price').hidden = yearly
   document.querySelector('#pro-period').textContent = yearly ? 'per year' : 'per month'
-  document.querySelector('#billing-note').textContent = yearly ? '₹281/month, billed yearly. Save ₹216 a year (about 6%).' : 'Proposed monthly launch price. No payment is taken here.'
+  document.querySelector('#billing-note').textContent = yearly ? '₹281/month, billed yearly. Save ₹216 versus 12 months at the pilot rate.' : 'Individual Pro pilot price.'
   document.querySelector('#pro-contact').href = 'mailto:monolog@notokens.co?subject=Monolog%20Pro%20' + (yearly ? 'Yearly' : 'Monthly')
 })
 

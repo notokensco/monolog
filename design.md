@@ -396,10 +396,11 @@ Pricing is the proposed India launch configuration, not a claim of validated wil
 | Plan | Price | Core offering |
 | --- | --- | --- |
 | Free | ₹0 | Keyboard, local journaling, basic search, basic grammar/voice and a limited Vox/cloud AI pool |
-| Pro monthly | ₹299/month | Advanced assistance and expanded allowances |
+| Pro monthly pilot | ₹299/month (₹599 reference price) | Advanced assistance and expanded allowances |
 | Pro yearly | ₹3,372/year | Equivalent to ₹281/month, billed annually |
+| Brokerage Team | ₹1,299/month after the free pilot | 5 Pro seats. Contact monolog@notokens.co for a customised package |
 
-Annual savings: ₹299 × 12 = ₹3,588; ₹3,588 − ₹3,372 = **₹216**, or approximately **6.02%**. A **Save 6%** badge is accurate when rounded.
+Annual savings compared with 12 months at the individual pilot rate are **₹216 (about 6%)**.
 
 Pro features: expanded Vox, punctuation/formatting, vocabulary, advanced grammar and rewriting, writing styles, expanded AI/search/screenshot allowance, memory questions, richer recaps, supported routines and enhanced exports.
 

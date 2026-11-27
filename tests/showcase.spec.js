@@ -570,10 +570,16 @@ test('incognito illustration and annual pricing communicate their state', async 
   await expect(page.locator('#privacy-toggle')).toHaveAttribute('aria-pressed', 'false')
   await page.getByRole('button', { name: /Yearly/ }).click()
   await expect(page.locator('#pro-price')).toHaveText('₹3,372')
+  await expect(page.locator('#pro-reference-price')).toBeHidden()
   await expect(page.locator('#billing-note')).toContainText('₹281/month, billed yearly. Save ₹216')
   await expect(page.locator('#pro-contact')).toHaveAttribute('href', /monolog@notokens.co.*Yearly/)
   await page.getByRole('button', { name: 'Monthly', exact: true }).click()
   await expect(page.locator('#pro-price')).toHaveText('₹299')
+  await expect(page.locator('del#pro-reference-price')).toBeVisible()
+  await expect(page.locator('#billing-note')).toHaveText('Individual Pro pilot price.')
+  const team = page.getByRole('article', { name: 'Brokerage Team' })
+  await expect(team).toContainText(/₹1,299\s+per month for 5 Pro seats/)
+  await expect(team.getByRole('link', { name: 'Contact us for a customised package' })).toHaveAttribute('href', /^mailto:monolog@notokens\.co/)
 })
 
 test('native scroll reveals all three desktop feature chapters', async ({ page }) => {

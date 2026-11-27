@@ -461,6 +461,28 @@ a:hover .nav-ext {
   transform: translate(-1%, -2%);
 }
 
+.price del {
+  color: #66596f;
+  font-size: 22px;
+}
+
+.price-team {
+  max-width: 1100px;
+  margin: 36px auto 0;
+  padding: 28px 0 0;
+  border-top: 1px solid #ccc6d2;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.price-team h3 { font-size: 14px; }
+.price-team .price { margin-top: 14px; }
+.price-team .price > span { font-size: clamp(48px, 7vw, 72px); }
+.price-team p { margin: 12px 0 0; color: #66596f; }
+
 @media (max-width: 700px) {
   .footer-keyboard > .footer-brand-key {
     box-shadow: 0 9px 0 #9680af;
