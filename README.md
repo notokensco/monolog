@@ -63,4 +63,4 @@ The replacement hero keys were generated individually with the built-in image_ge
 
 ## Product status
 
-Monolog is in development. App screens, journal content and voice/AI illustrations are product previews. The website does not capture microphone audio, save journal entries, execute Android actions or accept payments. Individual Pro pilot pricing is ₹299/month (₹599 reference price). The proposed annual price is ₹3,372. Brokerage Team is ₹1,299/month for 5 Pro seats after the free brokerage pilot. Email monolog@notokens.co for a customised package. Local storage holds only the optional Paper/Ink preview preference.
+Monolog is in development. App screens, journal content and voice/AI illustrations are product previews. The website does not capture microphone audio, save journal entries, execute Android actions or accept payments. Individual Pro pilot pricing is ₹299/month (₹599 reference price). The proposed annual price is ₹3,372. The Team Plan is ₹1,299/month for 5 Pro seats after the free team pilot. Email monolog@notokens.co for a customised package. Local storage holds only the optional Paper/Ink preview preference.

@@ -577,8 +577,10 @@ test('incognito illustration and annual pricing communicate their state', async 
   await expect(page.locator('#pro-price')).toHaveText('₹299')
   await expect(page.locator('del#pro-reference-price')).toBeVisible()
   await expect(page.locator('#billing-note')).toHaveText('Individual Pro pilot price.')
-  const team = page.getByRole('article', { name: 'Brokerage Team' })
+  const team = page.getByRole('article', { name: 'Team Plan' })
+  await expect(team.getByRole('heading')).toHaveText('Team Plan*')
   await expect(team).toContainText(/₹1,299\s+per month for 5 Pro seats/)
+  await expect(team).toHaveAccessibleDescription('* Proposed monthly price after the free team pilot.')
   await expect(team.getByRole('link', { name: 'Contact us for a customised package' })).toHaveAttribute('href', /^mailto:monolog@notokens\.co/)
 })
 
